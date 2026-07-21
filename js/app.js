@@ -168,15 +168,23 @@
   function wireMobileNav() {
     const toggle = $("#navToggle");
     const toc = $("#toc");
+    const backdrop = $("#tocBackdrop");
+    function closeToc() {
+      toc.classList.remove("open");
+      backdrop.classList.remove("show");
+      toggle.setAttribute("aria-expanded", "false");
+    }
     toggle.addEventListener("click", () => {
       const open = toc.classList.toggle("open");
+      backdrop.classList.toggle("show", open);
       toggle.setAttribute("aria-expanded", String(open));
     });
+    backdrop.addEventListener("click", closeToc);
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape") closeToc();
+    });
     $$(".toc-list a, .toc-restart").forEach((a) => {
-      a.addEventListener("click", () => {
-        toc.classList.remove("open");
-        toggle.setAttribute("aria-expanded", "false");
-      });
+      a.addEventListener("click", closeToc);
     });
   }
 
@@ -334,13 +342,13 @@
       <div class="cc-pair stagger">
         <div class="cc-card tracao">
           <div class="cc-img"><img src="${esc(tracao.image)}" alt="${esc(tracao.label)}" loading="lazy" /></div>
-          <span class="sub">${esc(tracao.sub)}</span>
+          ${tracao.sub ? `<span class="sub">${esc(tracao.sub)}</span>` : ""}
           <h3>${esc(tracao.label)}</h3>
           <p>${esc(tracao.desc)}</p>
         </div>
         <div class="cc-card carga">
           <div class="cc-img"><img src="${esc(carga.image)}" alt="${esc(carga.label)}" loading="lazy" /></div>
-          <span class="sub">${esc(carga.sub)}</span>
+          ${carga.sub ? `<span class="sub">${esc(carga.sub)}</span>` : ""}
           <h3>${esc(carga.label)}</h3>
           <p>${esc(carga.desc)}</p>
         </div>
@@ -586,6 +594,7 @@
                 <div class="label">${esc(pin.label)}</div>
               </div>`).join("")}
           </div>
+          ${r.rulesTitle ? `<div class="rules-title">${esc(r.rulesTitle)}</div>` : ""}
           <ul class="rodotrem-rules">
             ${r.rules.map(rule => `<li>${esc(rule)}</li>`).join("")}
           </ul>
@@ -724,9 +733,10 @@
             </div>`).join("")}
         </div>
         <div class="journey-detail">
-          <div>
+          <div class="step-text">
             <span class="step-of" id="journeyStepOf">Etapa 1 de ${p.steps.length}</span>
             <div class="big-label" id="journeyLabel">${esc(p.steps[0].label)}</div>
+            <p class="step-desc" id="journeyDesc">${esc(p.steps[0].desc || "")}</p>
           </div>
           <div class="journey-controls">
             <button id="journeyPrev" disabled aria-label="Etapa anterior">←</button>
@@ -740,6 +750,7 @@
     const steps = $$(".journey-step", section);
     const fill = $("#journeyFill", section);
     const label = $("#journeyLabel", section);
+    const desc = $("#journeyDesc", section);
     const stepOf = $("#journeyStepOf", section);
     const prev = $("#journeyPrev", section);
     const next = $("#journeyNext", section);
@@ -751,6 +762,7 @@
       });
       fill.style.width = (idx / (steps.length - 1)) * 100 + "%";
       label.textContent = p.steps[idx].label;
+      desc.textContent = p.steps[idx].desc || "";
       stepOf.textContent = `Etapa ${idx + 1} de ${steps.length}`;
       prev.disabled = idx === 0;
       next.disabled = idx === steps.length - 1;
