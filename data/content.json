@@ -8,7 +8,7 @@
   "hero": {
     "kicker": "GUIA LIBRELATO",
     "title": "Visão de Negócio",
-    "subtitle": "Um guia interativo sobre o mercado de implementos rodoviários e o papel da Librelato dentro dele. Navegue pelos 10 capítulos, clique, arraste e explore.",
+    "subtitle": "Um guia interativo sobre o mercado de implementos rodoviários e o papel da Librelato dentro dele. Use as setas, o scroll ou os pontinhos para passar as páginas.",
     "cta": "Começar a explorar",
     "image": "assets/img/trucks-yard.jpg",
     "stats": [
@@ -18,20 +18,20 @@
     ]
   },
   "toc": [
-    { "id": 1, "title": "Quem Somos", "subtitle": "A força da Librelato no transporte" },
-    { "id": 2, "title": "O que são Implementos?", "subtitle": "O conceito do “Cavalo e a Carroça”" },
-    { "id": 3, "title": "Portfólio e Aplicações", "subtitle": "A “mochila” certa para cada carga" },
-    { "id": 4, "title": "Panorama de Mercado", "subtitle": "Os grandes players do setor" },
-    { "id": 5, "title": "Diferenciais Librelato", "subtitle": "Como geramos valor" },
-    { "id": 6, "title": "A Métrica do Setor", "subtitle": "Entendendo a contagem por “Pinos”" },
-    { "id": 7, "title": "Dicionário das Estradas", "subtitle": "Glossário técnico e operacional" },
-    { "id": 8, "title": "Modelo de Negócio", "subtitle": "Nossa presença nacional" },
-    { "id": 9, "title": "Jornada do Cliente", "subtitle": "Do pedido à entrega" },
-    { "id": 10, "title": "Representatividade", "subtitle": "Entidades que organizam o setor" }
+    { "group": 1, "title": "Quem Somos", "subtitle": "A força da Librelato no transporte" },
+    { "group": 2, "title": "O que são Implementos?", "subtitle": "O conceito do “Cavalo e a Carroça”" },
+    { "group": 3, "title": "Portfólio e Aplicações", "subtitle": "A “mochila” certa para cada carga" },
+    { "group": 4, "title": "Panorama de Mercado", "subtitle": "Os grandes players do setor" },
+    { "group": 5, "title": "Diferenciais Librelato", "subtitle": "Como geramos valor" },
+    { "group": 6, "title": "A Métrica do Setor", "subtitle": "Entendendo a contagem por “Pinos”" },
+    { "group": 7, "title": "Dicionário das Estradas", "subtitle": "Glossário técnico e operacional" },
+    { "group": 8, "title": "Modelo de Negócio", "subtitle": "Nossa presença nacional" },
+    { "group": 9, "title": "Jornada do Cliente", "subtitle": "Do pedido à entrega" },
+    { "group": 10, "title": "Representatividade", "subtitle": "Entidades que organizam o setor" }
   ],
-  "sections": [
+  "pages": [
     {
-      "id": 1,
+      "group": 1, "part": "",
       "type": "intro",
       "kicker": "01 · Quem Somos",
       "title": "A força da Librelato no transporte",
@@ -45,12 +45,11 @@
       "imageAlt": "Pátio da Librelato com dois implementos rodoviários lado a lado"
     },
     {
-      "id": 2,
+      "group": 2, "part": "1/2",
       "type": "cavalo-carroca",
       "kicker": "02 · O que são Implementos?",
       "title": "O conceito do “Cavalo e a Carroça”",
-      "intro": "Para falar sobre o que fazemos, precisamos começar falando sobre os implementos. Aqui, é importante destacar dois elementos principais na operação: a unidade de tração (o veículo que gera a força, seja linha leve ou pesada) e o implemento (a estrutura onde a carga viaja). Ou seja: o veículo puxa, o implemento transporta.",
-      "note": "Os implementos rodoviários são estruturas de carga, que podem ser acopladas, desacopladas e adaptadas conforme a necessidade da operação.",
+      "intro": "Destaque para dois elementos principais na operação: a unidade de tração (o veículo que gera a força) e o implemento (a estrutura onde a carga viaja). O veículo puxa, o implemento transporta.",
       "analogyLabel": "Um jeito fácil de entender, de uma forma ainda mais simples:",
       "analogy": "Pense em um cavalo puxando uma carroça.",
       "pair": [
@@ -69,36 +68,40 @@
           "image": "assets/img/trailer-cutout.png"
         }
       ],
-      "backpack": {
-        "label": "Cada carga tem sua “mochila”",
-        "intro": "A coisa mais legal do implemento é que ele pode mudar dependendo do que o caminhão precisa carregar. É como se o caminhão trocasse de mochila:",
-        "options": [
-          {
-            "cargo": "Gasolina",
-            "icon": "⛽",
-            "implement": "Tanque gigante",
-            "desc": "Para levar gasolina, o implemento é um tanque gigante."
-          },
-          {
-            "cargo": "Comida congelada",
-            "icon": "❄️",
-            "implement": "Geladeira gigante",
-            "desc": "Para levar comida congelada, o implemento é uma caixa fechada que funciona como uma geladeira gigante."
-          },
-          {
-            "cargo": "Areia ou pedras",
-            "icon": "🪨",
-            "implement": "Caçamba basculante",
-            "desc": "Para levar areia ou pedras, o implemento é uma caçamba que levanta para despejar tudo no chão."
-          }
-        ]
-      }
+      "note": "Os implementos rodoviários são estruturas de carga, que podem ser acopladas, desacopladas e adaptadas conforme a necessidade da operação."
     },
     {
-      "id": 3,
-      "type": "portfolio",
+      "group": 2, "part": "2/2",
+      "type": "backpack",
+      "kicker": "02 · O que são Implementos?",
+      "title": "Cada carga tem sua “mochila”",
+      "intro": "A coisa mais legal do implemento é que ele pode mudar dependendo do que o caminhão precisa carregar. É como se o caminhão trocasse de mochila — clique numa carga para ver:",
+      "options": [
+        {
+          "cargo": "Gasolina",
+          "icon": "⛽",
+          "implement": "Tanque gigante",
+          "desc": "Para levar gasolina, o implemento é um tanque gigante."
+        },
+        {
+          "cargo": "Comida congelada",
+          "icon": "❄️",
+          "implement": "Geladeira gigante",
+          "desc": "Para levar comida congelada, o implemento é uma caixa fechada que funciona como uma geladeira gigante."
+        },
+        {
+          "cargo": "Areia ou pedras",
+          "icon": "🪨",
+          "implement": "Caçamba basculante",
+          "desc": "Para levar areia ou pedras, o implemento é uma caçamba que levanta para despejar tudo no chão."
+        }
+      ]
+    },
+    {
+      "group": 3, "part": "1/2",
+      "type": "portfolio-grid",
       "kicker": "03 · Portfólio e Aplicações",
-      "title": "A “mochila” certa para cada carga",
+      "title": "Conheça os tipos de implementos",
       "intro": "Existem diferentes tipos de implementos, cada um desenvolvido para uma aplicação específica. Cada tipo atende a uma necessidade logística diferente. O portfólio da Librelato contém:",
       "image": "assets/img/portfolio-grid.jpg",
       "imageAlt": "Grade com 12 tipos de implementos Librelato: graneleiro, basculante, tanque, furgão alumínio, furgão lonado, porta contêiner, florestal, carrega tudo, cavaqueira, canavieiro, carga seca e frigorífica",
@@ -106,25 +109,35 @@
         "Graneleiro", "Basculante", "Tanque", "Furgão Alumínio", "Furgão Lonado",
         "Porta Contêiner", "Florestal", "Carrega Tudo", "Cavaqueira",
         "Canavieiro", "Carga Seca", "Frigorífica"
-      ],
-      "tableTitle": "Da carga ao dia a dia",
+      ]
+    },
+    {
+      "group": 3, "part": "2/2",
+      "type": "portfolio-table",
+      "kicker": "03 · Portfólio e Aplicações",
+      "title": "A “mochila” certa para cada carga",
+      "intro": "Da carga ao dia a dia: clique em um tipo de carga para ver qual implemento a Librelato usa para transportá-la.",
       "table": [
         {
+          "icon": "🌾",
           "cargo": "Grãos (Soja, Milho)",
           "implemento": "Graneleiro / Basculante",
           "exemplo": "O agronegócio — a comida que está todo dia na sua mesa."
         },
         {
+          "icon": "📦",
           "cargo": "Carga Geral (Caixas, Paletes)",
           "implemento": "Sider (Lona) ou Baú",
           "exemplo": "Produtos que você compra no e-commerce."
         },
         {
+          "icon": "⛽",
           "cargo": "Líquidos (Combustível)",
           "implemento": "Tanque",
           "exemplo": "Item essencial para sua locomoção, seja de moto ou carro."
         },
         {
+          "icon": "🏗️",
           "cargo": "Construção / Mineração",
           "implemento": "Caçambas Basculantes",
           "exemplo": "Infraestrutura e obras."
@@ -132,12 +145,12 @@
       ]
     },
     {
-      "id": 4,
+      "group": 4, "part": "",
       "type": "market",
       "kicker": "04 · Panorama de Mercado",
       "title": "Os grandes players do setor",
       "lead": "O mercado de implementos rodoviários no Brasil conta com mais de 100 fabricantes ativos.",
-      "body": "Atualmente, são cerca de 104 players no setor. Quatro dessas empresas se destacam pela relevância e volume de atuação:",
+      "body": "Atualmente, são cerca de 104 players no setor. Quatro dessas empresas se destacam pela relevância e volume de atuação — clique em cada uma:",
       "stat": { "value": "104", "label": "fabricantes ativos" },
       "players": [
         { "name": "Librelato", "trait": "Força / Feito pra durar", "logo": "assets/img/logo.png", "accent": "#0092d5" },
@@ -148,11 +161,11 @@
       "footer": "Esses players concentram uma parcela significativa do mercado e lideram as principais inovações e tendências do setor."
     },
     {
-      "id": 5,
+      "group": 5, "part": "",
       "type": "differentials",
       "kicker": "05 · Diferenciais Librelato",
       "title": "Como geramos valor",
-      "subtitle": "Outras características importantes",
+      "subtitle": "Outras características importantes — clique para expandir",
       "cards": [
         {
           "n": "01",
@@ -179,14 +192,12 @@
       ]
     },
     {
-      "id": 6,
-      "type": "pinos",
+      "group": 6, "part": "1/2",
+      "type": "pinos-calc",
       "kicker": "06 · A Métrica do Setor",
       "title": "Entendendo a contagem por “Pinos”",
-      "intro": "Diferente do mercado de caminhões, que é medido por número de chassis, o mercado de implementos rodoviários é medido por pinos.",
-      "body": "Cada produto (ou unidade de acoplamento) corresponde a 1 pino. Na prática, isso significa que cada reboque, semirreboque ou dolly conectado à composição é contabilizado individualmente.",
+      "intro": "O mercado de implementos rodoviários é medido por pinos, não por chassis. Cada produto (ou unidade de acoplamento) corresponde a 1 pino — cada reboque, semirreboque ou dolly conectado à composição é contabilizado individualmente.",
       "rule": "A regra é simples: conte quantos produtos (unidades de acoplamento) existem na composição. Cada produto equivale a um “pino”.",
-      "footnote": "Portanto, quando falamos de volume de mercado, estamos falando do número de implementos vendidos, e não de caminhões.",
       "image": "assets/img/bitrem-highway.jpg",
       "imageAlt": "Bitrem Librelato branco trafegando em rodovia",
       "compositions": [
@@ -195,10 +206,16 @@
         { "name": "Tritrem", "pinos": 3, "note": "3 implementos" },
         { "name": "Rodotrem", "pinos": 3, "note": "2 implementos + 1 dolly" }
       ],
+      "footnote": "Quando falamos de volume de mercado, estamos falando do número de implementos vendidos, e não de caminhões."
+    },
+    {
+      "group": 6, "part": "2/2",
+      "type": "pinos-rodotrem",
+      "kicker": "06 · A Métrica do Setor",
+      "title": "E o Rodotrem?",
       "rodotrem": {
-        "title": "E o Rodotrem?",
         "kicker": "O conjunto que mais gera dúvidas",
-        "intro": "Para não errar, entenda que dolly é um implemento que cria um novo ponto de conexão no sistema. A conta do Rodotrem (3 pinos) funciona assim:",
+        "intro": "Dolly é um implemento que cria um novo ponto de conexão no sistema. A conta do Rodotrem (3 pinos) funciona assim — clique em cada passo:",
         "pins": [
           { "n": 1, "label": "Conecta o 1º semirreboque ao cavalo mecânico." },
           { "n": 2, "label": "O Dolly, que atua como ponte, possui seu próprio pino para ser engatado." },
@@ -209,12 +226,12 @@
         "rules": [
           "Cavalo Mecânico: não entra na conta (ele é a força de tração, não o implemento).",
           "Dolly e Reboques: ambos contam como 1 “pino” no sistema.",
-          "Isso porque a métrica não avalia o componente físico (pino-rei), mas sim o número de produtos independentes acoplados. Se é uma unidade a mais na composição, ela contabiliza como um pino, independentemente do tipo de engate."
+          "A métrica não avalia o componente físico (pino-rei), mas sim o número de produtos independentes acoplados."
         ]
       }
     },
     {
-      "id": 7,
+      "group": 7, "part": "1/2",
       "type": "glossary",
       "kicker": "07 · Dicionário das Estradas",
       "title": "Glossário técnico e operacional",
@@ -258,38 +275,65 @@
           "def": "Combinação de dois semirreboques unidos por um Dolly (unidade intermediária). É a configuração de alta capacidade para longas distâncias.",
           "image": "assets/img/dolly-unit.png"
         }
+      ]
+    },
+    {
+      "group": 7, "part": "2/2",
+      "type": "checklist",
+      "kicker": "07 · Dicionário das Estradas",
+      "title": "Itens Obrigatórios",
+      "subtitle": "O que são esses itens obrigatórios para reboque e semirreboque?",
+      "note": "Tabela 3 — Equipamentos Obrigatórios (Tratores e Rebocados). Clique para marcar.",
+      "items": [
+        "Iluminação", "Parachoque Traseiro", "Freio", "Aparabarra Antisapray",
+        "Pneu", "Protetor Lateral", "Paralama", "Roda"
+      ]
+    },
+    {
+      "group": 8, "part": "1/2",
+      "type": "network-map",
+      "kicker": "08 · Modelo de Negócio",
+      "title": "Nossa presença nacional",
+      "lead": "A Librelato opera por meio de uma rede de representantes comerciais distribuídos pelo país.",
+      "mapBase": "assets/img/map-base.jpg",
+      "legend": [
+        { "key": "postos", "label": "Postos de Venda", "color": "#2f9bf0", "image": "assets/img/map-pins-postos.png", "active": true },
+        { "key": "oficinas", "label": "Oficinas Homologadas", "color": "#8fe1f5", "count": "43", "image": "assets/img/map-pins-oficinas.png", "active": true },
+        { "key": "lojas", "label": "Lojas Libre Parts", "color": "#ffffff", "count": "31", "image": "assets/img/map-pins-lojas.png", "active": true },
+        { "key": "box", "label": "Box Libre Parts", "color": "#b8a58c", "count": "6", "image": "assets/img/map-pins-box.png", "active": true }
       ],
-      "checklist": {
-        "title": "Itens Obrigatórios",
-        "subtitle": "O que são esses itens obrigatórios para reboque e semirreboque?",
-        "note": "Tabela 3 — Equipamentos Obrigatórios (Tratores e Rebocados)",
-        "items": [
-          "Iluminação", "Parachoque Traseiro", "Freio", "Aparabarra Antisapray",
-          "Pneu", "Protetor Lateral", "Paralama", "Roda"
+      "international": {
+        "label": "Presença internacional (postos de venda)",
+        "countries": [
+          { "name": "Paraguai", "count": "6" },
+          { "name": "Argentina", "count": "3" },
+          { "name": "Bolívia", "count": "3" },
+          { "name": "Chile", "count": "1" },
+          { "name": "Uruguai", "count": "1" },
+          { "name": "Colômbia", "count": "" }
         ]
       }
     },
     {
-      "id": 8,
-      "type": "network",
+      "group": 8, "part": "2/2",
+      "type": "network-roles",
       "kicker": "08 · Modelo de Negócio",
-      "title": "Nossa presença nacional",
-      "lead": "A Librelato opera por meio de uma rede de representantes comerciais distribuídos pelo país.",
+      "title": "O papel dos representantes",
       "body": "Esses representantes são responsáveis por:",
       "responsibilities": [
         "Prospectar clientes",
         "Entender a necessidade de cada operação",
         "Oferecer a solução mais adequada"
       ],
-      "image": "assets/img/brazil-map.jpg",
-      "imageAlt": "Mapa do Brasil com pontos de representantes comerciais da Librelato distribuídos pelo território nacional"
+      "image": "assets/img/trailer-cutout.png",
+      "imageAlt": "Implemento basculante Librelato"
     },
     {
-      "id": 9,
+      "group": 9, "part": "",
       "type": "journey",
       "kicker": "09 · Jornada do Cliente",
       "title": "Do pedido à entrega",
-      "intro": "O processo de venda, de forma simplificada, segue as seguintes etapas:",
+      "intro": "O processo de venda, de forma simplificada, segue as seguintes etapas — use as setas para avançar:",
       "steps": [
         { "n": 1, "label": "Prospecção e Relacionamento" },
         { "n": 2, "label": "Identificação da Necessidade" },
@@ -300,20 +344,24 @@
       ]
     },
     {
-      "id": 10,
-      "type": "association",
+      "group": 10, "part": "1/2",
+      "type": "association-entities",
       "kicker": "10 · Representatividade",
-      "title": "Entidades que organizam o setor",
-      "subtitle": "Como o mercado é organizado",
-      "intro": "O setor automotivo e o setor de implementos rodoviários são organizados por associações que consolidam dados e representam o mercado. ANFAVEA e ANFIR são as principais.",
+      "title": "Como o mercado é organizado",
+      "intro": "O setor automotivo e o setor de implementos rodoviários são organizados por associações que consolidam dados e representam o mercado.",
       "entities": [
         { "acronym": "ANFAVEA", "desc": "Associação Nacional dos Fabricantes de Veículos Automotores" },
         { "acronym": "ANFIR", "desc": "Associação Nacional dos Fabricantes de Implementos Rodoviários" }
       ],
       "dataLabel": "Essas entidades são fundamentais para o setor, pois fornecem dados como:",
-      "dataProvided": ["Volume de mercado", "Emplacamentos", "Tendências", "Performance dos fabricantes"],
-      "normsLabel": "Além disso, o mercado segue normas rigorosas:",
-      "normsDesc": "Diretrizes e regulamentações garantem que todos os produtos sigam os padrões legais exigidos, estabelecendo limites de segurança e características essenciais. Isso envolve o cumprimento estrito de:",
+      "dataProvided": ["Volume de mercado", "Emplacamentos", "Tendências", "Performance dos fabricantes"]
+    },
+    {
+      "group": 10, "part": "2/2",
+      "type": "association-standards",
+      "kicker": "10 · Representatividade",
+      "title": "Normas e Regulamentações",
+      "normsDesc": "Além disso, o mercado segue normas rigorosas: diretrizes que garantem que todos os produtos sigam os padrões legais exigidos, estabelecendo limites de segurança e características essenciais.",
       "standards": [
         { "org": "CONTRAN", "desc": "Resoluções — pesos, dimensões e limites" },
         { "org": "ABNT", "desc": "Normas Técnicas — padrões de fabricação e ensaios" },

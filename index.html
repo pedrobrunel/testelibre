@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Guia Librelato — Visão de Negócio</title>
-<meta name="description" content="Guia interativo sobre o mercado de implementos rodoviários e o papel da Librelato dentro dele." />
+<meta name="description" content="Guia interativo, em formato de apresentação paginada, sobre o mercado de implementos rodoviários e o papel da Librelato dentro dele." />
 <link rel="icon" href="assets/img/logo.png" />
 <link rel="stylesheet" href="css/styles.css" />
 </head>
@@ -21,16 +21,20 @@
       <img src="assets/img/logo.png" alt="Librelato" />
     </div>
     <ol class="toc-list" id="tocList"></ol>
-    <a class="toc-restart" href="#hero" data-nav="hero">↑ Início</a>
+    <a class="toc-restart" href="#" data-jump="first">↑ Início</a>
   </nav>
 
-  <main id="main">
-    <section class="hero" id="hero"></section>
-    <div id="sections"></div>
-    <section class="closing" id="closing"></section>
-  </main>
+  <div class="dot-rail" id="dotRail" aria-hidden="true"></div>
 
-  <div class="tap-hint" id="tapHint">Role para explorar ↓</div>
+  <div class="deck-nav">
+    <button id="prevBtn" aria-label="Página anterior">←</button>
+    <span class="counter" id="pageCounter">01 / 01</span>
+    <button id="nextBtn" aria-label="Próxima página">→</button>
+  </div>
+
+  <main id="deck"></main>
+
+  <div class="tap-hint" id="tapHint">Role, arraste ou use as setas ↓</div>
 
   <script src="js/app.js" defer></script>
 </body>

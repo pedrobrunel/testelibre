@@ -1,5 +1,5 @@
 /* Guia Librelato — Visão de Negócio
-   Renders the whole page from data/content.json and wires up interactivity. */
+   Paginated interactive deck. Renders data/content.json and wires up navigation + widgets. */
 
 (function () {
   "use strict";
@@ -16,6 +16,9 @@
       "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
     }[c]));
 
+  let slides = [];   // { el, group, kind, wire() }
+  let current = 0;
+
   fetch("data/content.json")
     .then((r) => {
       if (!r.ok) throw new Error("HTTP " + r.status);
@@ -23,15 +26,19 @@
     })
     .then((data) => {
       document.title = data.meta.siteTitle;
-      renderToc(data);
-      renderHero(data);
-      renderSections(data);
-      renderClosing(data);
-      afterRender(data);
+      buildDeck(data);
+      buildToc(data);
+      buildDotRail(data);
+      wireNav();
+      wireKeyboard();
+      wireMobileNav();
+      setupObserver();
+      setupTapHint();
+      updateUI(0);
     })
     .catch((err) => {
       console.error("Falha ao carregar data/content.json", err);
-      $("#main").innerHTML =
+      $("#deck").innerHTML =
         '<div style="padding:80px 6vw;font-family:sans-serif;max-width:640px">' +
         "<h1>Não foi possível carregar o conteúdo</h1>" +
         "<p>Este site lê o arquivo <code>data/content.json</code> via <code>fetch()</code>. " +
@@ -44,13 +51,54 @@
     });
 
   // ---------------------------------------------------------------
-  // TOC
+  // Deck assembly
   // ---------------------------------------------------------------
-  function renderToc(data) {
+  function buildDeck(data) {
+    const deck = $("#deck");
+
+    // Hero slide
+    const heroEl = el(`<section class="slide hero" id="slide-0" data-kind="hero"></section>`);
+    heroEl.innerHTML = renderHero(data.hero);
+    deck.appendChild(heroEl);
+    slides.push({ el: heroEl, group: 0, title: "Início", kind: "hero" });
+
+    // Chapter pages
+    data.pages.forEach((page, i) => {
+      const idx = slides.length;
+      const alt = idx % 2 === 0 ? "" : " alt";
+      const pageEl = el(`<section class="slide${alt}" id="slide-${idx}" data-kind="chapter" data-group="${page.group}"></section>`);
+      pageEl.innerHTML = renderPage(page);
+      deck.appendChild(pageEl);
+      slides.push({ el: pageEl, group: page.group, title: page.title, part: page.part, kind: "chapter", type: page.type, data: page });
+    });
+
+    // Closing slide
+    const closeIdx = slides.length;
+    const closingEl = el(`<section class="slide closing" id="slide-${closeIdx}" data-kind="closing"></section>`);
+    closingEl.innerHTML = renderClosing(data.closing, data.meta);
+    deck.appendChild(closingEl);
+    slides.push({ el: closingEl, group: 999, title: "Fim", kind: "closing" });
+
+    // Wire interactivity per slide now that DOM exists
+    data.pages.forEach((page) => {
+      const s = slides.find((sl) => sl.kind === "chapter" && sl.data === page);
+      wirePage(s.el, page);
+    });
+  }
+
+  function firstSlideIndexOfGroup(group) {
+    return slides.findIndex((s) => s.group === group);
+  }
+
+  // ---------------------------------------------------------------
+  // Sidebar TOC (topic-level)
+  // ---------------------------------------------------------------
+  function buildToc(data) {
     const list = $("#tocList");
     data.toc.forEach((item) => {
-      const li = el(`<li><a href="#chapter-${item.id}" data-nav="${item.id}">
-        <span class="n">${String(item.id).padStart(2, "0")}</span>
+      const idx = firstSlideIndexOfGroup(item.group);
+      const li = el(`<li><a href="#" data-jump-index="${idx}" data-group="${item.group}">
+        <span class="n">${String(item.group).padStart(2, "0")}</span>
         <span>${esc(item.title)}</span>
       </a></li>`);
       list.appendChild(li);
@@ -58,93 +106,232 @@
   }
 
   // ---------------------------------------------------------------
-  // Hero
+  // Dot rail (page-level, fine grained)
   // ---------------------------------------------------------------
-  function renderHero(data) {
-    const h = data.hero;
-    const hero = $("#hero");
-    hero.innerHTML = `
-      <div class="hero-inner reveal">
-        <div class="hero-kicker">${esc(h.kicker)}</div>
-        <h1 class="hero-title">${esc(h.title)}</h1>
-        <p class="hero-subtitle">${esc(h.subtitle)}</p>
-        <a class="hero-cta" href="#chapter-1" data-nav="1">${esc(h.cta)} →</a>
-        <div class="hero-stats">
-          ${h.stats.map(s => `
-            <div class="hero-stat">
-              <div class="value">${esc(s.value)}</div>
-              <div class="label">${esc(s.label)}</div>
-            </div>`).join("")}
+  function buildDotRail(data) {
+    const rail = $("#dotRail");
+    let prevGroup = null;
+    slides.forEach((s, i) => {
+      const btn = document.createElement("button");
+      btn.dataset.index = i;
+      let label = s.title || "";
+      if (s.kind === "chapter" && s.part) label += " " + s.part;
+      btn.dataset.label = label;
+      if (prevGroup !== null && s.group !== prevGroup) {
+        btn.style.marginTop = "10px";
+      }
+      prevGroup = s.group;
+      btn.addEventListener("click", () => goToIndex(i));
+      rail.appendChild(btn);
+    });
+  }
+
+  // ---------------------------------------------------------------
+  // Navigation
+  // ---------------------------------------------------------------
+  function goToIndex(i) {
+    i = Math.max(0, Math.min(slides.length - 1, i));
+    slides[i].el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function wireNav() {
+    $("#prevBtn").addEventListener("click", () => goToIndex(current - 1));
+    $("#nextBtn").addEventListener("click", () => goToIndex(current + 1));
+    $$(".toc-list a").forEach((a) => {
+      a.addEventListener("click", (e) => {
+        e.preventDefault();
+        goToIndex(parseInt(a.dataset.jumpIndex, 10));
+      });
+    });
+  }
+
+  function wireKeyboard() {
+    window.addEventListener("keydown", (e) => {
+      const tag = (document.activeElement && document.activeElement.tagName) || "";
+      if (tag === "INPUT" || tag === "TEXTAREA") return;
+      if (["ArrowDown", "ArrowRight", "PageDown", " "].includes(e.key)) {
+        e.preventDefault();
+        goToIndex(current + 1);
+      } else if (["ArrowUp", "ArrowLeft", "PageUp"].includes(e.key)) {
+        e.preventDefault();
+        goToIndex(current - 1);
+      } else if (e.key === "Home") {
+        e.preventDefault();
+        goToIndex(0);
+      } else if (e.key === "End") {
+        e.preventDefault();
+        goToIndex(slides.length - 1);
+      }
+    });
+  }
+
+  function wireMobileNav() {
+    const toggle = $("#navToggle");
+    const toc = $("#toc");
+    toggle.addEventListener("click", () => {
+      const open = toc.classList.toggle("open");
+      toggle.setAttribute("aria-expanded", String(open));
+    });
+    $$(".toc-list a, .toc-restart").forEach((a) => {
+      a.addEventListener("click", () => {
+        toc.classList.remove("open");
+        toggle.setAttribute("aria-expanded", "false");
+      });
+    });
+  }
+
+  // ---------------------------------------------------------------
+  // Active-slide observer: drives UI state + replayable animations
+  // ---------------------------------------------------------------
+  function setupObserver() {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const idx = slides.findIndex((s) => s.el === entry.target);
+          if (idx === -1) return;
+          if (entry.isIntersecting) {
+            slides[idx].el.classList.add("is-active");
+            current = idx;
+            updateUI(idx);
+            onSlideActivate(slides[idx]);
+          } else {
+            slides[idx].el.classList.remove("is-active");
+          }
+        });
+      },
+      { root: $("#deck"), threshold: 0.55 }
+    );
+    slides.forEach((s) => io.observe(s.el));
+  }
+
+  function updateUI(idx) {
+    const total = slides.length;
+    $("#progressFill").style.width = (idx / (total - 1)) * 100 + "%";
+    $("#pageCounter").textContent = String(idx + 1).padStart(2, "0") + " / " + String(total).padStart(2, "0");
+    $("#prevBtn").disabled = idx === 0;
+    $("#nextBtn").disabled = idx === total - 1;
+
+    $$(".dot-rail button").forEach((b, i) => b.classList.toggle("active", i === idx));
+
+    const activeGroup = slides[idx].group;
+    $$(".toc-list a").forEach((a) => a.classList.toggle("active", parseInt(a.dataset.group, 10) === activeGroup));
+  }
+
+  function onSlideActivate(slide) {
+    if (slide.type === "market") replayStatCount(slide.el);
+  }
+
+  // ---------------------------------------------------------------
+  // Hero & Closing
+  // ---------------------------------------------------------------
+  function renderHero(h) {
+    return `
+      <div class="hero-flex">
+        <div class="hero-inner">
+          <div class="hero-kicker anim">${esc(h.kicker)}</div>
+          <h1 class="hero-title anim anim-d1">${esc(h.title)}</h1>
+          <p class="hero-subtitle anim anim-d2">${esc(h.subtitle)}</p>
+          <a class="hero-cta anim anim-d3" href="#" data-jump-index="1">${esc(h.cta)} →</a>
+          <div class="hero-stats anim anim-d4">
+            ${h.stats.map(s => `
+              <div class="hero-stat">
+                <div class="value">${esc(s.value)}</div>
+                <div class="label">${esc(s.label)}</div>
+              </div>`).join("")}
+          </div>
         </div>
+        <div class="hero-photo anim anim-d2"><img src="${esc(h.image)}" alt="Implementos Librelato" loading="lazy" /></div>
       </div>
-      <div class="hero-photo reveal"><img src="${esc(h.image)}" alt="Implementos Librelato" loading="lazy" /></div>
-      <div class="hero-scroll"><span class="dot"></span> Role para explorar</div>
+      <div class="hero-scroll anim anim-d5"><span class="dot"></span> Role, arraste ou clique para avançar</div>
+    `;
+  }
+
+  function renderClosing(c, meta) {
+    return `
+      <img class="logo anim" src="${esc(meta.logo)}" alt="Librelato" />
+      <p class="quote anim anim-d1">“${esc(c.quote)}”</p>
+      <a class="back-cta anim anim-d2" href="#" data-jump="first">${esc(c.cta)}</a>
     `;
   }
 
   // ---------------------------------------------------------------
-  // Sections dispatch
+  // Page dispatch
   // ---------------------------------------------------------------
   const renderers = {
     intro: renderIntro,
     "cavalo-carroca": renderCavaloCarroca,
-    portfolio: renderPortfolio,
+    backpack: renderBackpack,
+    "portfolio-grid": renderPortfolioGrid,
+    "portfolio-table": renderPortfolioTable,
     market: renderMarket,
     differentials: renderDifferentials,
-    pinos: renderPinos,
+    "pinos-calc": renderPinosCalc,
+    "pinos-rodotrem": renderPinosRodotrem,
     glossary: renderGlossary,
-    network: renderNetwork,
+    checklist: renderChecklist,
+    "network-map": renderNetworkMap,
+    "network-roles": renderNetworkRoles,
     journey: renderJourney,
-    association: renderAssociation
+    "association-entities": renderAssociationEntities,
+    "association-standards": renderAssociationStandards
   };
 
-  function renderSections(data) {
-    const root = $("#sections");
-    data.sections.forEach((s) => {
-      const fn = renderers[s.type];
-      const section = el(`<section class="chapter" id="chapter-${s.id}" data-chapter="${s.id}"></section>`);
-      section.innerHTML = chapterHead(s) + '<div class="chapter-body">' + (fn ? fn(s) : "") + "</div>";
-      root.appendChild(section);
-    });
+  const wirers = {
+    backpack: wireBackpack,
+    "portfolio-grid": wirePortfolioGrid,
+    "portfolio-table": wirePortfolioTable,
+    market: wireMarket,
+    differentials: wireDifferentials,
+    "pinos-calc": wirePinosCalc,
+    "pinos-rodotrem": wirePinosRodotrem,
+    glossary: wireGlossary,
+    checklist: wireChecklist,
+    "network-map": wireNetworkMap,
+    journey: wireJourney
+  };
+
+  function renderPage(p) {
+    const fn = renderers[p.type];
+    return `<div class="slide-inner">` + slideHead(p) + (fn ? fn(p) : "") + `</div>`;
   }
 
-  function chapterHead(s) {
+  function wirePage(el, p) {
+    const fn = wirers[p.type];
+    if (fn) fn(el, p);
+  }
+
+  function slideHead(p) {
     return `
-      <div class="chapter-head reveal">
-        <div class="chapter-kicker">${esc(s.kicker)}</div>
-        <h2 class="chapter-title">${esc(s.title)}</h2>
-        ${s.subtitle ? `<p class="chapter-subtitle">${esc(s.subtitle)}</p>` : ""}
+      <div class="slide-head anim">
+        <div class="slide-kicker">${esc(p.kicker)}${p.part ? `<span class="slide-part">· ${esc(p.part)}</span>` : ""}</div>
+        <h2 class="slide-title">${esc(p.title)}</h2>
+        ${p.subtitle ? `<p class="slide-subtitle">${esc(p.subtitle)}</p>` : ""}
       </div>
     `;
   }
 
-  // ---------- 1. Intro ----------
-  function renderIntro(s) {
+  // ---------- intro ----------
+  function renderIntro(p) {
     return `
-      <div class="intro-split reveal">
+      <div class="intro-split anim anim-d1">
         <div>
-          <p class="lead">${esc(s.lead)}</p>
-          ${s.body.map(p => `<p class="copy">${esc(p)}</p>`).join("")}
-          <div class="tag-row">${s.tags.map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div>
+          <p class="lead">${esc(p.lead)}</p>
+          ${p.body.map(t => `<p class="copy">${esc(t)}</p>`).join("")}
+          <div class="tag-row">${p.tags.map(t => `<span class="tag">${esc(t)}</span>`).join("")}</div>
         </div>
-        <div class="intro-media">
-          <img src="${esc(s.image)}" alt="${esc(s.imageAlt || "")}" loading="lazy" />
-        </div>
+        <div class="intro-media"><img src="${esc(p.image)}" alt="${esc(p.imageAlt || "")}" loading="lazy" /></div>
       </div>
     `;
   }
 
-  // ---------- 2. Cavalo e Carroça ----------
-  function renderCavaloCarroca(s) {
-    const [tracao, carga] = s.pair;
+  // ---------- cavalo-carroca ----------
+  function renderCavaloCarroca(p) {
+    const [tracao, carga] = p.pair;
     return `
-      <div class="cc-intro reveal">
-        <p class="copy">${esc(s.intro)}</p>
-        <div class="cc-note">${esc(s.note)}</div>
-      </div>
-      <div class="cc-analogy-label reveal">${esc(s.analogyLabel)}</div>
-      <div class="cc-analogy reveal">“${esc(s.analogy)}”</div>
-      <div class="cc-pair reveal-stagger">
+      <p class="copy anim anim-d1" style="margin-bottom:14px;">${esc(p.intro)}</p>
+      <div class="cc-analogy-label anim anim-d2">${esc(p.analogyLabel)}</div>
+      <div class="cc-analogy anim anim-d2">“${esc(p.analogy)}”</div>
+      <div class="cc-pair stagger">
         <div class="cc-card tracao">
           <div class="cc-img"><img src="${esc(tracao.image)}" alt="${esc(tracao.label)}" loading="lazy" /></div>
           <span class="sub">${esc(tracao.sub)}</span>
@@ -158,33 +345,37 @@
           <p>${esc(carga.desc)}</p>
         </div>
       </div>
-      <div class="backpack reveal">
-        <div class="backpack-label">${esc(s.backpack.label)}</div>
-        <p class="backpack-intro">${esc(s.backpack.intro)}</p>
-        <div class="backpack-tabs" role="tablist">
-          ${s.backpack.options.map((o, i) => `
-            <button class="backpack-tab${i === 0 ? " active" : ""}" data-idx="${i}" role="tab">
-              <span class="ico">${o.icon}</span> ${esc(o.cargo)}
-            </button>`).join("")}
-        </div>
-        <div class="backpack-display" id="backpackDisplay"></div>
-      </div>
+      <div class="cc-note anim anim-d3">${esc(p.note)}</div>
     `;
   }
 
-  function wireCavaloCarroca(section, s) {
-    const tabs = $$(".backpack-tab", section);
+  // ---------- backpack ----------
+  function renderBackpack(p) {
+    return `
+      <div class="switch-panel anim anim-d1">
+        <p class="switch-intro">${esc(p.intro)}</p>
+        <div class="switch-tabs" role="tablist">
+          ${p.options.map((o, i) => `
+            <button class="switch-tab${i === 0 ? " active" : ""}" data-idx="${i}" role="tab">
+              <span class="ico">${o.icon}</span> ${esc(o.cargo)}
+            </button>`).join("")}
+        </div>
+        <div class="switch-display" id="backpackDisplay"></div>
+      </div>
+    `;
+  }
+  function wireBackpack(section, p) {
+    const tabs = $$(".switch-tab", section);
     const display = $("#backpackDisplay", section);
-    const opts = s.backpack.options;
     function show(i) {
-      const o = opts[i];
+      const o = p.options[i];
       display.classList.remove("swap");
       void display.offsetWidth;
       display.classList.add("swap");
       display.innerHTML = `
         <div class="big-ico">${o.icon}</div>
         <div>
-          <div class="implement-name">${esc(o.implement)}</div>
+          <div class="headline">${esc(o.implement)}</div>
           <div class="desc">${esc(o.desc)}</div>
         </div>`;
     }
@@ -198,80 +389,122 @@
     show(0);
   }
 
-  // ---------- 3. Portfolio ----------
-  function renderPortfolio(s) {
+  // ---------- portfolio-grid ----------
+  function renderPortfolioGrid(p) {
     return `
-      <p class="copy reveal" style="margin-bottom:26px;">${esc(s.intro)}</p>
-      <div class="portfolio-media reveal">
-        <img src="${esc(s.image)}" alt="${esc(s.imageAlt || "")}" loading="lazy" />
+      <p class="copy anim anim-d1" style="margin-bottom:20px;">${esc(p.intro)}</p>
+      <div class="portfolio-media anim anim-d2">
+        <img src="${esc(p.image)}" alt="${esc(p.imageAlt || "")}" loading="lazy" />
       </div>
-      <div class="type-chips reveal-stagger">
-        ${s.types.map(t => `<span class="type-chip">${esc(t)}</span>`).join("")}
-      </div>
-      <div class="reveal">
-        <div class="portfolio-table-title">${esc(s.tableTitle)}</div>
-        <div class="pt-grid">
-          ${s.table.map((row, i) => `
-            <div class="pt-card">
-              <div class="k">Tipo de carga ${String(i + 1).padStart(2, "0")}</div>
-              <div class="cargo">${esc(row.cargo)}</div>
-              <span class="implemento">${esc(row.implemento)}</span>
-              <p class="exemplo">${esc(row.exemplo)}</p>
-            </div>`).join("")}
-        </div>
+      <div class="type-chips stagger">
+        ${p.types.map(t => `<span class="type-chip">${esc(t)}</span>`).join("")}
       </div>
     `;
   }
-
-  function wirePortfolio(section) {
+  function wirePortfolioGrid(section) {
     $$(".type-chip", section).forEach(chip => {
       chip.addEventListener("click", () => chip.classList.toggle("active"));
     });
   }
 
-  // ---------- 4. Market ----------
-  function renderMarket(s) {
+  // ---------- portfolio-table (interactive tab switcher) ----------
+  function renderPortfolioTable(p) {
     return `
-      <div class="market-top reveal">
+      <div class="switch-panel anim anim-d1">
+        <p class="switch-intro">${esc(p.intro)}</p>
+        <div class="switch-tabs" role="tablist">
+          ${p.table.map((row, i) => `
+            <button class="switch-tab${i === 0 ? " active" : ""}" data-idx="${i}" role="tab">
+              <span class="ico">${row.icon}</span> ${esc(row.cargo)}
+            </button>`).join("")}
+        </div>
+        <div class="switch-display" id="portfolioDisplay"></div>
+      </div>
+    `;
+  }
+  function wirePortfolioTable(section, p) {
+    const tabs = $$(".switch-tab", section);
+    const display = $("#portfolioDisplay", section);
+    function show(i) {
+      const row = p.table[i];
+      display.classList.remove("swap");
+      void display.offsetWidth;
+      display.classList.add("swap");
+      display.innerHTML = `
+        <div class="big-ico">${row.icon}</div>
+        <div>
+          <div class="headline">${esc(row.implemento)}</div>
+          <div class="desc">${esc(row.exemplo)}</div>
+          <span class="tagline">${esc(row.cargo)}</span>
+        </div>`;
+    }
+    tabs.forEach((tab, i) => {
+      tab.addEventListener("click", () => {
+        tabs.forEach(t => t.classList.remove("active"));
+        tab.classList.add("active");
+        show(i);
+      });
+    });
+    show(0);
+  }
+
+  // ---------- market ----------
+  function renderMarket(p) {
+    return `
+      <div class="market-top anim anim-d1">
         <div class="market-stat">
-          <div class="value" data-count="${s.stat.value}">0</div>
-          <div class="label">${esc(s.stat.label)}</div>
+          <div class="value" data-count="${p.stat.value}">0</div>
+          <div class="label">${esc(p.stat.label)}</div>
         </div>
         <div class="market-lead">
-          <p class="lead" style="margin-bottom:8px;">${esc(s.lead)}</p>
-          <p class="copy">${esc(s.body)}</p>
+          <p class="lead" style="margin-bottom:6px;">${esc(p.lead)}</p>
+          <p class="copy">${esc(p.body)}</p>
         </div>
       </div>
-      <div class="player-grid reveal-stagger">
-        ${s.players.map(p => `
+      <div class="player-grid stagger">
+        ${p.players.map(pl => `
           <div class="player-card">
             <div class="player-flip">
               <div class="player-face player-front">
-                <img src="${esc(p.logo)}" alt="${esc(p.name)}" loading="lazy" />
+                <img src="${esc(pl.logo)}" alt="${esc(pl.name)}" loading="lazy" />
                 <span class="hint">clique para ver o diferencial</span>
               </div>
-              <div class="player-face player-back" style="--accent:${esc(p.accent)}">
-                <div class="name">${esc(p.name)}</div>
-                <div class="trait">${esc(p.trait)}</div>
+              <div class="player-face player-back" style="--accent:${esc(pl.accent)}">
+                <div class="name">${esc(pl.name)}</div>
+                <div class="trait">${esc(pl.trait)}</div>
               </div>
             </div>
           </div>`).join("")}
       </div>
-      <p class="market-footer reveal">${esc(s.footer)}</p>
+      <p class="market-footer anim anim-d3">${esc(p.footer)}</p>
     `;
   }
-
   function wireMarket(section) {
     $$(".player-card", section).forEach(card => {
       card.addEventListener("click", () => card.classList.toggle("flipped"));
     });
   }
+  function replayStatCount(section) {
+    const node = $(".market-stat .value[data-count]", section);
+    if (!node) return;
+    const target = parseInt(node.dataset.count, 10);
+    if (Number.isNaN(target)) return;
+    const dur = 1100;
+    const start = performance.now();
+    function tick(now) {
+      const t = Math.min(1, (now - start) / dur);
+      const eased = 1 - Math.pow(1 - t, 3);
+      node.textContent = Math.round(eased * target);
+      if (t < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
 
-  // ---------- 5. Differentials ----------
-  function renderDifferentials(s) {
+  // ---------- differentials ----------
+  function renderDifferentials(p) {
     return `
-      <div class="diff-grid reveal-stagger">
-        ${s.cards.map(c => `
+      <div class="diff-grid stagger">
+        ${p.cards.map(c => `
           <div class="diff-card${c.points.length ? "" : " no-points"}">
             <div class="n">${esc(c.n)}</div>
             <h3>${esc(c.title)}</h3>
@@ -284,7 +517,6 @@
       </div>
     `;
   }
-
   function wireDifferentials(section) {
     $$(".diff-card", section).forEach(card => {
       if (!card.classList.contains("no-points")) {
@@ -293,54 +525,30 @@
     });
   }
 
-  // ---------- 6. Pinos ----------
-  function renderPinos(s) {
+  // ---------- pinos-calc ----------
+  function renderPinosCalc(p) {
     return `
-      <div class="pinos-layout reveal">
+      <div class="pinos-layout anim anim-d1">
         <div>
-          <p class="copy">${esc(s.intro)}</p>
-          <p class="copy" style="margin-top:12px;">${esc(s.body)}</p>
-          <div class="pinos-rule">${esc(s.rule)}</div>
+          <p class="copy">${esc(p.intro)}</p>
+          <div class="pinos-rule">${esc(p.rule)}</div>
         </div>
-        <div class="pinos-media"><img src="${esc(s.image)}" alt="${esc(s.imageAlt || "")}" loading="lazy" /></div>
+        <div class="pinos-media"><img src="${esc(p.image)}" alt="${esc(p.imageAlt || "")}" loading="lazy" /></div>
       </div>
-
-      <div class="comp-selector">
-        ${s.compositions.map((c, i) => `
+      <div class="comp-selector anim anim-d2">
+        ${p.compositions.map((c, i) => `
           <button class="comp-btn${i === 0 ? " active" : ""}" data-idx="${i}">${esc(c.name)}</button>
         `).join("")}
       </div>
-      <div class="pin-display" id="pinDisplay"></div>
-      <p class="copy" style="margin-top:20px;max-width:820px;">${esc(s.footnote)}</p>
-
-      <div class="rodotrem-panel" style="margin-top:60px;">
-        <div>
-          <div class="rk">${esc(s.rodotrem.kicker)}</div>
-          <h3>${esc(s.rodotrem.title)}</h3>
-          <p class="intro">${esc(s.rodotrem.intro)}</p>
-          <div class="pin-steps" id="pinSteps">
-            ${s.rodotrem.pins.map((p, i) => `
-              <div class="pin-step${i === 0 ? " active" : ""}" data-idx="${i}">
-                <div class="num">${p.n}</div>
-                <div class="label">${esc(p.label)}</div>
-              </div>`).join("")}
-          </div>
-          <ul class="rodotrem-rules">
-            ${s.rodotrem.rules.map(r => `<li>${esc(r)}</li>`).join("")}
-          </ul>
-        </div>
-        <div class="rodotrem-media">
-          <img src="${esc(s.rodotrem.image)}" alt="${esc(s.rodotrem.imageAlt || "")}" loading="lazy" />
-        </div>
-      </div>
+      <div class="pin-display anim anim-d3" id="pinDisplay"></div>
+      <p class="copy pinos-footnote anim anim-d3">${esc(p.footnote)}</p>
     `;
   }
-
-  function wirePinos(section, s) {
+  function wirePinosCalc(section, p) {
     const buttons = $$(".comp-btn", section);
     const display = $("#pinDisplay", section);
     function show(i) {
-      const c = s.compositions[i];
+      const c = p.compositions[i];
       let dots = "";
       for (let k = 1; k <= c.pinos; k++) {
         if (k > 1) dots += `<div class="pin-link"></div>`;
@@ -361,8 +569,34 @@
       });
     });
     show(0);
+  }
 
-    // rodotrem step highlight cycling on click
+  // ---------- pinos-rodotrem ----------
+  function renderPinosRodotrem(p) {
+    const r = p.rodotrem;
+    return `
+      <div class="rodotrem-panel anim anim-d1">
+        <div>
+          <div class="rk">${esc(r.kicker)}</div>
+          <p class="intro">${esc(r.intro)}</p>
+          <div class="pin-steps" id="pinSteps">
+            ${r.pins.map((pin, i) => `
+              <div class="pin-step${i === 0 ? " active" : ""}" data-idx="${i}">
+                <div class="num">${pin.n}</div>
+                <div class="label">${esc(pin.label)}</div>
+              </div>`).join("")}
+          </div>
+          <ul class="rodotrem-rules">
+            ${r.rules.map(rule => `<li>${esc(rule)}</li>`).join("")}
+          </ul>
+        </div>
+        <div class="rodotrem-media">
+          <img src="${esc(r.image)}" alt="${esc(r.imageAlt || "")}" loading="lazy" />
+        </div>
+      </div>
+    `;
+  }
+  function wirePinosRodotrem(section) {
     const steps = $$(".pin-step", section);
     steps.forEach(step => {
       step.addEventListener("click", () => {
@@ -372,11 +606,11 @@
     });
   }
 
-  // ---------- 7. Glossary ----------
-  function renderGlossary(s) {
+  // ---------- glossary ----------
+  function renderGlossary(p) {
     return `
-      <div class="glossary-grid reveal-stagger">
-        ${s.terms.map(t => `
+      <div class="glossary-grid stagger">
+        ${p.terms.map(t => `
           <div class="term-card">
             <div class="term-flip">
               <div class="term-face term-front">
@@ -394,41 +628,80 @@
             </div>
           </div>`).join("")}
       </div>
-      <div class="checklist-box reveal">
-        <div class="checklist-head">
-          <h3>${esc(s.checklist.title)}</h3>
-          <p>${esc(s.checklist.subtitle)}</p>
-        </div>
-        <span class="checklist-note">${esc(s.checklist.note)}</span>
-        <div class="check-grid">
-          ${s.checklist.items.map(item => `
-            <div class="check-item">
-              <span class="box">✓</span>${esc(item)}
-            </div>`).join("")}
-        </div>
-      </div>
     `;
   }
-
   function wireGlossary(section) {
     $$(".term-card", section).forEach(card => {
       card.addEventListener("click", () => card.classList.toggle("flipped"));
     });
+  }
+
+  // ---------- checklist ----------
+  function renderChecklist(p) {
+    return `
+      <span class="checklist-note anim anim-d1">${esc(p.note)}</span>
+      <div class="check-grid stagger">
+        ${p.items.map(item => `
+          <div class="check-item">
+            <span class="box">✓</span>${esc(item)}
+          </div>`).join("")}
+      </div>
+    `;
+  }
+  function wireChecklist(section) {
     $$(".check-item", section).forEach(item => {
       item.addEventListener("click", () => item.classList.toggle("checked"));
     });
   }
 
-  // ---------- 8. Network ----------
-  function renderNetwork(s) {
+  // ---------- network-map ----------
+  function renderNetworkMap(p) {
     return `
-      <div class="network-layout reveal">
-        <div class="network-media"><img src="${esc(s.image)}" alt="${esc(s.imageAlt || "")}" loading="lazy" /></div>
+      <p class="lead anim anim-d1">${esc(p.lead)}</p>
+      <div class="map-layout anim anim-d2">
+        <div class="map-stage">
+          <img src="${esc(p.mapBase)}" alt="Mapa do Brasil com a rede Librelato" loading="lazy" />
+          ${p.legend.map(l => `<img class="map-overlay${l.active ? " on" : ""}" data-key="${l.key}" src="${esc(l.image)}" alt="${esc(l.label)}" loading="lazy" />`).join("")}
+        </div>
         <div>
-          <p class="lead">${esc(s.lead)}</p>
-          <p class="copy">${esc(s.body)}</p>
-          <div class="resp-list">
-            ${s.responsibilities.map((r, i) => `
+          <div class="map-legend" id="mapLegend">
+            ${p.legend.map(l => `
+              <button class="legend-chip" data-key="${l.key}">
+                <span class="swatch" style="background:${esc(l.color)}"></span>
+                ${esc(l.label)}
+                ${l.count ? `<span class="count">${esc(l.count)}</span>` : ""}
+              </button>`).join("")}
+          </div>
+          <div class="intl-box">
+            <div class="intl-label">${esc(p.international.label)}</div>
+            <div class="intl-chips">
+              ${p.international.countries.map(c => `<span class="intl-chip">${c.count ? `<b>${esc(c.count)}</b>` : ""}${esc(c.name)}</span>`).join("")}
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  function wireNetworkMap(section) {
+    $$(".legend-chip", section).forEach(chip => {
+      chip.addEventListener("click", () => {
+        const key = chip.dataset.key;
+        const overlay = $(`.map-overlay[data-key="${key}"]`, section);
+        const isOn = overlay.classList.toggle("on");
+        chip.classList.toggle("off", !isOn);
+      });
+    });
+  }
+
+  // ---------- network-roles ----------
+  function renderNetworkRoles(p) {
+    return `
+      <div class="network-layout anim anim-d1">
+        <div class="network-media"><img src="${esc(p.image)}" alt="${esc(p.imageAlt || "")}" loading="lazy" /></div>
+        <div>
+          <p class="copy">${esc(p.body)}</p>
+          <div class="resp-list stagger">
+            ${p.responsibilities.map((r, i) => `
               <div class="resp-item"><span class="idx">${i + 1}</span><p>${esc(r)}</p></div>
             `).join("")}
           </div>
@@ -437,14 +710,14 @@
     `;
   }
 
-  // ---------- 9. Journey ----------
-  function renderJourney(s) {
+  // ---------- journey ----------
+  function renderJourney(p) {
     return `
-      <p class="copy reveal" style="margin-bottom:34px;">${esc(s.intro)}</p>
-      <div class="journey-stepper reveal">
+      <p class="copy anim anim-d1" style="margin-bottom:26px;">${esc(p.intro)}</p>
+      <div class="anim anim-d2">
         <div class="journey-track" id="journeyTrack">
           <div class="journey-line"><div class="journey-line-fill" id="journeyFill"></div></div>
-          ${s.steps.map((step, i) => `
+          ${p.steps.map((step, i) => `
             <div class="journey-step${i === 0 ? " active" : ""}" data-idx="${i}">
               <div class="dot">${step.n}</div>
               <div class="label">${esc(step.label)}</div>
@@ -452,8 +725,8 @@
         </div>
         <div class="journey-detail">
           <div>
-            <span class="step-of" id="journeyStepOf">Etapa 1 de ${s.steps.length}</span>
-            <div class="big-label" id="journeyLabel">${esc(s.steps[0].label)}</div>
+            <span class="step-of" id="journeyStepOf">Etapa 1 de ${p.steps.length}</span>
+            <div class="big-label" id="journeyLabel">${esc(p.steps[0].label)}</div>
           </div>
           <div class="journey-controls">
             <button id="journeyPrev" disabled aria-label="Etapa anterior">←</button>
@@ -463,196 +736,90 @@
       </div>
     `;
   }
-
-  function wireJourney(section, s) {
+  function wireJourney(section, p) {
     const steps = $$(".journey-step", section);
     const fill = $("#journeyFill", section);
     const label = $("#journeyLabel", section);
     const stepOf = $("#journeyStepOf", section);
     const prev = $("#journeyPrev", section);
     const next = $("#journeyNext", section);
-    let current = 0;
-
+    let idx = 0;
     function render() {
-      steps.forEach((el2, i) => {
-        el2.classList.toggle("active", i === current);
-        el2.classList.toggle("done", i < current);
+      steps.forEach((e, i) => {
+        e.classList.toggle("active", i === idx);
+        e.classList.toggle("done", i < idx);
       });
-      fill.style.width = (current / (steps.length - 1)) * 100 + "%";
-      label.textContent = s.steps[current].label;
-      stepOf.textContent = `Etapa ${current + 1} de ${steps.length}`;
-      prev.disabled = current === 0;
-      next.disabled = current === steps.length - 1;
+      fill.style.width = (idx / (steps.length - 1)) * 100 + "%";
+      label.textContent = p.steps[idx].label;
+      stepOf.textContent = `Etapa ${idx + 1} de ${steps.length}`;
+      prev.disabled = idx === 0;
+      next.disabled = idx === steps.length - 1;
     }
-    steps.forEach((el2, i) => {
-      el2.addEventListener("click", () => { current = i; render(); });
+    steps.forEach((e, i) => {
+      e.addEventListener("click", () => { idx = i; render(); });
     });
-    prev.addEventListener("click", () => { if (current > 0) { current--; render(); } });
-    next.addEventListener("click", () => { if (current < steps.length - 1) { current++; render(); } });
+    prev.addEventListener("click", () => { if (idx > 0) { idx--; render(); } });
+    next.addEventListener("click", () => { if (idx < steps.length - 1) { idx++; render(); } });
     render();
   }
 
-  // ---------- 10. Association ----------
-  function renderAssociation(s) {
+  // ---------- association-entities ----------
+  function renderAssociationEntities(p) {
     return `
-      <p class="copy reveal" style="margin-bottom:28px;">${esc(s.intro)}</p>
-      <div class="entity-grid reveal-stagger">
-        ${s.entities.map(e => `
+      <p class="copy anim anim-d1" style="margin-bottom:22px;">${esc(p.intro)}</p>
+      <div class="entity-grid stagger">
+        ${p.entities.map(e => `
           <div class="entity-card">
             <div class="acronym">${esc(e.acronym)}</div>
             <p class="desc">${esc(e.desc)}</p>
           </div>`).join("")}
       </div>
-      <p class="copy reveal" style="font-weight:700;margin-bottom:10px;">${esc(s.dataLabel)}</p>
-      <div class="data-chip-row reveal-stagger">
-        ${s.dataProvided.map(d => `<span class="data-chip">${esc(d)}</span>`).join("")}
+      <p class="copy anim anim-d2" style="font-weight:700;margin-bottom:4px;">${esc(p.dataLabel)}</p>
+      <div class="data-chip-row anim anim-d3">
+        ${p.dataProvided.map(d => `<span class="data-chip">${esc(d)}</span>`).join("")}
       </div>
-      <p class="copy reveal" style="font-weight:700;margin-bottom:6px;">${esc(s.normsLabel)}</p>
-      <p class="copy reveal" style="margin-bottom:26px;">${esc(s.normsDesc)}</p>
-      <div class="standards-grid reveal-stagger">
-        ${s.standards.map(st => `
+    `;
+  }
+
+  // ---------- association-standards ----------
+  function renderAssociationStandards(p) {
+    return `
+      <p class="copy anim anim-d1">${esc(p.normsDesc)}</p>
+      <div class="standards-grid stagger">
+        ${p.standards.map(s => `
           <div class="standard-card">
-            <div class="org">${esc(st.org)}</div>
-            <p class="desc">${esc(st.desc)}</p>
+            <div class="org">${esc(s.org)}</div>
+            <p class="desc">${esc(s.desc)}</p>
           </div>`).join("")}
       </div>
     `;
   }
 
   // ---------------------------------------------------------------
-  // Closing
+  // Misc
   // ---------------------------------------------------------------
-  function renderClosing(data) {
-    const c = data.closing;
-    $("#closing").innerHTML = `
-      <img class="logo reveal" src="${esc(data.meta.logo)}" alt="Librelato" />
-      <p class="quote reveal">“${esc(c.quote)}”</p>
-      <a class="back-cta reveal" href="#hero" data-nav="hero">${esc(c.cta)}</a>
-    `;
-  }
-
-  // ---------------------------------------------------------------
-  // Post-render wiring: interactivity per section, scrollspy, reveal, mobile nav
-  // ---------------------------------------------------------------
-  function afterRender(data) {
-    data.sections.forEach((s) => {
-      const section = $(`#chapter-${s.id}`);
-      if (!section) return;
-      if (s.type === "cavalo-carroca") wireCavaloCarroca(section, s);
-      if (s.type === "portfolio") wirePortfolio(section);
-      if (s.type === "market") wireMarket(section);
-      if (s.type === "differentials") wireDifferentials(section);
-      if (s.type === "pinos") wirePinos(section, s);
-      if (s.type === "glossary") wireGlossary(section);
-      if (s.type === "journey") wireJourney(section, s);
-    });
-
-    setupReveal();
-    setupScrollspyAndProgress(data);
-    setupMobileNav();
-    setupSmoothAnchors();
-    setupStatCount();
-    setupTapHint();
-  }
-
-  function setupReveal() {
-    const targets = $$(".reveal, .reveal-stagger");
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("in-view");
-          io.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.14, rootMargin: "0px 0px -60px 0px" });
-    targets.forEach((t) => io.observe(t));
-  }
-
-  function setupStatCount() {
-    $$(".market-stat .value[data-count]").forEach((node) => {
-      const target = parseInt(node.dataset.count, 10);
-      if (Number.isNaN(target)) { node.textContent = node.dataset.count; return; }
-      const io = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          io.unobserve(entry.target);
-          const dur = 1200;
-          const start = performance.now();
-          function tick(now) {
-            const p = Math.min(1, (now - start) / dur);
-            const eased = 1 - Math.pow(1 - p, 3);
-            node.textContent = Math.round(eased * target);
-            if (p < 1) requestAnimationFrame(tick);
-          }
-          requestAnimationFrame(tick);
-        });
-      }, { threshold: 0.5 });
-      io.observe(node);
-    });
-  }
-
-  function setupScrollspyAndProgress(data) {
-    const links = $$(".toc-list a");
-    const chapters = data.sections.map(s => $(`#chapter-${s.id}`)).filter(Boolean);
-    const progressFill = $("#progressFill");
-
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        const id = entry.target.dataset.chapter;
-        const link = links.find(l => l.dataset.nav === id);
-        if (!link) return;
-        if (entry.isIntersecting) {
-          links.forEach(l => l.classList.remove("active"));
-          link.classList.add("active");
-        }
-      });
-    }, { threshold: 0, rootMargin: "-40% 0px -55% 0px" });
-    chapters.forEach(c => io.observe(c));
-
-    window.addEventListener("scroll", () => {
-      const doc = document.documentElement;
-      const scrollTop = doc.scrollTop || document.body.scrollTop;
-      const height = doc.scrollHeight - doc.clientHeight;
-      progressFill.style.width = height > 0 ? (scrollTop / height) * 100 + "%" : "0%";
-    }, { passive: true });
-  }
-
-  function setupMobileNav() {
-    const toggle = $("#navToggle");
-    const toc = $("#toc");
-    toggle.addEventListener("click", () => {
-      const open = toc.classList.toggle("open");
-      toggle.setAttribute("aria-expanded", String(open));
-    });
-    $$(".toc-list a, .toc-restart").forEach(a => {
-      a.addEventListener("click", () => {
-        toc.classList.remove("open");
-        toggle.setAttribute("aria-expanded", "false");
-      });
-    });
-  }
-
-  function setupSmoothAnchors() {
-    document.addEventListener("click", (e) => {
-      const a = e.target.closest("a[href^='#']");
-      if (!a) return;
-      const targetId = a.getAttribute("href").slice(1);
-      const target = document.getElementById(targetId);
-      if (!target) return;
-      e.preventDefault();
-      target.scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-  }
-
   function setupTapHint() {
     const hint = $("#tapHint");
     let hidden = false;
-    window.addEventListener("scroll", () => {
+    $("#deck").addEventListener("scroll", () => {
       if (hidden) return;
-      if (window.scrollY > 120) {
-        hint.classList.add("hidden");
-        hidden = true;
-      }
+      hint.classList.add("hidden");
+      hidden = true;
     }, { passive: true });
   }
+
+  // delegate clicks on any element with data-jump-index / data-jump="first" (hero CTA, closing CTA, etc.)
+  document.addEventListener("click", (e) => {
+    const idxTarget = e.target.closest("[data-jump-index]");
+    if (idxTarget) {
+      e.preventDefault();
+      goToIndex(parseInt(idxTarget.dataset.jumpIndex, 10));
+      return;
+    }
+    const firstTarget = e.target.closest("[data-jump='first']");
+    if (firstTarget) {
+      e.preventDefault();
+      goToIndex(0);
+    }
+  });
 })();
