@@ -1,21 +1,15 @@
 {
   "meta": {
     "lang": "pt-BR",
-    "siteTitle": "Guia Librelato — Visão de Negócio",
+    "siteTitle": "Guia Librelato. Visão de Negócio",
     "logo": "assets/img/logo.png",
     "navLabel": "Guia Librelato"
   },
   "hero": {
-    "kicker": "GUIA LIBRELATO",
     "title": "Visão de Negócio",
     "subtitle": "Um guia interativo sobre o mercado de implementos rodoviários e o papel da Librelato dentro dele. Use as setas, o scroll ou os pontinhos para passar as páginas.",
     "cta": "Começar a explorar",
-    "image": "assets/img/trucks-yard.jpg",
-    "stats": [
-      { "value": "194", "label": "fabricantes ativos no setor" },
-      { "value": "4", "label": "grandes players concentram o mercado" },
-      { "value": "3", "label": "pinos no maior CVC (Rodotrem)" }
-    ]
+    "image": "assets/img/trucks-yard.jpg"
   },
   "toc": [
     { "group": 1, "title": "Quem Somos", "subtitle": "A força da Librelato no transporte" },
@@ -75,7 +69,7 @@
       "type": "backpack",
       "kicker": "02 · O que são Implementos?",
       "title": "Cada carga tem sua “mochila”",
-      "intro": "Uma das grandes vantagens do implemento é sua capacidade de se adaptar ao tipo de carga que o caminhão precisa transportar. É como se o caminhão trocasse de mochila — clique numa carga para ver:",
+      "intro": "Uma das grandes vantagens do implemento é sua capacidade de se adaptar ao tipo de carga que o caminhão precisa transportar. É como se o caminhão trocasse de mochila, clique numa carga para ver:",
       "options": [
         {
           "cargo": "Gasolina",
@@ -103,12 +97,19 @@
       "kicker": "03 · Portfólio e Aplicações",
       "title": "Conheça os tipos de implementos",
       "intro": "Existem diferentes tipos de implementos, cada um desenvolvido para uma aplicação específica. Cada tipo atende a uma necessidade logística diferente. O portfólio da Librelato contém:",
-      "image": "assets/img/portfolio-grid.jpg",
-      "imageAlt": "Grade com 12 tipos de implementos Librelato: graneleiro, basculante, tanque, furgão alumínio, furgão lonado, porta contêiner, florestal, carrega tudo, cavaqueira, canavieiro, carga seca e frigorífica",
       "types": [
-        "Graneleiro", "Basculante", "Tanque", "Furgão Alumínio", "Furgão Lonado",
-        "Porta Contêiner", "Florestal", "Carrega Tudo", "Cavaqueira",
-        "Canavieiro", "Carga Seca", "Frigorífica"
+        { "label": "Graneleiro", "image": "assets/img/types/graneleiro.jpg" },
+        { "label": "Basculante", "image": "assets/img/types/basculante.jpg" },
+        { "label": "Tanque", "image": "assets/img/types/tanque.jpg" },
+        { "label": "Furgão Alumínio", "image": "assets/img/types/furgao-aluminio.jpg" },
+        { "label": "Furgão Lonado", "image": "assets/img/types/furgao-lonado.jpg" },
+        { "label": "Porta Contêiner", "image": "assets/img/types/porta-conteiner.jpg" },
+        { "label": "Florestal", "image": "assets/img/types/florestal.jpg" },
+        { "label": "Carrega Tudo", "image": "assets/img/types/carrega-tudo.jpg" },
+        { "label": "Cavaqueira", "image": "assets/img/types/cavaqueira.jpg" },
+        { "label": "Canavieiro", "image": "assets/img/types/canavieiro.jpg" },
+        { "label": "Carga Seca", "image": "assets/img/types/carga-seca.jpg" },
+        { "label": "Frigorífica", "image": "assets/img/types/frigorifica.jpg" }
       ]
     },
     {
@@ -122,61 +123,71 @@
           "icon": "🌾",
           "cargo": "Grãos (Soja, Milho)",
           "implemento": "Graneleiro / Basculante",
-          "exemplo": "O agronegócio — a comida que está todo dia na sua mesa."
+          "exemplo": "O agronegócio, a comida que está todo dia na sua mesa.",
+          "image": "assets/img/types/graneleiro.jpg"
         },
         {
           "icon": "📦",
           "cargo": "Carga Geral (Caixas, Paletes)",
           "implemento": "Sider (Lona) ou Baú",
-          "exemplo": "Produtos que você compra no e-commerce."
+          "exemplo": "Produtos que você compra no e-commerce.",
+          "image": "assets/img/types/furgao-lonado.jpg"
         },
         {
           "icon": "⛽",
           "cargo": "Líquidos (Combustível)",
           "implemento": "Tanque",
-          "exemplo": "Item essencial para sua locomoção, seja de moto ou carro."
+          "exemplo": "Item essencial para sua locomoção, seja de moto ou carro.",
+          "image": "assets/img/types/tanque.jpg"
         },
         {
           "icon": "🏗️",
           "cargo": "Construção / Mineração",
           "implemento": "Caçambas Basculantes",
-          "exemplo": "Infraestrutura e obras."
+          "exemplo": "Infraestrutura e obras.",
+          "image": "assets/img/types/basculante.jpg"
         },
         {
           "icon": "🧊",
           "cargo": "Alimentos e Produtos Perecíveis",
           "implemento": "Frigorífico",
-          "exemplo": "Carnes, frutas, verduras e itens refrigerados que chegam frescos nas suas mesas."
+          "exemplo": "Carnes, frutas, verduras e itens refrigerados que chegam frescos nas suas mesas.",
+          "image": "assets/img/types/frigorifica.jpg"
         },
         {
           "icon": "🚢",
           "cargo": "Transporte Portuário",
           "implemento": "Porta Contêiner",
-          "exemplo": "Contêineres nos portos e entrepostos logísticos do comércio internacional."
+          "exemplo": "Contêineres nos portos e entrepostos logísticos do comércio internacional.",
+          "image": "assets/img/types/porta-conteiner.jpg"
         },
         {
           "icon": "🪵",
           "cargo": "Madeira e Resíduos de Madeira",
           "implemento": "Cavaqueira",
-          "exemplo": "Energia renovável – biomassa e processamento de madeira nas indústrias."
+          "exemplo": "Energia renovável, biomassa e processamento de madeira nas indústrias.",
+          "image": "assets/img/types/cavaqueira.jpg"
         },
         {
           "icon": "🎋",
           "cargo": "Cana de Açúcar",
           "implemento": "Canavieira",
-          "exemplo": "Produção de açúcar, álcool e energia que movimentam a economia do Brasil."
+          "exemplo": "Produção de açúcar, álcool e energia que movimentam a economia do Brasil.",
+          "image": "assets/img/types/canavieiro.jpg"
         },
         {
           "icon": "🌲",
           "cargo": "Madeira em Toras",
           "implemento": "Florestal",
-          "exemplo": "Celulose, papel e produtos de madeira usados em praticamente tudo."
+          "exemplo": "Celulose, papel e produtos de madeira usados em praticamente tudo.",
+          "image": "assets/img/types/florestal.jpg"
         },
         {
           "icon": "🚜",
           "cargo": "Máquinas e Cargas Indivisíveis",
           "implemento": "Carrega Tudo",
-          "exemplo": "Transporta colheitadeiras, tratores e grandes máquinas para o campo e obras. E até blindados de guerra."
+          "exemplo": "Transporta colheitadeiras, tratores e grandes máquinas para o campo e obras. E até blindados de guerra.",
+          "image": "assets/img/types/carrega-tudo.jpg"
         }
       ]
     },
@@ -186,7 +197,7 @@
       "kicker": "04 · Panorama de Mercado",
       "title": "Os grandes players do setor",
       "lead": "O mercado de implementos rodoviários no Brasil conta com mais de 100 fabricantes ativos.",
-      "body": "Atualmente, são cerca de 194 players no setor. Quatro dessas empresas se destacam pela relevância e volume de atuação — clique em cada uma:",
+      "body": "Atualmente, são cerca de 194 players no setor. Quatro dessas empresas se destacam pela relevância e volume de atuação, clique em cada uma:",
       "stat": { "value": "194", "label": "fabricantes ativos" },
       "players": [
         { "name": "Librelato", "trait": "Força / Feito pra durar", "logo": "assets/img/logo.png", "accent": "#0092d5" },
@@ -201,7 +212,7 @@
       "type": "differentials",
       "kicker": "05 · Diferenciais Librelato",
       "title": "Como geramos valor",
-      "subtitle": "Outras características importantes — clique para expandir",
+      "subtitle": "Outras características importantes, clique para expandir",
       "cards": [
         {
           "n": "01",
@@ -232,7 +243,7 @@
       "type": "pinos-calc",
       "kicker": "06 · A Métrica do Setor",
       "title": "Entendendo a contagem por “Pinos”",
-      "intro": "O mercado de implementos rodoviários é medido por pinos, não por chassis. Cada produto (ou unidade de acoplamento) corresponde a 1 pino — cada reboque, semirreboque ou dolly conectado à composição é contabilizado individualmente.",
+      "intro": "O mercado de implementos rodoviários é medido por pinos, não por chassis. Cada produto (ou unidade de acoplamento) corresponde a 1 pino, cada reboque, semirreboque ou dolly conectado à composição é contabilizado individualmente.",
       "rule": "A regra é simples: conte quantos produtos (unidades de acoplamento) existem na composição. Cada produto equivale a um “pino”.",
       "image": "assets/img/bitrem-highway.jpg",
       "imageAlt": "Bitrem Librelato branco trafegando em rodovia",
@@ -251,14 +262,14 @@
       "title": "E o Rodotrem?",
       "rodotrem": {
         "kicker": "O conjunto que mais gera dúvidas",
-        "intro": "Para facilitar o entendimento, lembre-se: o dolly é um implemento que cria um novo ponto de conexão no conjunto. A contagem do Rodotrem (3 pinos) funciona assim — clique em cada passo:",
+        "intro": "Para facilitar o entendimento, lembre-se: o dolly é um implemento que cria um novo ponto de conexão no conjunto. A contagem do Rodotrem (3 pinos) funciona assim, clique em cada passo:",
         "pins": [
           { "n": 1, "label": "Conecta o 1º semirreboque ao cavalo mecânico." },
           { "n": 2, "label": "O dolly funciona como uma ponte entre os semirreboques e possui seu próprio ponto de conexão." },
           { "n": 3, "label": "Conecta o 2º semirreboque ao dolly." }
         ],
         "image": "assets/img/dolly-unit.png",
-        "imageAlt": "Dolly — unidade intermediária de acoplamento",
+        "imageAlt": "Dolly, unidade intermediária de acoplamento",
         "rulesTitle": "Regras fundamentais para o cálculo",
         "rules": [
           "Cavalo Mecânico: não entra na contagem, pois é o veículo responsável pela tração do conjunto.",
@@ -319,10 +330,17 @@
       "kicker": "07 · Dicionário das Estradas",
       "title": "Itens Obrigatórios",
       "subtitle": "O que são esses itens obrigatórios para reboque e semirreboque?",
-      "note": "Clique para marcar.",
+      "note": "Marque todos os itens para continuar.",
+      "gate": true,
       "items": [
-        "Iluminação", "Parachoque Traseiro", "Freio", "Para-barra Antispray",
-        "Pneu", "Protetor Lateral", "Paralama", "Roda"
+        { "label": "Iluminação", "icon": "💡" },
+        { "label": "Parachoque Traseiro", "icon": "🛡️" },
+        { "label": "Freio", "icon": "🛑" },
+        { "label": "Para-barra Antispray", "icon": "💧" },
+        { "label": "Pneu", "icon": "🛞" },
+        { "label": "Protetor Lateral", "icon": "🚧" },
+        { "label": "Paralama", "icon": "☔" },
+        { "label": "Roda", "icon": "⚙️" }
       ]
     },
     {
@@ -346,7 +364,7 @@
           { "name": "Bolívia", "count": "3" },
           { "name": "Chile", "count": "1" },
           { "name": "Uruguai", "count": "1" },
-          { "name": "Colômbia", "count": "" }
+          { "name": "Colômbia", "count": "1" }
         ]
       }
     },
@@ -371,7 +389,7 @@
       "type": "journey",
       "kicker": "09 · Jornada do Cliente",
       "title": "Do pedido à entrega",
-      "intro": "O processo de venda, de forma simplificada, segue as seguintes etapas — use as setas para avançar:",
+      "intro": "O processo de venda, de forma simplificada, segue as seguintes etapas, use as setas para avançar:",
       "steps": [
         { "n": 1, "label": "Prospecção e Relacionamento", "desc": "Entendemos o cliente, sua operação e criamos um relacionamento para identificar oportunidades de negócio." },
         { "n": 2, "label": "Identificação da Necessidade", "desc": "Analisamos o tipo de carga, a operação e as necessidades do cliente para indicar a melhor solução." },
@@ -401,9 +419,9 @@
       "title": "Normas e Regulamentações",
       "normsDesc": "Além disso, o mercado segue normas rigorosas: diretrizes que garantem que todos os produtos sigam os padrões legais exigidos, estabelecendo limites de segurança e características essenciais.",
       "standards": [
-        { "org": "CONTRAN", "desc": "Resoluções — pesos, dimensões e limites" },
-        { "org": "ABNT", "desc": "Normas Técnicas — padrões de fabricação e ensaios" },
-        { "org": "INMETRO", "desc": "Portarias — certificações de segurança e qualidade" }
+        { "org": "CONTRAN", "desc": "Resoluções, pesos, dimensões e limites" },
+        { "org": "ABNT", "desc": "Normas Técnicas, padrões de fabricação e ensaios" },
+        { "org": "INMETRO", "desc": "Portarias, certificações de segurança e qualidade" }
       ]
     }
   ],

@@ -32,6 +32,7 @@
       wireNav();
       wireKeyboard();
       wireMobileNav();
+      wireScrollGate();
       setupObserver();
       setupTapHint();
       updateUI(0);
@@ -69,7 +70,11 @@
       const pageEl = el(`<section class="slide${alt}" id="slide-${idx}" data-kind="chapter" data-group="${page.group}"></section>`);
       pageEl.innerHTML = renderPage(page);
       deck.appendChild(pageEl);
-      slides.push({ el: pageEl, group: page.group, title: page.title, part: page.part, kind: "chapter", type: page.type, data: page });
+      slides.push({
+        el: pageEl, group: page.group, title: page.title, part: page.part,
+        kind: "chapter", type: page.type, data: page,
+        gate: !!page.gate, satisfied: !page.gate
+      });
     });
 
     // Closing slide
@@ -131,7 +136,52 @@
   // ---------------------------------------------------------------
   function goToIndex(i) {
     i = Math.max(0, Math.min(slides.length - 1, i));
+    if (i > current && isGateBlocking()) {
+      showToast("Marque todos os itens obrigatórios antes de continuar.");
+      return;
+    }
     slides[i].el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  function isGateBlocking() {
+    const cur = slides[current];
+    return !!(cur && cur.gate && !cur.satisfied);
+  }
+
+  let toastTimer = null;
+  function showToast(message) {
+    let toast = $("#toast");
+    if (!toast) {
+      toast = el(`<div id="toast" class="toast"></div>`);
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove("show"), 2600);
+  }
+
+  function wireScrollGate() {
+    const deck = $("#deck");
+    deck.addEventListener("wheel", (e) => {
+      if (e.deltaY > 0 && isGateBlocking()) {
+        e.preventDefault();
+        showToast("Marque todos os itens obrigatórios antes de continuar.");
+      }
+    }, { passive: false });
+
+    let touchStartY = null;
+    deck.addEventListener("touchstart", (e) => {
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+    deck.addEventListener("touchmove", (e) => {
+      if (touchStartY === null) return;
+      const dy = touchStartY - e.touches[0].clientY;
+      if (dy > 0 && isGateBlocking()) {
+        e.preventDefault();
+        showToast("Marque todos os itens obrigatórios antes de continuar.");
+      }
+    }, { passive: false });
   }
 
   function wireNav() {
@@ -236,21 +286,13 @@
     return `
       <div class="hero-flex">
         <div class="hero-inner">
-          <div class="hero-kicker anim">${esc(h.kicker)}</div>
-          <h1 class="hero-title anim anim-d1">${esc(h.title)}</h1>
-          <p class="hero-subtitle anim anim-d2">${esc(h.subtitle)}</p>
-          <a class="hero-cta anim anim-d3" href="#" data-jump-index="1">${esc(h.cta)} →</a>
-          <div class="hero-stats anim anim-d4">
-            ${h.stats.map(s => `
-              <div class="hero-stat">
-                <div class="value">${esc(s.value)}</div>
-                <div class="label">${esc(s.label)}</div>
-              </div>`).join("")}
-          </div>
+          <h1 class="hero-title anim">${esc(h.title)}</h1>
+          <p class="hero-subtitle anim anim-d1">${esc(h.subtitle)}</p>
+          <a class="hero-cta anim anim-d2" href="#" data-jump-index="1">${esc(h.cta)} →</a>
         </div>
-        <div class="hero-photo anim anim-d2"><img src="${esc(h.image)}" alt="Implementos Librelato" loading="lazy" /></div>
+        <div class="hero-photo anim anim-d1"><img src="${esc(h.image)}" alt="Implementos Librelato" loading="lazy" /></div>
       </div>
-      <div class="hero-scroll anim anim-d5"><span class="dot"></span> Role, arraste ou clique para avançar</div>
+      <div class="hero-scroll anim anim-d3"><span class="dot"></span> Role, arraste ou clique para avançar</div>
     `;
   }
 
@@ -400,20 +442,17 @@
   // ---------- portfolio-grid ----------
   function renderPortfolioGrid(p) {
     return `
-      <p class="copy anim anim-d1" style="margin-bottom:20px;">${esc(p.intro)}</p>
-      <div class="portfolio-media anim anim-d2">
-        <img src="${esc(p.image)}" alt="${esc(p.imageAlt || "")}" loading="lazy" />
-      </div>
-      <div class="type-chips stagger">
-        ${p.types.map(t => `<span class="type-chip">${esc(t)}</span>`).join("")}
+      <p class="copy anim anim-d1" style="margin-bottom:16px;">${esc(p.intro)}</p>
+      <div class="type-grid stagger">
+        ${p.types.map(t => `
+          <div class="type-card">
+            <div class="type-card-img"><img src="${esc(t.image)}" alt="${esc(t.label)}" loading="lazy" /></div>
+            <div class="type-card-label">${esc(t.label)}</div>
+          </div>`).join("")}
       </div>
     `;
   }
-  function wirePortfolioGrid(section) {
-    $$(".type-chip", section).forEach(chip => {
-      chip.addEventListener("click", () => chip.classList.toggle("active"));
-    });
-  }
+  function wirePortfolioGrid() {}
 
   // ---------- portfolio-table (interactive tab switcher) ----------
   function renderPortfolioTable(p) {
@@ -439,7 +478,7 @@
       void display.offsetWidth;
       display.classList.add("swap");
       display.innerHTML = `
-        <div class="big-ico">${row.icon}</div>
+        ${row.image ? `<div class="switch-display-media"><img src="${esc(row.image)}" alt="${esc(row.implemento)}" loading="lazy" /></div>` : `<div class="big-ico">${row.icon}</div>`}
         <div>
           <div class="headline">${esc(row.implemento)}</div>
           <div class="desc">${esc(row.exemplo)}</div>
@@ -652,15 +691,27 @@
       <div class="check-grid stagger">
         ${p.items.map(item => `
           <div class="check-item">
-            <span class="box">✓</span>${esc(item)}
+            <span class="box">✓</span>
+            <div class="check-icon">${item.icon}</div>
+            <div class="check-label">${esc(item.label)}</div>
           </div>`).join("")}
       </div>
     `;
   }
-  function wireChecklist(section) {
-    $$(".check-item", section).forEach(item => {
-      item.addEventListener("click", () => item.classList.toggle("checked"));
+  function wireChecklist(section, p) {
+    const items = $$(".check-item", section);
+    const slide = slides.find((s) => s.el === section);
+    function updateGate() {
+      if (!slide) return;
+      slide.satisfied = items.every((it) => it.classList.contains("checked"));
+    }
+    items.forEach((item) => {
+      item.addEventListener("click", () => {
+        item.classList.toggle("checked");
+        updateGate();
+      });
     });
+    updateGate();
   }
 
   // ---------- network-map ----------
