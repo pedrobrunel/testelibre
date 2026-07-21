@@ -1,0 +1,328 @@
+{
+  "meta": {
+    "lang": "pt-BR",
+    "siteTitle": "Guia Librelato — Visão de Negócio",
+    "logo": "assets/img/logo.png",
+    "navLabel": "Guia Librelato"
+  },
+  "hero": {
+    "kicker": "GUIA LIBRELATO",
+    "title": "Visão de Negócio",
+    "subtitle": "Um guia interativo sobre o mercado de implementos rodoviários e o papel da Librelato dentro dele. Navegue pelos 10 capítulos, clique, arraste e explore.",
+    "cta": "Começar a explorar",
+    "image": "assets/img/trucks-yard.jpg",
+    "stats": [
+      { "value": "104", "label": "fabricantes ativos no setor" },
+      { "value": "4", "label": "grandes players concentram o mercado" },
+      { "value": "3", "label": "pinos no maior CVC (Rodotrem)" }
+    ]
+  },
+  "toc": [
+    { "id": 1, "title": "Quem Somos", "subtitle": "A força da Librelato no transporte" },
+    { "id": 2, "title": "O que são Implementos?", "subtitle": "O conceito do “Cavalo e a Carroça”" },
+    { "id": 3, "title": "Portfólio e Aplicações", "subtitle": "A “mochila” certa para cada carga" },
+    { "id": 4, "title": "Panorama de Mercado", "subtitle": "Os grandes players do setor" },
+    { "id": 5, "title": "Diferenciais Librelato", "subtitle": "Como geramos valor" },
+    { "id": 6, "title": "A Métrica do Setor", "subtitle": "Entendendo a contagem por “Pinos”" },
+    { "id": 7, "title": "Dicionário das Estradas", "subtitle": "Glossário técnico e operacional" },
+    { "id": 8, "title": "Modelo de Negócio", "subtitle": "Nossa presença nacional" },
+    { "id": 9, "title": "Jornada do Cliente", "subtitle": "Do pedido à entrega" },
+    { "id": 10, "title": "Representatividade", "subtitle": "Entidades que organizam o setor" }
+  ],
+  "sections": [
+    {
+      "id": 1,
+      "type": "intro",
+      "kicker": "01 · Quem Somos",
+      "title": "A força da Librelato no transporte",
+      "lead": "A Librelato é uma montadora de implementos rodoviários.",
+      "body": [
+        "Isso significa que desenvolvemos e produzimos equipamentos que são acoplados a caminhões e utilizados no transporte de cargas.",
+        "Estamos inseridos diretamente na cadeia logística do país, atendendo principalmente transportadores, frotistas e operadores do agronegócio, indústria e varejo."
+      ],
+      "tags": ["Transportadores", "Frotistas", "Agronegócio", "Indústria", "Varejo"],
+      "image": "assets/img/trucks-yard.jpg",
+      "imageAlt": "Pátio da Librelato com dois implementos rodoviários lado a lado"
+    },
+    {
+      "id": 2,
+      "type": "cavalo-carroca",
+      "kicker": "02 · O que são Implementos?",
+      "title": "O conceito do “Cavalo e a Carroça”",
+      "intro": "Para falar sobre o que fazemos, precisamos começar falando sobre os implementos. Aqui, é importante destacar dois elementos principais na operação: a unidade de tração (o veículo que gera a força, seja linha leve ou pesada) e o implemento (a estrutura onde a carga viaja). Ou seja: o veículo puxa, o implemento transporta.",
+      "note": "Os implementos rodoviários são estruturas de carga, que podem ser acopladas, desacopladas e adaptadas conforme a necessidade da operação.",
+      "analogyLabel": "Um jeito fácil de entender, de uma forma ainda mais simples:",
+      "analogy": "Pense em um cavalo puxando uma carroça.",
+      "pair": [
+        {
+          "role": "cavalo",
+          "label": "O Caminhão",
+          "sub": "(cavalo mecânico)",
+          "desc": "É a parte da frente, onde fica o motor e o motorista. Ele é a força. Sozinho, ele corre muito, mas não consegue levar quase nada.",
+          "image": "assets/img/tractor-unit.png"
+        },
+        {
+          "role": "carroca",
+          "label": "O Implemento",
+          "sub": "(a carroça)",
+          "desc": "É a parte de trás que é engatada no caminhão. Ele é a utilidade. É lá dentro que a carga viaja protegida.",
+          "image": "assets/img/trailer-cutout.png"
+        }
+      ],
+      "backpack": {
+        "label": "Cada carga tem sua “mochila”",
+        "intro": "A coisa mais legal do implemento é que ele pode mudar dependendo do que o caminhão precisa carregar. É como se o caminhão trocasse de mochila:",
+        "options": [
+          {
+            "cargo": "Gasolina",
+            "icon": "⛽",
+            "implement": "Tanque gigante",
+            "desc": "Para levar gasolina, o implemento é um tanque gigante."
+          },
+          {
+            "cargo": "Comida congelada",
+            "icon": "❄️",
+            "implement": "Geladeira gigante",
+            "desc": "Para levar comida congelada, o implemento é uma caixa fechada que funciona como uma geladeira gigante."
+          },
+          {
+            "cargo": "Areia ou pedras",
+            "icon": "🪨",
+            "implement": "Caçamba basculante",
+            "desc": "Para levar areia ou pedras, o implemento é uma caçamba que levanta para despejar tudo no chão."
+          }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "type": "portfolio",
+      "kicker": "03 · Portfólio e Aplicações",
+      "title": "A “mochila” certa para cada carga",
+      "intro": "Existem diferentes tipos de implementos, cada um desenvolvido para uma aplicação específica. Cada tipo atende a uma necessidade logística diferente. O portfólio da Librelato contém:",
+      "image": "assets/img/portfolio-grid.jpg",
+      "imageAlt": "Grade com 12 tipos de implementos Librelato: graneleiro, basculante, tanque, furgão alumínio, furgão lonado, porta contêiner, florestal, carrega tudo, cavaqueira, canavieiro, carga seca e frigorífica",
+      "types": [
+        "Graneleiro", "Basculante", "Tanque", "Furgão Alumínio", "Furgão Lonado",
+        "Porta Contêiner", "Florestal", "Carrega Tudo", "Cavaqueira",
+        "Canavieiro", "Carga Seca", "Frigorífica"
+      ],
+      "tableTitle": "Da carga ao dia a dia",
+      "table": [
+        {
+          "cargo": "Grãos (Soja, Milho)",
+          "implemento": "Graneleiro / Basculante",
+          "exemplo": "O agronegócio — a comida que está todo dia na sua mesa."
+        },
+        {
+          "cargo": "Carga Geral (Caixas, Paletes)",
+          "implemento": "Sider (Lona) ou Baú",
+          "exemplo": "Produtos que você compra no e-commerce."
+        },
+        {
+          "cargo": "Líquidos (Combustível)",
+          "implemento": "Tanque",
+          "exemplo": "Item essencial para sua locomoção, seja de moto ou carro."
+        },
+        {
+          "cargo": "Construção / Mineração",
+          "implemento": "Caçambas Basculantes",
+          "exemplo": "Infraestrutura e obras."
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "market",
+      "kicker": "04 · Panorama de Mercado",
+      "title": "Os grandes players do setor",
+      "lead": "O mercado de implementos rodoviários no Brasil conta com mais de 100 fabricantes ativos.",
+      "body": "Atualmente, são cerca de 104 players no setor. Quatro dessas empresas se destacam pela relevância e volume de atuação:",
+      "stat": { "value": "104", "label": "fabricantes ativos" },
+      "players": [
+        { "name": "Librelato", "trait": "Força / Feito pra durar", "logo": "assets/img/logo.png", "accent": "#0092d5" },
+        { "name": "Facchini", "trait": "Preços agressivos", "logo": "assets/img/logo-facchini.png", "accent": "#e2231a" },
+        { "name": "Randon", "trait": "Tradição e ecossistema", "logo": "assets/img/logo-randon.png", "accent": "#111318" },
+        { "name": "Guerra", "trait": "Agilidade e amplitude", "logo": "assets/img/logo-guerra.png", "accent": "#f4c60d" }
+      ],
+      "footer": "Esses players concentram uma parcela significativa do mercado e lideram as principais inovações e tendências do setor."
+    },
+    {
+      "id": 5,
+      "type": "differentials",
+      "kicker": "05 · Diferenciais Librelato",
+      "title": "Como geramos valor",
+      "subtitle": "Outras características importantes",
+      "cards": [
+        {
+          "n": "01",
+          "title": "Produtividade",
+          "desc": "Nossos implementos ficam menos tempo parados em manutenção e mais tempo na estrada.",
+          "points": [
+            "Durabilidade: equipamentos feitos para percorrer as estradas brasileiras.",
+            "Segurança: proteção para quem dirige e para o patrimônio transportado.",
+            "Inovação e Tecnologia: aplicamos engenharia para que o implemento seja mais leve e resistente."
+          ]
+        },
+        {
+          "n": "02",
+          "title": "Economia",
+          "desc": "Design aerodinâmico e materiais inteligentes que reduzem o consumo de combustível do caminhão.",
+          "points": []
+        },
+        {
+          "n": "03",
+          "title": "Rede de Apoio",
+          "desc": "O cliente nunca está sozinho; ele tem o suporte da nossa rede de concessionárias e serviços.",
+          "points": []
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "pinos",
+      "kicker": "06 · A Métrica do Setor",
+      "title": "Entendendo a contagem por “Pinos”",
+      "intro": "Diferente do mercado de caminhões, que é medido por número de chassis, o mercado de implementos rodoviários é medido por pinos.",
+      "body": "Cada produto (ou unidade de acoplamento) corresponde a 1 pino. Na prática, isso significa que cada reboque, semirreboque ou dolly conectado à composição é contabilizado individualmente.",
+      "rule": "A regra é simples: conte quantos produtos (unidades de acoplamento) existem na composição. Cada produto equivale a um “pino”.",
+      "footnote": "Portanto, quando falamos de volume de mercado, estamos falando do número de implementos vendidos, e não de caminhões.",
+      "image": "assets/img/bitrem-highway.jpg",
+      "imageAlt": "Bitrem Librelato branco trafegando em rodovia",
+      "compositions": [
+        { "name": "Carreta Simples", "pinos": 1, "note": "1 implemento" },
+        { "name": "Bitrem", "pinos": 2, "note": "2 semirreboques" },
+        { "name": "Tritrem", "pinos": 3, "note": "3 implementos" },
+        { "name": "Rodotrem", "pinos": 3, "note": "2 implementos + 1 dolly" }
+      ],
+      "rodotrem": {
+        "title": "E o Rodotrem?",
+        "kicker": "O conjunto que mais gera dúvidas",
+        "intro": "Para não errar, entenda que dolly é um implemento que cria um novo ponto de conexão no sistema. A conta do Rodotrem (3 pinos) funciona assim:",
+        "pins": [
+          { "n": 1, "label": "Conecta o 1º semirreboque ao cavalo mecânico." },
+          { "n": 2, "label": "O Dolly, que atua como ponte, possui seu próprio pino para ser engatado." },
+          { "n": 3, "label": "Conecta o 2º semirreboque ao Dolly." }
+        ],
+        "image": "assets/img/dolly-unit.png",
+        "imageAlt": "Dolly — unidade intermediária de acoplamento",
+        "rules": [
+          "Cavalo Mecânico: não entra na conta (ele é a força de tração, não o implemento).",
+          "Dolly e Reboques: ambos contam como 1 “pino” no sistema.",
+          "Isso porque a métrica não avalia o componente físico (pino-rei), mas sim o número de produtos independentes acoplados. Se é uma unidade a mais na composição, ela contabiliza como um pino, independentemente do tipo de engate."
+        ]
+      }
+    },
+    {
+      "id": 7,
+      "type": "glossary",
+      "kicker": "07 · Dicionário das Estradas",
+      "title": "Glossário técnico e operacional",
+      "subtitle": "Clique nos cartões para ver a definição completa",
+      "terms": [
+        {
+          "term": "CVC",
+          "full": "Combinação de Veículos de Carga",
+          "def": "É o conjunto completo em operação, formado pela união do cavalo mecânico (unidade tratora) + implementos acoplados. Exemplos: Bitrem, Rodotrem ou Carreta simples."
+        },
+        {
+          "term": "PBTC",
+          "full": "Peso Bruto Total Combinado",
+          "def": "O limite máximo de peso permitido para toda a CVC (cavalo + implementos + carga). É o balizador da capacidade logística."
+        },
+        {
+          "term": "PBT",
+          "full": "Peso Bruto Total",
+          "def": "Refere-se ao limite de peso de um único veículo isolado (apenas o caminhão ou apenas um implemento)."
+        },
+        {
+          "term": "Semirreboque",
+          "full": "Engate por pino-rei",
+          "def": "Implemento que se apoia na “quinta roda” do caminhão através de um pino-rei. Ele depende do cavalo mecânico para sustentação parcial de seu peso.",
+          "image": "assets/img/pino-rei.png"
+        },
+        {
+          "term": "Reboque",
+          "full": "Engate por ponteira",
+          "def": "Diferente do semirreboque, ele possui eixos dianteiros e traseiros (sustenta-se sozinho) e é conectado por uma barra de tração."
+        },
+        {
+          "term": "Bitrem",
+          "full": "Dois semirreboques acoplados",
+          "def": "Combinação de dois semirreboques acoplados entre si. Destaca-se pela versatilidade e distribuição de peso por eixo.",
+          "image": "assets/img/bitrem-side.png"
+        },
+        {
+          "term": "Rodotrem",
+          "full": "Dois semirreboques + Dolly",
+          "def": "Combinação de dois semirreboques unidos por um Dolly (unidade intermediária). É a configuração de alta capacidade para longas distâncias.",
+          "image": "assets/img/dolly-unit.png"
+        }
+      ],
+      "checklist": {
+        "title": "Itens Obrigatórios",
+        "subtitle": "O que são esses itens obrigatórios para reboque e semirreboque?",
+        "note": "Tabela 3 — Equipamentos Obrigatórios (Tratores e Rebocados)",
+        "items": [
+          "Iluminação", "Parachoque Traseiro", "Freio", "Aparabarra Antisapray",
+          "Pneu", "Protetor Lateral", "Paralama", "Roda"
+        ]
+      }
+    },
+    {
+      "id": 8,
+      "type": "network",
+      "kicker": "08 · Modelo de Negócio",
+      "title": "Nossa presença nacional",
+      "lead": "A Librelato opera por meio de uma rede de representantes comerciais distribuídos pelo país.",
+      "body": "Esses representantes são responsáveis por:",
+      "responsibilities": [
+        "Prospectar clientes",
+        "Entender a necessidade de cada operação",
+        "Oferecer a solução mais adequada"
+      ],
+      "image": "assets/img/brazil-map.jpg",
+      "imageAlt": "Mapa do Brasil com pontos de representantes comerciais da Librelato distribuídos pelo território nacional"
+    },
+    {
+      "id": 9,
+      "type": "journey",
+      "kicker": "09 · Jornada do Cliente",
+      "title": "Do pedido à entrega",
+      "intro": "O processo de venda, de forma simplificada, segue as seguintes etapas:",
+      "steps": [
+        { "n": 1, "label": "Prospecção e Relacionamento" },
+        { "n": 2, "label": "Identificação da Necessidade" },
+        { "n": 3, "label": "Negociação Comercial" },
+        { "n": 4, "label": "Formalização do Pedido" },
+        { "n": 5, "label": "Produção" },
+        { "n": 6, "label": "Entrega ao Cliente" }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "association",
+      "kicker": "10 · Representatividade",
+      "title": "Entidades que organizam o setor",
+      "subtitle": "Como o mercado é organizado",
+      "intro": "O setor automotivo e o setor de implementos rodoviários são organizados por associações que consolidam dados e representam o mercado. ANFAVEA e ANFIR são as principais.",
+      "entities": [
+        { "acronym": "ANFAVEA", "desc": "Associação Nacional dos Fabricantes de Veículos Automotores" },
+        { "acronym": "ANFIR", "desc": "Associação Nacional dos Fabricantes de Implementos Rodoviários" }
+      ],
+      "dataLabel": "Essas entidades são fundamentais para o setor, pois fornecem dados como:",
+      "dataProvided": ["Volume de mercado", "Emplacamentos", "Tendências", "Performance dos fabricantes"],
+      "normsLabel": "Além disso, o mercado segue normas rigorosas:",
+      "normsDesc": "Diretrizes e regulamentações garantem que todos os produtos sigam os padrões legais exigidos, estabelecendo limites de segurança e características essenciais. Isso envolve o cumprimento estrito de:",
+      "standards": [
+        { "org": "CONTRAN", "desc": "Resoluções — pesos, dimensões e limites" },
+        { "org": "ABNT", "desc": "Normas Técnicas — padrões de fabricação e ensaios" },
+        { "org": "INMETRO", "desc": "Portarias — certificações de segurança e qualidade" }
+      ]
+    }
+  ],
+  "closing": {
+    "quote": "Na Librelato, nós carregamos o que o Brasil produz, conectando estradas e entregando o futuro.",
+    "cta": "Voltar ao início"
+  }
+}

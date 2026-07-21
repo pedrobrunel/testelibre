@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Guia Librelato — Visão de Negócio</title>
+<meta name="description" content="Guia interativo sobre o mercado de implementos rodoviários e o papel da Librelato dentro dele." />
+<link rel="icon" href="assets/img/logo.png" />
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+
+  <div class="progress-rail" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+
+  <button class="nav-toggle" id="navToggle" aria-label="Abrir sumário" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+
+  <nav class="toc" id="toc" aria-label="Sumário do guia">
+    <div class="toc-brand">
+      <img src="assets/img/logo.png" alt="Librelato" />
+    </div>
+    <ol class="toc-list" id="tocList"></ol>
+    <a class="toc-restart" href="#hero" data-nav="hero">↑ Início</a>
+  </nav>
+
+  <main id="main">
+    <section class="hero" id="hero"></section>
+    <div id="sections"></div>
+    <section class="closing" id="closing"></section>
+  </main>
+
+  <div class="tap-hint" id="tapHint">Role para explorar ↓</div>
+
+  <script src="js/app.js" defer></script>
+</body>
+</html>
