@@ -9,7 +9,14 @@
     "title": "Visão de Negócio",
     "subtitle": "Um guia interativo sobre o mercado de implementos rodoviários e o papel da Librelato dentro dele. Use as setas, o scroll ou os pontinhos para passar as páginas.",
     "cta": "Começar a explorar",
-    "image": "assets/img/trucks-yard.jpg"
+    "image": "assets/img/trucks-yard.jpg",
+    "scrollHint": "Role, arraste ou clique para avançar"
+  },
+  "ui": {
+    "tapHint": "Role, arraste ou use as setas ↓",
+    "gateToast": "Marque todos os itens obrigatórios antes de continuar.",
+    "marketFlipHint": "clique para ver o diferencial",
+    "glossaryFlipHint": "clique ↻"
   },
   "toc": [
     { "group": 1, "title": "Quem Somos", "subtitle": "A força da Librelato no transporte" },
@@ -275,8 +282,8 @@
         "imageAlt": "Cavalo mecânico",
         "rulesTitle": "Regras fundamentais para o cálculo",
         "rules": [
-          "Cavalo Mecânico: não entra na contagem, pois é o veículo responsável pela tração do conjunto.",
-          "Dolly e Reboques: cada implemento independente conta como 1 pino. A contagem considera a quantidade de implementos que compõem o conjunto, independentemente do tipo de engate utilizado."
+          { "label": "Cavalo Mecânico", "desc": "Não entra na contagem, pois é o veículo responsável pela tração do conjunto." },
+          { "label": "Dolly e Reboques", "desc": "Cada implemento independente conta como 1 pino, considerando a quantidade de implementos do conjunto, independentemente do tipo de engate." }
         ]
       }
     },

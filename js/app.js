@@ -18,6 +18,7 @@
 
   let slides = [];   // { el, group, kind, wire() }
   let current = 0;
+  let ui = {};       // reusable interaction strings, from data.ui
 
   fetch("data/content.json")
     .then((r) => {
@@ -26,9 +27,11 @@
     })
     .then((data) => {
       document.title = data.meta.siteTitle;
+      ui = data.ui || {};
       buildDeck(data);
       buildToc(data);
       buildDotRail(data);
+      applyStagger();
       wireNav();
       wireKeyboard();
       wireMobileNav();
@@ -137,7 +140,7 @@
   function goToIndex(i) {
     i = Math.max(0, Math.min(slides.length - 1, i));
     if (i > current && isGateBlocking()) {
-      showToast("Marque todos os itens obrigatórios antes de continuar.");
+      showToast(ui.gateToast || "Marque todos os itens obrigatórios antes de continuar.");
       return;
     }
     slides[i].el.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -166,7 +169,7 @@
     deck.addEventListener("wheel", (e) => {
       if (e.deltaY > 0 && isGateBlocking()) {
         e.preventDefault();
-        showToast("Marque todos os itens obrigatórios antes de continuar.");
+        showToast(ui.gateToast || "Marque todos os itens obrigatórios antes de continuar.");
       }
     }, { passive: false });
 
@@ -179,7 +182,7 @@
       const dy = touchStartY - e.touches[0].clientY;
       if (dy > 0 && isGateBlocking()) {
         e.preventDefault();
-        showToast("Marque todos os itens obrigatórios antes de continuar.");
+        showToast(ui.gateToast || "Marque todos os itens obrigatórios antes de continuar.");
       }
     }, { passive: false });
   }
@@ -239,6 +242,18 @@
   }
 
   // ---------------------------------------------------------------
+  // Staggered reveal delays: computed per-child so any number of items
+  // (e.g. the 12-item portfolio grid) animates strictly first-to-last.
+  // ---------------------------------------------------------------
+  function applyStagger() {
+    $$(".stagger").forEach((container) => {
+      Array.from(container.children).forEach((child, i) => {
+        child.style.transitionDelay = Math.min(i * 0.06, 0.6) + "s";
+      });
+    });
+  }
+
+  // ---------------------------------------------------------------
   // Active-slide observer: drives UI state + replayable animations
   // ---------------------------------------------------------------
   function setupObserver() {
@@ -292,7 +307,7 @@
         </div>
         <div class="hero-photo anim anim-d1"><img src="${esc(h.image)}" alt="Implementos Librelato" loading="lazy" /></div>
       </div>
-      <div class="hero-scroll anim anim-d3"><span class="dot"></span> Role, arraste ou clique para avançar</div>
+      <div class="hero-scroll anim anim-d3"><span class="dot"></span> ${esc(h.scrollHint)}</div>
     `;
   }
 
@@ -514,7 +529,7 @@
             <div class="player-flip">
               <div class="player-face player-front">
                 <img src="${esc(pl.logo)}" alt="${esc(pl.name)}" loading="lazy" />
-                <span class="hint">clique para ver o diferencial</span>
+                <span class="hint">${esc(ui.marketFlipHint)}</span>
               </div>
               <div class="player-face player-back" style="--accent:${esc(pl.accent)}">
                 <div class="name">${esc(pl.name)}</div>
@@ -634,9 +649,13 @@
               </div>`).join("")}
           </div>
           ${r.rulesTitle ? `<div class="rules-title">${esc(r.rulesTitle)}</div>` : ""}
-          <ul class="rodotrem-rules">
-            ${r.rules.map(rule => `<li>${esc(rule)}</li>`).join("")}
-          </ul>
+          <div class="rodotrem-rules">
+            ${r.rules.map(rule => `
+              <div class="rule-item">
+                <span class="rule-label">${esc(rule.label)}</span>
+                <p class="rule-desc">${esc(rule.desc)}</p>
+              </div>`).join("")}
+          </div>
         </div>
         <div class="rodotrem-media">
           <img id="rodotremImg" src="${esc(r.image)}" alt="${esc(r.imageAlt || "")}" loading="lazy" />
@@ -674,9 +693,11 @@
               <div class="term-face term-front">
                 <div class="term-img"><img src="${esc(t.image)}" alt="${esc(t.term)}" loading="lazy" /></div>
                 <div class="term-body">
-                  <div class="term">${esc(t.term)}</div>
+                  <div class="term-body-top">
+                    <div class="term">${esc(t.term)}</div>
+                    <span class="flip-hint">${esc(ui.glossaryFlipHint)}</span>
+                  </div>
                   <div class="full">${esc(t.full)}</div>
-                  <span class="flip-hint">clique ↻</span>
                 </div>
               </div>
               <div class="term-face term-back">
@@ -873,6 +894,7 @@
   // ---------------------------------------------------------------
   function setupTapHint() {
     const hint = $("#tapHint");
+    if (ui.tapHint) hint.textContent = ui.tapHint;
     let hidden = false;
     $("#deck").addEventListener("scroll", () => {
       if (hidden) return;

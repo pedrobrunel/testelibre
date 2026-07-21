@@ -71,12 +71,28 @@ duas páginas menores, indicado pelo campo `part`, ex. `"1/2"`). O campo
 | `association-standards`  | 10 · Normas (2/2)                       | —                                                   |
 
 Para adicionar uma nova imagem: coloque o arquivo em `assets/img/` e aponte
-para ele no JSON (ex. `"image": "assets/img/minha-foto.jpg"`).
+para ele no JSON (ex. `"image": "assets/img/minha-foto.jpg"`). Todas as
+imagens de um mesmo componente (ex. os 7 cartões do glossário, as 3 fotos do
+Rodotrem, o quadro da "mochila") são exibidas em uma caixa de tamanho fixo, então
+qualquer imagem que você colocar ali se ajusta automaticamente ao mesmo
+tamanho das demais — não precisa recortar a imagem no tamanho exato.
 
 Para reordenar, adicionar ou remover uma página, edite o array `pages` (e o
 array `toc`, que gera o menu lateral) — a ordem no array é a ordem de
 navegação. Cada página deve ter um `group` (1-10) igual ao de alguma entrada
-em `toc` para aparecer corretamente marcada no menu lateral.
+em `toc` para aparecer corretamente marcada no menu lateral. Ao adicionar
+itens numa lista com animação (ex. mais tipos de implemento), a animação de
+entrada se ajusta sozinha à quantidade de itens, sem precisar editar o CSS.
+
+O objeto `"ui"` no topo do JSON reúne textos de interface reaproveitados em
+várias páginas (dica de rolagem, aviso do checklist obrigatório, "clique para
+ver o diferencial", "clique ↻" do glossário) — editar ali muda o texto em
+todos os lugares onde ele aparece.
+
+A página "E o Rodotrem?" tem um campo `rulesTitle` (título da seção de regras)
+e `rules`, uma lista de `{ "label": "...", "desc": "..." }` — cada regra vira
+um cartão com o nome em destaque e a explicação abaixo, mais fácil de ler do
+que um parágrafo corrido.
 
 O mapa interativo (página "Nossa presença nacional") usa uma imagem-base do
 mapa (`map-base.jpg`) com 4 camadas de pinos transparentes que se ligam/desligam
