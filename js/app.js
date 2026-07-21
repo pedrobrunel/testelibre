@@ -423,7 +423,7 @@
       void display.offsetWidth;
       display.classList.add("swap");
       display.innerHTML = `
-        <div class="big-ico">${o.icon}</div>
+        ${o.image ? `<div class="switch-display-media"><img src="${esc(o.image)}" alt="${esc(o.implement)}" loading="lazy" /></div>` : `<div class="big-ico">${o.icon}</div>`}
         <div>
           <div class="headline">${esc(o.implement)}</div>
           <div class="desc">${esc(o.desc)}</div>
@@ -639,17 +639,27 @@
           </ul>
         </div>
         <div class="rodotrem-media">
-          <img src="${esc(r.image)}" alt="${esc(r.imageAlt || "")}" loading="lazy" />
+          <img id="rodotremImg" src="${esc(r.image)}" alt="${esc(r.imageAlt || "")}" loading="lazy" />
         </div>
       </div>
     `;
   }
-  function wirePinosRodotrem(section) {
+  function wirePinosRodotrem(section, p) {
     const steps = $$(".pin-step", section);
-    steps.forEach(step => {
+    const img = $("#rodotremImg", section);
+    steps.forEach((step, i) => {
       step.addEventListener("click", () => {
         steps.forEach(x => x.classList.remove("active"));
         step.classList.add("active");
+        const pin = p.rodotrem.pins[i];
+        if (pin.image) {
+          img.style.opacity = "0";
+          setTimeout(() => {
+            img.src = pin.image;
+            img.alt = pin.imageAlt || "";
+            img.style.opacity = "1";
+          }, 150);
+        }
       });
     });
   }
@@ -662,12 +672,12 @@
           <div class="term-card">
             <div class="term-flip">
               <div class="term-face term-front">
-                ${t.image ? `<img class="mini-img" src="${esc(t.image)}" alt="" loading="lazy" />` : ""}
-                <div>
+                <div class="term-img"><img src="${esc(t.image)}" alt="${esc(t.term)}" loading="lazy" /></div>
+                <div class="term-body">
                   <div class="term">${esc(t.term)}</div>
                   <div class="full">${esc(t.full)}</div>
+                  <span class="flip-hint">clique ↻</span>
                 </div>
-                <span class="flip-hint">clique ↻</span>
               </div>
               <div class="term-face term-back">
                 <div class="term-mini">${esc(t.term)}</div>

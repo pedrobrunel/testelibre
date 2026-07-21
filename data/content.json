@@ -75,19 +75,22 @@
           "cargo": "Gasolina",
           "icon": "⛽",
           "implement": "Tanque gigante",
-          "desc": "Para levar gasolina, o implemento é um tanque gigante."
+          "desc": "Para levar gasolina, o implemento é um tanque gigante.",
+          "image": "assets/img/types/tanque.jpg"
         },
         {
           "cargo": "Comida congelada",
           "icon": "❄️",
           "implement": "Geladeira gigante",
-          "desc": "Para levar comida congelada, o implemento é uma caixa fechada que funciona como uma geladeira gigante."
+          "desc": "Para levar comida congelada, o implemento é uma caixa fechada que funciona como uma geladeira gigante.",
+          "image": "assets/img/types/frigorifica.jpg"
         },
         {
           "cargo": "Areia ou pedras",
           "icon": "🪨",
           "implement": "Caçamba basculante",
-          "desc": "Para levar areia ou pedras, o implemento é uma caçamba que levanta para despejar tudo no chão."
+          "desc": "Para levar areia ou pedras, o implemento é uma caçamba que levanta para despejar tudo no chão.",
+          "image": "assets/img/types/basculante.jpg"
         }
       ]
     },
@@ -264,12 +267,12 @@
         "kicker": "O conjunto que mais gera dúvidas",
         "intro": "Para facilitar o entendimento, lembre-se: o dolly é um implemento que cria um novo ponto de conexão no conjunto. A contagem do Rodotrem (3 pinos) funciona assim, clique em cada passo:",
         "pins": [
-          { "n": 1, "label": "Conecta o 1º semirreboque ao cavalo mecânico." },
-          { "n": 2, "label": "O dolly funciona como uma ponte entre os semirreboques e possui seu próprio ponto de conexão." },
-          { "n": 3, "label": "Conecta o 2º semirreboque ao dolly." }
+          { "n": 1, "label": "Conecta o 1º semirreboque ao cavalo mecânico.", "image": "assets/img/tractor-unit.png", "imageAlt": "Cavalo mecânico" },
+          { "n": 2, "label": "O dolly funciona como uma ponte entre os semirreboques e possui seu próprio ponto de conexão.", "image": "assets/img/dolly-unit.png", "imageAlt": "Dolly, unidade intermediária de acoplamento" },
+          { "n": 3, "label": "Conecta o 2º semirreboque ao dolly.", "image": "assets/img/bitrem-side.png", "imageAlt": "Dois semirreboques conectados" }
         ],
-        "image": "assets/img/dolly-unit.png",
-        "imageAlt": "Dolly, unidade intermediária de acoplamento",
+        "image": "assets/img/tractor-unit.png",
+        "imageAlt": "Cavalo mecânico",
         "rulesTitle": "Regras fundamentais para o cálculo",
         "rules": [
           "Cavalo Mecânico: não entra na contagem, pois é o veículo responsável pela tração do conjunto.",
@@ -287,17 +290,20 @@
         {
           "term": "CVC",
           "full": "Combinação de Veículos de Carga",
-          "def": "É o conjunto completo em operação, formado pela união do cavalo mecânico (unidade tratora) + implementos acoplados. Exemplos: Bitrem, Rodotrem ou Carreta simples."
+          "def": "É o conjunto completo em operação, formado pela união do cavalo mecânico (unidade tratora) + implementos acoplados. Exemplos: Bitrem, Rodotrem ou Carreta simples.",
+          "image": "assets/img/bitrem-highway.jpg"
         },
         {
           "term": "PBTC",
           "full": "Peso Bruto Total Combinado",
-          "def": "O limite máximo de peso permitido para toda a CVC (cavalo + implementos + carga). É o balizador da capacidade logística."
+          "def": "O limite máximo de peso permitido para toda a CVC (cavalo + implementos + carga). É o balizador da capacidade logística.",
+          "image": "assets/img/trucks-yard.jpg"
         },
         {
           "term": "PBT",
           "full": "Peso Bruto Total",
-          "def": "Refere-se ao limite de peso de um único veículo isolado (apenas o caminhão ou apenas um implemento)."
+          "def": "Refere-se ao limite de peso de um único veículo isolado (apenas o caminhão ou apenas um implemento).",
+          "image": "assets/img/tractor-unit.png"
         },
         {
           "term": "Semirreboque",
@@ -308,7 +314,8 @@
         {
           "term": "Reboque",
           "full": "Engate por ponteira",
-          "def": "Diferente do semirreboque, ele possui eixos dianteiros e traseiros (sustenta-se sozinho) e é conectado por uma barra de tração."
+          "def": "Diferente do semirreboque, ele possui eixos dianteiros e traseiros (sustenta-se sozinho) e é conectado por uma barra de tração.",
+          "image": "assets/img/trailer-cutout.png"
         },
         {
           "term": "Bitrem",
