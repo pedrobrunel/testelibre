@@ -377,7 +377,13 @@
   // ---------------------------------------------------------------
   // Hero & Closing
   // ---------------------------------------------------------------
+  function youtubeId(url) {
+    const m = String(url || "").match(/(?:youtu\.be\/|youtube(?:-nocookie)?\.com\/(?:watch\?v=|embed\/))([\w-]{11})/);
+    return m ? m[1] : "";
+  }
+
   function renderHero(h) {
+    const vid = youtubeId(h.video);
     return `
       <div class="hero-flex">
         <div class="hero-inner">
@@ -385,7 +391,7 @@
           <p class="hero-subtitle anim anim-d1">${esc(h.subtitle)}</p>
           <a class="hero-cta anim anim-d2" href="#" data-jump-index="1">${esc(h.cta)} →</a>
         </div>
-        <div class="hero-photo anim anim-d1"><img src="${esc(h.image)}" alt="Implementos Librelato" loading="lazy" /></div>
+        ${vid ? `<div class="hero-video anim anim-d1"><iframe src="https://www.youtube-nocookie.com/embed/${vid}" title="Vídeo Librelato" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div>` : ""}
       </div>
       <div class="hero-scroll anim anim-d3"><span class="dot"></span> ${esc(h.scrollHint)}</div>
     `;
@@ -830,7 +836,14 @@
     }
     items.forEach((item) => {
       item.addEventListener("click", () => {
-        item.classList.toggle("checked");
+        const nowChecked = !item.classList.contains("checked");
+        item.classList.toggle("checked", nowChecked);
+        if (nowChecked) {
+          item.classList.remove("just-checked");
+          void item.offsetWidth;
+          item.classList.add("just-checked");
+          item.addEventListener("animationend", () => item.classList.remove("just-checked"), { once: true });
+        }
         updateGate();
       });
     });

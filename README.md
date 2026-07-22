@@ -79,11 +79,18 @@ tamanho das demais — não precisa recortar a imagem no tamanho exato.
 
 Cada item de `types` na página "Conheça os tipos de implementos" pode ter um
 campo `"gallery"`, uma lista de fotos extras daquele implemento que abrem num
-modal ao clicar no card (`{ "src": "assets/img/gallery/tanque/01.jpg", "caption": "..." }`).
+modal ao clicar no card (`{ "src": "assets/img/gallery/tanque/01.webp", "caption": "..." }`).
 Sem esse campo, o card fica só ilustrativo, sem abrir modal. Com uma ou mais
 fotos, aparece um pequeno ícone de lupa no canto da imagem e o card inteiro
 fica clicável; dentro do modal dá para navegar entre as fotos com as setas
-laterais, as setas do teclado, e fechar com o X, clicando fora ou com Esc.
+laterais, as setas do teclado, e fechar com o X, clicando fora ou com Esc. As
+fotos de `assets/img/gallery/` são mantidas no formato original (WEBP) enviado,
+sem reconverter para outro formato, para não perder qualidade nem aumentar o
+tamanho do arquivo.
+
+A capa (`hero`) tem um campo `"video"` com o link do YouTube (aceita tanto
+`youtube.com/watch?v=...` quanto `youtu.be/...`) que substitui a foto do lado
+direito por um vídeo incorporado, mantendo a proporção 16:9.
 
 Para reordenar, adicionar ou remover uma página, edite o array `pages` (e o
 array `toc`, que gera o menu lateral) — a ordem no array é a ordem de
