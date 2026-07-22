@@ -407,9 +407,58 @@ button { font-family: inherit; cursor: pointer; }
   box-shadow: var(--shadow-card); transition: transform .2s var(--ease);
 }
 .type-card:hover { transform: translateY(-3px); }
-.type-card-img { aspect-ratio: 16/10; overflow: hidden; background: #1c3a57; }
+.type-card.has-gallery { cursor: pointer; }
+.type-card.has-gallery:focus-visible { outline: 2px solid var(--blue-500); outline-offset: 2px; }
+.type-card-img { position: relative; aspect-ratio: 16/10; overflow: hidden; background: #1c3a57; }
 .type-card-img img { width: 100%; height: 100%; object-fit: cover; }
 .type-card-label { padding: 7px 8px; font-size: .72rem; font-weight: 700; color: var(--ink-700); text-align: center; }
+
+.type-card-zoom {
+  position: absolute; right: 6px; bottom: 6px; width: 20px; height: 20px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(0,3,15,0.45); color: #fff; border-radius: 50%;
+  font-size: .66rem; line-height: 1; opacity: .8; pointer-events: none;
+  transition: opacity .2s var(--ease), transform .2s var(--ease);
+}
+.type-card.has-gallery:hover .type-card-zoom { opacity: 1; transform: scale(1.1); }
+
+/* ---- Gallery lightbox ---- */
+body.gallery-lock { overflow: hidden; }
+.gallery-modal {
+  position: fixed; inset: 0; z-index: 1000; display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity .25s var(--ease); padding: 24px;
+}
+.gallery-modal.show { opacity: 1; pointer-events: auto; }
+.gallery-modal-backdrop { position: absolute; inset: 0; background: rgba(0,3,15,0.82); }
+.gallery-modal-box {
+  position: relative; z-index: 1; width: min(880px, 92vw); max-height: 88vh;
+  display: flex; flex-direction: column; align-items: center;
+}
+.gallery-modal-main {
+  width: 100%; max-height: 70vh; border-radius: 12px; overflow: hidden;
+  background: var(--navy-950); display: flex; align-items: center; justify-content: center;
+}
+.gallery-modal-img { max-width: 100%; max-height: 70vh; object-fit: contain; display: block; }
+.gallery-close {
+  position: absolute; top: -44px; right: 0; width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(255,255,255,0.12); color: #fff; border: none; font-size: .92rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: background .2s var(--ease);
+}
+.gallery-close:hover { background: rgba(255,255,255,0.25); }
+.gallery-nav {
+  position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; border-radius: 50%;
+  background: rgba(255,255,255,0.12); color: #fff; border: none; font-size: 1.3rem; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; transition: background .2s var(--ease); z-index: 2;
+}
+.gallery-nav:hover { background: rgba(255,255,255,0.25); }
+.gallery-nav.prev { left: -52px; }
+.gallery-nav.next { right: -52px; }
+.gallery-modal-footer {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%;
+  margin-top: 12px; color: #cfe0f2; font-size: .82rem;
+}
+.gallery-caption { flex: 1; }
+.gallery-counter { font-family: var(--font-display); color: var(--blue-400); white-space: nowrap; }
 
 /* ============================================================
    4. Market
@@ -665,6 +714,9 @@ button { font-family: inherit; cursor: pointer; }
   .rodotrem-panel { grid-template-columns: 1fr; }
   .network-layout, .map-layout { grid-template-columns: 1fr; }
   .glossary-grid { grid-template-columns: repeat(3, 1fr); }
+  .gallery-nav.prev { left: 6px; }
+  .gallery-nav.next { right: 6px; }
+  .gallery-close { top: -40px; }
 }
 
 @media (max-width: 760px) {

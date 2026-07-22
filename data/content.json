@@ -108,18 +108,139 @@
       "title": "Conheça os tipos de implementos",
       "intro": "Existem diferentes tipos de implementos, cada um desenvolvido para uma aplicação específica. Cada tipo atende a uma necessidade logística diferente. O portfólio da Librelato contém:",
       "types": [
-        { "label": "Graneleiro", "image": "assets/img/types/graneleiro.jpg" },
-        { "label": "Basculante", "image": "assets/img/types/basculante.jpg" },
-        { "label": "Tanque", "image": "assets/img/types/tanque.jpg" },
-        { "label": "Furgão Alumínio", "image": "assets/img/types/furgao-aluminio.jpg" },
-        { "label": "Furgão Lonado", "image": "assets/img/types/furgao-lonado.jpg" },
-        { "label": "Porta Contêiner", "image": "assets/img/types/porta-conteiner.jpg" },
-        { "label": "Florestal", "image": "assets/img/types/florestal.jpg" },
-        { "label": "Carrega Tudo", "image": "assets/img/types/carrega-tudo.jpg" },
-        { "label": "Cavaqueira", "image": "assets/img/types/cavaqueira.jpg" },
-        { "label": "Canavieiro", "image": "assets/img/types/canavieiro.jpg" },
-        { "label": "Carga Seca", "image": "assets/img/types/carga-seca.jpg" },
-        { "label": "Frigorífica", "image": "assets/img/types/frigorifica.jpg" }
+        {
+          "label": "Graneleiro", "image": "assets/img/types/graneleiro.jpg",
+          "gallery": [
+            { "src": "assets/img/gallery/graneleiro/01.jpg", "caption": "Bitrem Graneleiro 04 Eixos" },
+            { "src": "assets/img/gallery/graneleiro/02.jpg", "caption": "Bitrem Graneleiro 06 Eixos" },
+            { "src": "assets/img/gallery/graneleiro/03.jpg", "caption": "Rodotrem Graneleiro 06 Eixos Engate 5ª Roda" },
+            { "src": "assets/img/gallery/graneleiro/04.jpg", "caption": "Rodotrem Graneleiro 06 Eixos Engate Esférico" },
+            { "src": "assets/img/gallery/graneleiro/05.jpg", "caption": "Semirreboque Graneleiro 03 Eixos (6X2)" },
+            { "src": "assets/img/gallery/graneleiro/06.jpg", "caption": "Semirreboque Graneleiro 03 Eixos (8X2)" },
+            { "src": "assets/img/gallery/graneleiro/07.jpg", "caption": "Semirreboque Graneleiro 03 Eixos Distanciados" },
+            { "src": "assets/img/gallery/graneleiro/08.jpg", "caption": "Semirreboque Graneleiro 04 Eixos" }
+          ]
+        },
+        {
+          "label": "Basculante", "image": "assets/img/types/basculante.jpg",
+          "gallery": [
+            { "src": "assets/img/gallery/basculante/01.jpg", "caption": "Bitrem Basculante Evolut 04 Eixos" },
+            { "src": "assets/img/gallery/basculante/02.jpg", "caption": "Rodotrem Basculante Evolut 06 Eixos Engate 5ª Roda" },
+            { "src": "assets/img/gallery/basculante/03.jpg", "caption": "Rodotrem Basculante Evolut 06 Eixos Engate Esférico" },
+            { "src": "assets/img/gallery/basculante/04.jpg", "caption": "Rodotrem Basculante Premium 06 Eixos Engate 5ª Roda" },
+            { "src": "assets/img/gallery/basculante/05.jpg", "caption": "Rodotrem Basculante Premium 06 Eixos Engate Esférico" },
+            { "src": "assets/img/gallery/basculante/06.jpg", "caption": "Semirreboque Basculante Evolut 03 Eixos (1+2)" },
+            { "src": "assets/img/gallery/basculante/07.jpg", "caption": "Semirreboque Basculante Evolut 03 Eixos Distanciados" },
+            { "src": "assets/img/gallery/basculante/08.jpg", "caption": "Semirreboque Basculante Evolut 03 Eixos" },
+            { "src": "assets/img/gallery/basculante/09.jpg", "caption": "Semirreboque Basculante Evolut 04 Eixos" },
+            { "src": "assets/img/gallery/basculante/10.jpg", "caption": "Semirreboque Basculante Evolut Graneleiro 03 Eixos" }
+          ]
+        },
+        {
+          "label": "Tanque", "image": "assets/img/types/tanque.jpg",
+          "gallery": [
+            { "src": "assets/img/gallery/tanque/01.jpg", "caption": "Bitrem Tanque 04 Eixos" },
+            { "src": "assets/img/gallery/tanque/02.jpg", "caption": "Bitrem Tanque 06 Eixos" },
+            { "src": "assets/img/gallery/tanque/03.jpg", "caption": "Semirreboque Tanque 03 Eixos (4X2)" },
+            { "src": "assets/img/gallery/tanque/04.jpg", "caption": "Semirreboque Tanque 03 Eixos (6X2)" },
+            { "src": "assets/img/gallery/tanque/05.jpg", "caption": "Semirreboque Tanque 04 Eixos" },
+            { "src": "assets/img/gallery/tanque/06.jpg", "caption": "Tanquevanderleia" }
+          ]
+        },
+        {
+          "label": "Furgão Alumínio", "image": "assets/img/types/furgao-aluminio.jpg",
+          "gallery": [
+            { "src": "assets/img/gallery/furgao-aluminio/01.jpg", "caption": "Bitrenzão Furgão Alumínio, Foto 1" },
+            { "src": "assets/img/gallery/furgao-aluminio/02.jpg", "caption": "Bitrenzão Furgão Alumínio, Foto 2" },
+            { "src": "assets/img/gallery/furgao-aluminio/03.jpg", "caption": "Bitrenzão Furgão Alumínio, Foto 3" },
+            { "src": "assets/img/gallery/furgao-aluminio/04.jpg", "caption": "Bitrenzão Furgão Alumínio, Foto 4" },
+            { "src": "assets/img/gallery/furgao-aluminio/05.jpg", "caption": "Bitrenzão Furgão Alumínio, Foto 5" },
+            { "src": "assets/img/gallery/furgao-aluminio/06.jpg", "caption": "Bitrenzão Furgão Alumínio, Foto 6" },
+            { "src": "assets/img/gallery/furgao-aluminio/07.jpg", "caption": "Bitrenzão Furgão Alumínio, Foto 7" },
+            { "src": "assets/img/gallery/furgao-aluminio/08.jpg", "caption": "Bitrenzão Furgão Alumínio, Foto 8" },
+            { "src": "assets/img/gallery/furgao-aluminio/09.jpg", "caption": "Bitrenzão Furgão Alumínio, Foto 9" },
+            { "src": "assets/img/gallery/furgao-aluminio/10.jpg", "caption": "Bitrenzão Furgão Alumínio, Foto 10" },
+            { "src": "assets/img/gallery/furgao-aluminio/11.jpg", "caption": "Bitrenzão Furgão Alumínio, Foto 11" },
+            { "src": "assets/img/gallery/furgao-aluminio/12.jpg", "caption": "Bitrenzão Furgão Alumínio, Foto 12" },
+            { "src": "assets/img/gallery/furgao-aluminio/13.jpg", "caption": "Bitrenzão Furgão Alumínio, Foto 13" },
+            { "src": "assets/img/gallery/furgao-aluminio/14.jpg", "caption": "Bitrenzão Furgão Alumínio, Foto 14" },
+            { "src": "assets/img/gallery/furgao-aluminio/15.jpg", "caption": "Bitrenzão Furgão Alumínio, Foto 15" },
+            { "src": "assets/img/gallery/furgao-aluminio/16.jpg", "caption": "Bitrenzão Furgão Alumínio, Foto 16" },
+            { "src": "assets/img/gallery/furgao-aluminio/17.jpg", "caption": "Bitrenzão Furgão Alumínio, Foto 17" },
+            { "src": "assets/img/gallery/furgao-aluminio/18.jpg", "caption": "Semirreboque Furgão Alumínio 03 Eixos (4X2)" },
+            { "src": "assets/img/gallery/furgao-aluminio/19.jpg", "caption": "Semirreboque Furgão Alumínio 03 Eixos (6X2)" },
+            { "src": "assets/img/gallery/furgao-aluminio/20.jpg", "caption": "Semirreboque Furgão Alumínio 03 Eixos Distanciados" }
+          ]
+        },
+        {
+          "label": "Furgão Lonado", "image": "assets/img/types/furgao-lonado.jpg",
+          "gallery": [
+            { "src": "assets/img/gallery/furgao-lonado/01.jpg", "caption": "Bitrem Furgão Lonado 06 Eixos" },
+            { "src": "assets/img/gallery/furgao-lonado/02.jpg", "caption": "Semirreboque Furgão Lonado 03 (6X2) Eixos" },
+            { "src": "assets/img/gallery/furgao-lonado/03.jpg", "caption": "Semirreboque Furgão Lonado 03 Eixos (4X2)" },
+            { "src": "assets/img/gallery/furgao-lonado/04.jpg", "caption": "Semirreboque Furgão Lonado 03 Eixos Distanciados" },
+            { "src": "assets/img/gallery/furgao-lonado/05.jpg", "caption": "Semirreboque Furgão Lonado 04 Eixos" }
+          ]
+        },
+        {
+          "label": "Porta Contêiner", "image": "assets/img/types/porta-conteiner.jpg",
+          "gallery": [
+            { "src": "assets/img/gallery/porta-conteiner/01.jpg", "caption": "Bitrem Porta Contêiner 06 Eixos Deslizante" },
+            { "src": "assets/img/gallery/porta-conteiner/02.jpg", "caption": "Semirreboque Porta Contêiner 03 Eixos 20 Pés" },
+            { "src": "assets/img/gallery/porta-conteiner/03.jpg", "caption": "Semirreboque Porta Contêiner 03 Eixos 40 Pés (6X2)" },
+            { "src": "assets/img/gallery/porta-conteiner/04.jpg", "caption": "Semirreboque Porta Contêiner 03 Eixos 40 Pés (4X2)" }
+          ]
+        },
+        {
+          "label": "Florestal", "image": "assets/img/types/florestal.jpg",
+          "gallery": [
+            { "src": "assets/img/gallery/florestal/01.jpg", "caption": "Bitrem Florestal 02 Fueiros" },
+            { "src": "assets/img/gallery/florestal/02.jpg", "caption": "Bitrem Florestal 04 Fueiros" },
+            { "src": "assets/img/gallery/florestal/03.jpg", "caption": "Bitrem Florestal 06 Fueiros" },
+            { "src": "assets/img/gallery/florestal/04.jpg", "caption": "Reboque Florestal 06 Fueiros" },
+            { "src": "assets/img/gallery/florestal/05.jpg", "caption": "Tritrem Florestal 04 Fueiros" }
+          ]
+        },
+        {
+          "label": "Carrega Tudo", "image": "assets/img/types/carrega-tudo.jpg",
+          "gallery": [
+            { "src": "assets/img/gallery/carrega-tudo/01.jpg", "caption": "Sr Carrega Tudo Colheitradeira 03 Eixos" },
+            { "src": "assets/img/gallery/carrega-tudo/02.jpg", "caption": "Sr Carrega Tudo Colheitradeira 04 Eixos" },
+            { "src": "assets/img/gallery/carrega-tudo/03.jpg", "caption": "Sr Carrega Tudo Plano 02 Eixos" },
+            { "src": "assets/img/gallery/carrega-tudo/04.jpg", "caption": "Sr Carrega Tudo Plano 03 Eixos" },
+            { "src": "assets/img/gallery/carrega-tudo/05.jpg", "caption": "Sr Carrega Tudo Plano 04 Eixos" },
+            { "src": "assets/img/gallery/carrega-tudo/06.jpg", "caption": "Sr Carrega Tudo Rebaixado 02 Eixos" },
+            { "src": "assets/img/gallery/carrega-tudo/07.jpg", "caption": "Sr Carrega Tudo Rebaixado 03 Eixos" },
+            { "src": "assets/img/gallery/carrega-tudo/08.jpg", "caption": "Sr Carrega Tudo Rebaixado 04 Eixos" }
+          ]
+        },
+        {
+          "label": "Cavaqueira", "image": "assets/img/types/cavaqueira.jpg",
+          "gallery": [
+            { "src": "assets/img/gallery/cavaqueira/01.jpg", "caption": "Cavaqueira 3 Eixos Distanciados" },
+            { "src": "assets/img/gallery/cavaqueira/02.jpg", "caption": "Cavaqueira 3 Eixos Juntos" },
+            { "src": "assets/img/gallery/cavaqueira/03.jpg", "caption": "Cavaqueira 4 Eixos" }
+          ]
+        },
+        {
+          "label": "Canavieiro", "image": "assets/img/types/canavieiro.jpg",
+          "gallery": [
+            { "src": "assets/img/gallery/canavieiro/01.jpg", "caption": "Rodotrem Canavieiro 91T" },
+            { "src": "assets/img/gallery/canavieiro/02.jpg", "caption": "Rodotrem Canavieiro" }
+          ]
+        },
+        {
+          "label": "Carga Seca", "image": "assets/img/types/carga-seca.jpg",
+          "gallery": [
+            { "src": "assets/img/types/carga-seca.jpg", "caption": "Carga Seca" }
+          ]
+        },
+        {
+          "label": "Frigorífica", "image": "assets/img/types/frigorifica.jpg",
+          "gallery": [
+            { "src": "assets/img/types/frigorifica.jpg", "caption": "Frigorífica" }
+          ]
+        }
       ]
     },
     {

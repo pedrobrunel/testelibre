@@ -56,7 +56,7 @@ duas páginas menores, indicado pelo campo `part`, ex. `"1/2"`). O campo
 | `intro`                  | 01 · Quem Somos                        | —                                                   |
 | `cavalo-carroca`         | 02 · Conceito Cavalo/Carroça (1/2)     | —                                                   |
 | `backpack`               | 02 · Cada carga tem sua mochila (2/2)  | trocar a carga clicando nos botões                  |
-| `portfolio-grid`         | 03 · Tipos de implementos (1/2)        | chips clicáveis                                     |
+| `portfolio-grid`         | 03 · Tipos de implementos (1/2)        | clique num card para abrir a galeria de fotos       |
 | `portfolio-table`        | 03 · Mochila certa (2/2)                | trocar o tipo de carga clicando nos botões          |
 | `market`                 | 04 · Panorama de Mercado                | cards viram (flip) ao clicar; contador animado      |
 | `differentials`          | 05 · Diferenciais                       | cards expandem detalhes ao clicar                   |
@@ -76,6 +76,14 @@ imagens de um mesmo componente (ex. os 7 cartões do glossário, as 3 fotos do
 Rodotrem, o quadro da "mochila") são exibidas em uma caixa de tamanho fixo, então
 qualquer imagem que você colocar ali se ajusta automaticamente ao mesmo
 tamanho das demais — não precisa recortar a imagem no tamanho exato.
+
+Cada item de `types` na página "Conheça os tipos de implementos" pode ter um
+campo `"gallery"`, uma lista de fotos extras daquele implemento que abrem num
+modal ao clicar no card (`{ "src": "assets/img/gallery/tanque/01.jpg", "caption": "..." }`).
+Sem esse campo, o card fica só ilustrativo, sem abrir modal. Com uma ou mais
+fotos, aparece um pequeno ícone de lupa no canto da imagem e o card inteiro
+fica clicável; dentro do modal dá para navegar entre as fotos com as setas
+laterais, as setas do teclado, e fechar com o X, clicando fora ou com Esc.
 
 Para reordenar, adicionar ou remover uma página, edite o array `pages` (e o
 array `toc`, que gera o menu lateral) — a ordem no array é a ordem de

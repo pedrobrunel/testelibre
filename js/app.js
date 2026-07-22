@@ -167,6 +167,7 @@
   function wireScrollGate() {
     const deck = $("#deck");
     deck.addEventListener("wheel", (e) => {
+      if (galleryOpen) { e.preventDefault(); return; }
       if (e.deltaY > 0 && isGateBlocking()) {
         e.preventDefault();
         showToast(ui.gateToast || "Marque todos os itens obrigatórios antes de continuar.");
@@ -178,6 +179,7 @@
       touchStartY = e.touches[0].clientY;
     }, { passive: true });
     deck.addEventListener("touchmove", (e) => {
+      if (galleryOpen) { e.preventDefault(); return; }
       if (touchStartY === null) return;
       const dy = touchStartY - e.touches[0].clientY;
       if (dy > 0 && isGateBlocking()) {
@@ -185,6 +187,83 @@
         showToast(ui.gateToast || "Marque todos os itens obrigatórios antes de continuar.");
       }
     }, { passive: false });
+  }
+
+  // ---------------------------------------------------------------
+  // Gallery lightbox (implement photo galleries)
+  // ---------------------------------------------------------------
+  let galleryImages = [];
+  let galleryIndex = 0;
+  let galleryOpen = false;
+  let galleryModalEl = null;
+
+  function ensureGalleryModal() {
+    if (galleryModalEl) return galleryModalEl;
+    const modal = el(`
+      <div class="gallery-modal" id="galleryModal" role="dialog" aria-modal="true" aria-label="Galeria de fotos">
+        <div class="gallery-modal-backdrop"></div>
+        <div class="gallery-modal-box">
+          <button class="gallery-close" aria-label="Fechar">✕</button>
+          <button class="gallery-nav prev" aria-label="Foto anterior">‹</button>
+          <div class="gallery-modal-main"><img class="gallery-modal-img" src="" alt="" /></div>
+          <button class="gallery-nav next" aria-label="Próxima foto">›</button>
+          <div class="gallery-modal-footer">
+            <span class="gallery-caption"></span>
+            <span class="gallery-counter"></span>
+          </div>
+        </div>
+      </div>
+    `);
+    document.body.appendChild(modal);
+    galleryModalEl = modal;
+
+    $(".gallery-modal-backdrop", modal).addEventListener("click", closeGallery);
+    $(".gallery-close", modal).addEventListener("click", closeGallery);
+    $(".gallery-nav.prev", modal).addEventListener("click", () => showGalleryImage(galleryIndex - 1));
+    $(".gallery-nav.next", modal).addEventListener("click", () => showGalleryImage(galleryIndex + 1));
+
+    window.addEventListener("keydown", (e) => {
+      if (!galleryOpen) return;
+      if (e.key === "Escape") closeGallery();
+      else if (e.key === "ArrowLeft") showGalleryImage(galleryIndex - 1);
+      else if (e.key === "ArrowRight") showGalleryImage(galleryIndex + 1);
+    });
+
+    return modal;
+  }
+
+  function openGallery(images, title) {
+    if (!images || !images.length) return;
+    const modal = ensureGalleryModal();
+    galleryImages = images;
+    galleryOpen = true;
+    modal.setAttribute("aria-label", title ? "Galeria de fotos: " + title : "Galeria de fotos");
+    modal.classList.add("show");
+    document.body.classList.add("gallery-lock");
+    showGalleryImage(0);
+  }
+
+  function closeGallery() {
+    if (!galleryModalEl) return;
+    galleryOpen = false;
+    galleryModalEl.classList.remove("show");
+    document.body.classList.remove("gallery-lock");
+  }
+
+  function showGalleryImage(i) {
+    if (!galleryImages.length) return;
+    galleryIndex = (i + galleryImages.length) % galleryImages.length;
+    const item = galleryImages[galleryIndex];
+    const modal = galleryModalEl;
+    const img = $(".gallery-modal-img", modal);
+    img.src = item.src;
+    img.alt = item.caption || "";
+    $(".gallery-caption", modal).textContent = item.caption || "";
+    $(".gallery-counter", modal).textContent = (galleryIndex + 1) + " / " + galleryImages.length;
+    const multi = galleryImages.length > 1;
+    $(".gallery-nav.prev", modal).style.display = multi ? "" : "none";
+    $(".gallery-nav.next", modal).style.display = multi ? "" : "none";
+    $(".gallery-counter", modal).style.display = multi ? "" : "none";
   }
 
   function wireNav() {
@@ -200,6 +279,7 @@
 
   function wireKeyboard() {
     window.addEventListener("keydown", (e) => {
+      if (galleryOpen) return;
       const tag = (document.activeElement && document.activeElement.tagName) || "";
       if (tag === "INPUT" || tag === "TEXTAREA") return;
       if (["ArrowDown", "ArrowRight", "PageDown", " "].includes(e.key)) {
@@ -459,15 +539,27 @@
     return `
       <p class="copy anim anim-d1" style="margin-bottom:16px;">${esc(p.intro)}</p>
       <div class="type-grid stagger">
-        ${p.types.map(t => `
-          <div class="type-card">
-            <div class="type-card-img"><img src="${esc(t.image)}" alt="${esc(t.label)}" loading="lazy" /></div>
+        ${p.types.map((t, i) => `
+          <div class="type-card${t.gallery && t.gallery.length ? " has-gallery" : ""}" data-idx="${i}"${t.gallery && t.gallery.length ? ` tabindex="0" role="button" aria-label="Ver galeria de fotos de ${esc(t.label)}"` : ""}>
+            <div class="type-card-img">
+              <img src="${esc(t.image)}" alt="${esc(t.label)}" loading="lazy" />
+              ${t.gallery && t.gallery.length ? `<span class="type-card-zoom" aria-hidden="true">⤢</span>` : ""}
+            </div>
             <div class="type-card-label">${esc(t.label)}</div>
           </div>`).join("")}
       </div>
     `;
   }
-  function wirePortfolioGrid() {}
+  function wirePortfolioGrid(section, p) {
+    $$(".type-card.has-gallery", section).forEach((card) => {
+      const t = p.types[parseInt(card.dataset.idx, 10)];
+      const open = () => openGallery(t.gallery, t.label);
+      card.addEventListener("click", open);
+      card.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); }
+      });
+    });
+  }
 
   // ---------- portfolio-table (interactive tab switcher) ----------
   function renderPortfolioTable(p) {
