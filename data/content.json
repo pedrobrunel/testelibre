@@ -66,7 +66,7 @@
           "label": "Implemento",
           "sub": "",
           "desc": "Acoplado ao caminhão, desenvolvido para transportar diferentes tipos de carga com segurança e eficiência. É nele que a carga viaja protegida.",
-          "image": "assets/img/trailer-cutout.png"
+          "image": "assets/img/gallery/basculante/01.webp"
         }
       ],
       "note": "Os implementos rodoviários são estruturas de carga, que podem ser acopladas, desacopladas e adaptadas conforme a necessidade da operação."
@@ -83,21 +83,21 @@
           "icon": "⛽",
           "implement": "Tanque gigante",
           "desc": "Para levar gasolina, o implemento é um tanque gigante.",
-          "image": "assets/img/types/tanque.jpg"
+          "image": "assets/img/gallery/tanque/02.webp"
         },
         {
           "cargo": "Comida congelada",
           "icon": "❄️",
           "implement": "Geladeira gigante",
           "desc": "Para levar comida congelada, o implemento é uma caixa fechada que funciona como uma geladeira gigante.",
-          "image": "assets/img/types/frigorifica.jpg"
+          "image": "assets/img/gallery/frigorifica/01.webp"
         },
         {
           "cargo": "Areia ou pedras",
           "icon": "🪨",
           "implement": "Caçamba basculante",
           "desc": "Para levar areia ou pedras, o implemento é uma caçamba que levanta para despejar tudo no chão.",
-          "image": "assets/img/types/basculante.jpg"
+          "image": "assets/img/gallery/basculante/04.webp"
         }
       ]
     },
@@ -109,7 +109,7 @@
       "intro": "Existem diferentes tipos de implementos, cada um desenvolvido para uma aplicação específica. Cada tipo atende a uma necessidade logística diferente. O portfólio da Librelato contém:",
       "types": [
         {
-          "label": "Graneleiro", "image": "assets/img/types/graneleiro.jpg",
+          "label": "Graneleiro", "image": "assets/img/gallery/graneleiro/07.webp",
           "gallery": [
             { "src": "assets/img/gallery/graneleiro/01.webp", "caption": "Bitrem Graneleiro 04 Eixos" },
             { "src": "assets/img/gallery/graneleiro/02.webp", "caption": "Bitrem Graneleiro 06 Eixos" },
@@ -122,7 +122,7 @@
           ]
         },
         {
-          "label": "Basculante", "image": "assets/img/types/basculante.jpg",
+          "label": "Basculante", "image": "assets/img/gallery/basculante/09.webp",
           "gallery": [
             { "src": "assets/img/gallery/basculante/01.webp", "caption": "Bitrem Basculante Evolut 04 Eixos" },
             { "src": "assets/img/gallery/basculante/02.webp", "caption": "Rodotrem Basculante Evolut 06 Eixos Engate 5ª Roda" },
@@ -137,7 +137,7 @@
           ]
         },
         {
-          "label": "Tanque", "image": "assets/img/types/tanque.jpg",
+          "label": "Tanque", "image": "assets/img/gallery/tanque/01.webp",
           "gallery": [
             { "src": "assets/img/gallery/tanque/01.webp", "caption": "Bitrem Tanque 04 Eixos" },
             { "src": "assets/img/gallery/tanque/02.webp", "caption": "Bitrem Tanque 06 Eixos" },
@@ -148,7 +148,7 @@
           ]
         },
         {
-          "label": "Furgão Alumínio", "image": "assets/img/types/furgao-aluminio.jpg",
+          "label": "Furgão Alumínio", "image": "assets/img/gallery/furgao-aluminio/12.webp",
           "gallery": [
             { "src": "assets/img/gallery/furgao-aluminio/01.webp", "caption": "Bitrenzão Furgão Alumínio, Foto 1" },
             { "src": "assets/img/gallery/furgao-aluminio/02.webp", "caption": "Bitrenzão Furgão Alumínio, Foto 2" },
@@ -173,7 +173,7 @@
           ]
         },
         {
-          "label": "Furgão Lonado", "image": "assets/img/types/furgao-lonado.jpg",
+          "label": "Furgão Lonado", "image": "assets/img/gallery/furgao-lonado/05.webp",
           "gallery": [
             { "src": "assets/img/gallery/furgao-lonado/01.webp", "caption": "Bitrem Furgão Lonado 06 Eixos" },
             { "src": "assets/img/gallery/furgao-lonado/02.webp", "caption": "Semirreboque Furgão Lonado 03 (6X2) Eixos" },
@@ -230,15 +230,9 @@
           ]
         },
         {
-          "label": "Carga Seca", "image": "assets/img/types/carga-seca.jpg",
+          "label": "Frigorífica", "image": "assets/img/gallery/frigorifica/01.webp",
           "gallery": [
-            { "src": "assets/img/types/carga-seca.jpg", "caption": "Carga Seca" }
-          ]
-        },
-        {
-          "label": "Frigorífica", "image": "assets/img/types/frigorifica.jpg",
-          "gallery": [
-            { "src": "assets/img/types/frigorifica.jpg", "caption": "Frigorífica" }
+            { "src": "assets/img/gallery/frigorifica/01.webp", "caption": "Semirreboque Furgão Frigorífico" }
           ]
         }
       ]
@@ -255,70 +249,70 @@
           "cargo": "Grãos (Soja, Milho)",
           "implemento": "Graneleiro / Basculante",
           "exemplo": "O agronegócio, a comida que está todo dia na sua mesa.",
-          "image": "assets/img/types/graneleiro.jpg"
+          "image": "assets/img/gallery/graneleiro/02.webp"
         },
         {
           "icon": "📦",
           "cargo": "Carga Geral (Caixas, Paletes)",
           "implemento": "Sider (Lona) ou Baú",
           "exemplo": "Produtos que você compra no e-commerce.",
-          "image": "assets/img/types/furgao-lonado.jpg"
+          "image": "assets/img/gallery/furgao-lonado/01.webp"
         },
         {
           "icon": "⛽",
           "cargo": "Líquidos (Combustível)",
           "implemento": "Tanque",
           "exemplo": "Item essencial para sua locomoção, seja de moto ou carro.",
-          "image": "assets/img/types/tanque.jpg"
+          "image": "assets/img/gallery/tanque/03.webp"
         },
         {
           "icon": "🏗️",
           "cargo": "Construção / Mineração",
           "implemento": "Caçambas Basculantes",
           "exemplo": "Infraestrutura e obras.",
-          "image": "assets/img/types/basculante.jpg"
+          "image": "assets/img/gallery/basculante/02.webp"
         },
         {
           "icon": "🧊",
           "cargo": "Alimentos e Produtos Perecíveis",
           "implemento": "Frigorífico",
           "exemplo": "Carnes, frutas, verduras e itens refrigerados que chegam frescos nas suas mesas.",
-          "image": "assets/img/types/frigorifica.jpg"
+          "image": "assets/img/gallery/frigorifica/01.webp"
         },
         {
           "icon": "🚢",
           "cargo": "Transporte Portuário",
           "implemento": "Porta Contêiner",
           "exemplo": "Contêineres nos portos e entrepostos logísticos do comércio internacional.",
-          "image": "assets/img/types/porta-conteiner.jpg"
+          "image": "assets/img/gallery/porta-conteiner/01.webp"
         },
         {
           "icon": "🪵",
           "cargo": "Madeira e Resíduos de Madeira",
           "implemento": "Cavaqueira",
           "exemplo": "Energia renovável, biomassa e processamento de madeira nas indústrias.",
-          "image": "assets/img/types/cavaqueira.jpg"
+          "image": "assets/img/gallery/cavaqueira/01.webp"
         },
         {
           "icon": "🎋",
           "cargo": "Cana de Açúcar",
           "implemento": "Canavieira",
           "exemplo": "Produção de açúcar, álcool e energia que movimentam a economia do Brasil.",
-          "image": "assets/img/types/canavieiro.jpg"
+          "image": "assets/img/gallery/canavieiro/01.webp"
         },
         {
           "icon": "🌲",
           "cargo": "Madeira em Toras",
           "implemento": "Florestal",
           "exemplo": "Celulose, papel e produtos de madeira usados em praticamente tudo.",
-          "image": "assets/img/types/florestal.jpg"
+          "image": "assets/img/gallery/florestal/01.webp"
         },
         {
           "icon": "🚜",
           "cargo": "Máquinas e Cargas Indivisíveis",
           "implemento": "Carrega Tudo",
           "exemplo": "Transporta colheitadeiras, tratores e grandes máquinas para o campo e obras. E até blindados de guerra.",
-          "image": "assets/img/types/carrega-tudo.jpg"
+          "image": "assets/img/gallery/carrega-tudo/01.webp"
         }
       ]
     },
@@ -443,7 +437,7 @@
           "term": "Reboque",
           "full": "Engate por ponteira",
           "def": "Diferente do semirreboque, ele possui eixos dianteiros e traseiros (sustenta-se sozinho) e é conectado por uma barra de tração.",
-          "image": "assets/img/trailer-cutout.png"
+          "image": "assets/img/gallery/basculante/03.webp"
         },
         {
           "term": "Bitrem",
@@ -517,7 +511,7 @@
         "Atender clientes por meio das Concessionárias e Oficinas",
         "Comercializar peças nas Lojas/Boxes Libreparts"
       ],
-      "image": "assets/img/trailer-cutout.png",
+      "image": "assets/img/gallery/basculante/05.webp",
       "imageAlt": "Implemento basculante Librelato"
     },
     {
