@@ -437,7 +437,6 @@
     "pinos-rodotrem": wirePinosRodotrem,
     glossary: wireGlossary,
     checklist: wireChecklist,
-    "network-map": wireNetworkMap,
     journey: wireJourney
   };
 
@@ -857,16 +856,15 @@
       <div class="map-layout anim anim-d2">
         <div class="map-stage">
           <img src="${esc(p.mapBase)}" alt="Mapa do Brasil com a rede Librelato" loading="lazy" />
-          ${p.legend.map(l => `<img class="map-overlay${l.active ? " on" : ""}" data-key="${l.key}" src="${esc(l.image)}" alt="${esc(l.label)}" loading="lazy" />`).join("")}
         </div>
         <div>
           <div class="map-legend" id="mapLegend">
             ${p.legend.map(l => `
-              <button class="legend-chip" data-key="${l.key}">
+              <div class="legend-chip">
                 <span class="swatch" style="background:${esc(l.color)}"></span>
                 ${esc(l.label)}
                 ${l.count ? `<span class="count">${esc(l.count)}</span>` : ""}
-              </button>`).join("")}
+              </div>`).join("")}
           </div>
           <div class="intl-box">
             <div class="intl-label">${esc(p.international.label)}</div>
@@ -877,16 +875,6 @@
         </div>
       </div>
     `;
-  }
-  function wireNetworkMap(section) {
-    $$(".legend-chip", section).forEach(chip => {
-      chip.addEventListener("click", () => {
-        const key = chip.dataset.key;
-        const overlay = $(`.map-overlay[data-key="${key}"]`, section);
-        const isOn = overlay.classList.toggle("on");
-        chip.classList.toggle("off", !isOn);
-      });
-    });
   }
 
   // ---------- network-roles ----------

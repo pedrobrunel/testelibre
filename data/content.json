@@ -370,8 +370,8 @@
       "title": "Entendendo a contagem por “Pinos”",
       "intro": "O mercado de implementos rodoviários é medido por pinos, não por chassis. Cada produto (ou unidade de acoplamento) corresponde a 1 pino, cada reboque, semirreboque ou dolly conectado à composição é contabilizado individualmente.",
       "rule": "A regra é simples: conte quantos produtos (unidades de acoplamento) existem na composição. Cada produto equivale a um “pino”.",
-      "image": "assets/img/bitrem-highway.jpg",
-      "imageAlt": "Bitrem Librelato branco trafegando em rodovia",
+      "image": "assets/img/glossary/bitrem.webp",
+      "imageAlt": "Bitrem Librelato",
       "compositions": [
         { "name": "Semirreboque", "pinos": 1, "note": "1 implemento" },
         { "name": "Bitrem", "pinos": 2, "note": "2 semirreboques" },
@@ -389,12 +389,12 @@
         "kicker": "O conjunto que mais gera dúvidas",
         "intro": "Para facilitar o entendimento, lembre-se: o dolly é um implemento que cria um novo ponto de conexão no conjunto. A contagem do Rodotrem (3 pinos) funciona assim, clique em cada passo:",
         "pins": [
-          { "n": 1, "label": "Conecta o 1º semirreboque ao cavalo mecânico.", "image": "assets/img/tractor-unit.png", "imageAlt": "Cavalo mecânico" },
-          { "n": 2, "label": "O dolly funciona como uma ponte entre os semirreboques e possui seu próprio ponto de conexão.", "image": "assets/img/dolly-unit.png", "imageAlt": "Dolly, unidade intermediária de acoplamento" },
-          { "n": 3, "label": "Conecta o 2º semirreboque ao dolly.", "image": "assets/img/bitrem-side.png", "imageAlt": "Dois semirreboques conectados" }
+          { "n": 1, "label": "Conecta o 1º semirreboque ao cavalo mecânico.", "image": "assets/img/pinos/passo-01.webp", "imageAlt": "Rodotrem, 1º pino de conexão marcado" },
+          { "n": 2, "label": "O dolly funciona como uma ponte entre os semirreboques e possui seu próprio ponto de conexão.", "image": "assets/img/pinos/passo-02.webp", "imageAlt": "Rodotrem, 1º e 2º pinos de conexão marcados" },
+          { "n": 3, "label": "Conecta o 2º semirreboque ao dolly.", "image": "assets/img/pinos/passo-03.webp", "imageAlt": "Rodotrem, os 3 pinos de conexão marcados" }
         ],
-        "image": "assets/img/tractor-unit.png",
-        "imageAlt": "Cavalo mecânico",
+        "image": "assets/img/pinos/passo-01.webp",
+        "imageAlt": "Rodotrem, 1º pino de conexão marcado",
         "rulesTitle": "Regras fundamentais para o cálculo",
         "rules": [
           { "label": "Cavalo Mecânico", "desc": "Não entra na contagem, pois é o veículo responsável pela tração do conjunto." },
@@ -413,13 +413,13 @@
           "term": "CVC",
           "full": "Combinação de Veículos de Carga",
           "def": "É o conjunto completo em operação, formado pela união do cavalo mecânico (unidade tratora) + implementos acoplados. Exemplos: Bitrem, Rodotrem ou Carreta simples.",
-          "image": "assets/img/bitrem-highway.jpg"
+          "image": "assets/img/glossary/cvc.webp"
         },
         {
           "term": "PBTC",
           "full": "Peso Bruto Total Combinado",
           "def": "O limite máximo de peso permitido para toda a CVC (cavalo + implementos + carga). É o balizador da capacidade logística.",
-          "image": "assets/img/trucks-yard.jpg"
+          "image": "assets/img/glossary/pbtc.webp"
         },
         {
           "term": "PBT",
@@ -431,25 +431,25 @@
           "term": "Semirreboque",
           "full": "Engate por pino-rei",
           "def": "Implemento que se apoia na “quinta roda” do caminhão através de um pino-rei. Ele depende do cavalo mecânico para sustentação parcial de seu peso.",
-          "image": "assets/img/pino-rei.png"
+          "image": "assets/img/glossary/semirreboque.webp"
         },
         {
           "term": "Reboque",
           "full": "Engate por ponteira",
           "def": "Diferente do semirreboque, ele possui eixos dianteiros e traseiros (sustenta-se sozinho) e é conectado por uma barra de tração.",
-          "image": "assets/img/gallery/basculante/03.webp"
+          "image": "assets/img/glossary/reboque.webp"
         },
         {
           "term": "Bitrem",
           "full": "Dois semirreboques acoplados",
           "def": "Combinação de dois semirreboques acoplados entre si. Destaca-se pela versatilidade e distribuição de peso por eixo.",
-          "image": "assets/img/bitrem-side.png"
+          "image": "assets/img/glossary/bitrem.webp"
         },
         {
           "term": "Rodotrem",
           "full": "Dois semirreboques + Dolly",
           "def": "Combinação de dois semirreboques unidos por um Dolly (unidade intermediária). É a configuração de alta capacidade para longas distâncias.",
-          "image": "assets/img/dolly-unit.png"
+          "image": "assets/img/glossary/rodotrem.webp"
         }
       ]
     },
@@ -478,13 +478,13 @@
       "kicker": "08 · Modelo de Negócio",
       "title": "Nossa presença nacional",
       "lead": "A Librelato opera por meio de uma rede de representantes comerciais.",
-      "mapBase": "assets/img/map-base.jpg",
+      "mapBase": "assets/img/map-composite.jpg",
       "legend": [
-        { "key": "postos", "label": "Postos de Venda", "color": "#2f9bf0", "image": "assets/img/map-pins-postos.png", "active": true },
-        { "key": "oficinas", "label": "Oficinas Homologadas", "color": "#8fe1f5", "count": "43", "image": "assets/img/map-pins-oficinas.png", "active": true },
-        { "key": "lojas", "label": "Lojas Libre Parts", "color": "#ffffff", "count": "31", "image": "assets/img/map-pins-lojas.png", "active": true },
-        { "key": "box", "label": "Box Libre Parts", "color": "#b8a58c", "count": "6", "image": "assets/img/map-pins-box.png", "active": true },
-        { "key": "representantes", "label": "Representantes Regionais", "color": "#f3965f", "count": "15", "image": "assets/img/map-pins-representantes.png", "active": true }
+        { "key": "postos", "label": "Postos de Venda", "color": "#2f9bf0" },
+        { "key": "oficinas", "label": "Oficinas Homologadas", "color": "#8fe1f5", "count": "43" },
+        { "key": "lojas", "label": "Lojas Libre Parts", "color": "#ffffff", "count": "31" },
+        { "key": "box", "label": "Box Libre Parts", "color": "#b8a58c", "count": "6" },
+        { "key": "representantes", "label": "Representantes Regionais", "color": "#f3965f", "count": "15" }
       ],
       "international": {
         "label": "Presença internacional (postos de venda)",

@@ -64,7 +64,7 @@ duas páginas menores, indicado pelo campo `part`, ex. `"1/2"`). O campo
 | `pinos-rodotrem`         | 06 · E o Rodotrem? (2/2)                | passo a passo clicável                               |
 | `glossary`               | 07 · Glossário (1/2)                    | cards viram (flip)                                   |
 | `checklist`              | 07 · Itens Obrigatórios (2/2)           | itens marcáveis                                      |
-| `network-map`            | 08 · Nossa presença nacional (1/2)      | legenda liga/desliga camadas de pinos no mapa       |
+| `network-map`            | 08 · Nossa presença nacional (1/2)      | mapa estático, legenda apenas informativa           |
 | `network-roles`          | 08 · Papel dos representantes (2/2)     | —                                                   |
 | `journey`                | 09 · Jornada do Cliente                 | stepper com avançar/voltar                          |
 | `association-entities`   | 10 · Entidades (1/2)                    | —                                                   |
@@ -109,13 +109,13 @@ e `rules`, uma lista de `{ "label": "...", "desc": "..." }` — cada regra vira
 um cartão com o nome em destaque e a explicação abaixo, mais fácil de ler do
 que um parágrafo corrido.
 
-O mapa interativo (página "Nossa presença nacional") usa uma imagem-base do
-mapa (`map-base.jpg`) com 5 camadas de pinos transparentes que se ligam/desligam
-por cima (`map-pins-*.png`) — os números de Oficinas Homologadas (43), Lojas (31)
-e Box (6), e a presença internacional, vieram do arquivo de origem (PSD) enviado.
-A camada "Representantes Regionais" (15 pinos, cores variadas) foi adicionada a
-partir de uma imagem de referência enviada separadamente, já que não constava
-no PSD original.
+O mapa da página "Nossa presença nacional" é uma imagem única e estática
+(`"mapBase"` no JSON, atualmente `map-composite.jpg`). A legenda ao lado
+(`"legend"`, array de `{ key, label, color, count }`) é só uma referência
+visual — não há mais clique para ligar/desligar camadas de pinos, o mapa
+já vem com tudo desenhado na própria imagem. Para trocar o mapa, basta
+gerar uma nova imagem com todos os pinos já incluídos e apontar `"mapBase"`
+para ela.
 
 ## Créditos das imagens
 
