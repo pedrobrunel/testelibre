@@ -489,7 +489,8 @@
         { "key": "postos", "label": "Postos de Venda", "color": "#2f9bf0", "image": "assets/img/map-pins-postos.png", "active": true },
         { "key": "oficinas", "label": "Oficinas Homologadas", "color": "#8fe1f5", "count": "43", "image": "assets/img/map-pins-oficinas.png", "active": true },
         { "key": "lojas", "label": "Lojas Libre Parts", "color": "#ffffff", "count": "31", "image": "assets/img/map-pins-lojas.png", "active": true },
-        { "key": "box", "label": "Box Libre Parts", "color": "#b8a58c", "count": "6", "image": "assets/img/map-pins-box.png", "active": true }
+        { "key": "box", "label": "Box Libre Parts", "color": "#b8a58c", "count": "6", "image": "assets/img/map-pins-box.png", "active": true },
+        { "key": "representantes", "label": "Representantes Regionais", "color": "#f3965f", "count": "15", "image": "assets/img/map-pins-representantes.png", "active": true }
       ],
       "international": {
         "label": "Presença internacional (postos de venda)",

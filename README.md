@@ -110,9 +110,12 @@ um cartão com o nome em destaque e a explicação abaixo, mais fácil de ler do
 que um parágrafo corrido.
 
 O mapa interativo (página "Nossa presença nacional") usa uma imagem-base do
-mapa (`map-base.jpg`) com 4 camadas de pinos transparentes que se ligam/desligam
+mapa (`map-base.jpg`) com 5 camadas de pinos transparentes que se ligam/desligam
 por cima (`map-pins-*.png`) — os números de Oficinas Homologadas (43), Lojas (31)
 e Box (6), e a presença internacional, vieram do arquivo de origem (PSD) enviado.
+A camada "Representantes Regionais" (15 pinos, cores variadas) foi adicionada a
+partir de uma imagem de referência enviada separadamente, já que não constava
+no PSD original.
 
 ## Créditos das imagens
 
