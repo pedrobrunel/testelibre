@@ -86,6 +86,7 @@
     closingEl.innerHTML = renderClosing(data.closing, data.meta);
     deck.appendChild(closingEl);
     slides.push({ el: closingEl, group: 999, title: "Fim", kind: "closing" });
+    wireClosing(closingEl, data.closing);
 
     // Wire interactivity per slide now that DOM exists
     data.pages.forEach((page) => {
@@ -401,8 +402,79 @@
     return `
       <img class="logo anim" src="${esc(meta.logo)}" alt="Librelato" />
       <p class="quote anim anim-d1">“${esc(c.quote)}”</p>
-      <a class="back-cta anim anim-d2" href="#" data-jump="first">${esc(c.cta)}</a>
+      <div class="quiz-card anim anim-d2" id="quizCard"></div>
     `;
+  }
+
+  function wireClosing(section, c) {
+    const card = $("#quizCard", section);
+    const questions = c.quiz || [];
+    const total = questions.length;
+    let i = 0;
+    let score = 0;
+    let answered = false;
+
+    function renderQuestion() {
+      answered = false;
+      const q = questions[i];
+      card.innerHTML = `
+        <div class="quiz-progress">
+          <span class="quiz-progress-text">${c.quizTitle ? esc(c.quizTitle) + " · " : ""}Pergunta ${i + 1} de ${total}</span>
+          <div class="quiz-progress-bar"><div class="quiz-progress-fill" style="width:${(i / total) * 100}%"></div></div>
+        </div>
+        <h3 class="quiz-question">${esc(q.q)}</h3>
+        <div class="quiz-options">
+          ${q.options.map((opt, idx) => `<button type="button" class="quiz-option" data-idx="${idx}">${esc(opt)}</button>`).join("")}
+        </div>
+      `;
+      $$(".quiz-option", card).forEach((btn) => {
+        btn.addEventListener("click", () => onAnswer(parseInt(btn.dataset.idx, 10)));
+      });
+    }
+
+    function onAnswer(idx) {
+      if (answered) return;
+      answered = true;
+      const q = questions[i];
+      const options = $$(".quiz-option", card);
+      options.forEach((btn) => (btn.disabled = true));
+      if (idx === q.answer) {
+        score++;
+        options[idx].classList.add("correct");
+      } else {
+        options[idx].classList.add("wrong");
+        options[q.answer].classList.add("correct");
+      }
+      setTimeout(() => {
+        i++;
+        if (i < total) renderQuestion();
+        else renderResult();
+      }, 1100);
+    }
+
+    function renderResult() {
+      const pct = Math.round((score / total) * 100);
+      let msg;
+      if (score === total) msg = "Perfeito! Você manja tudo sobre implementos.";
+      else if (pct >= 60) msg = "Muito bem! Você entendeu os principais conceitos.";
+      else msg = "Vale revisar o guia — dá uma repassada nas páginas anteriores.";
+      card.innerHTML = `
+        <div class="quiz-result">
+          <div class="quiz-score">${score} / ${total}</div>
+          <p class="quiz-score-msg">${esc(msg)}</p>
+          <div class="quiz-result-actions">
+            <button type="button" class="quiz-retry" id="quizRetry">Refazer o quiz</button>
+            <a class="back-cta" href="#" data-jump="first">${esc(c.cta)}</a>
+          </div>
+        </div>
+      `;
+      $("#quizRetry", card).addEventListener("click", () => {
+        i = 0; score = 0;
+        renderQuestion();
+      });
+    }
+
+    renderQuestion();
   }
 
   // ---------------------------------------------------------------
@@ -419,6 +491,7 @@
     "pinos-calc": renderPinosCalc,
     "pinos-rodotrem": renderPinosRodotrem,
     glossary: renderGlossary,
+    "coupling-detail": renderCouplingDetail,
     checklist: renderChecklist,
     "network-map": renderNetworkMap,
     "network-roles": renderNetworkRoles,
@@ -478,7 +551,7 @@
   function renderCavaloCarroca(p) {
     const [tracao, carga] = p.pair;
     return `
-      <p class="copy anim anim-d1" style="margin-bottom:14px;">${esc(p.intro)}</p>
+      <p class="copy cc-intro anim anim-d1">${esc(p.intro)}</p>
       <div class="cc-analogy-label anim anim-d2">${esc(p.analogyLabel)}</div>
       <div class="cc-analogy anim anim-d2">“${esc(p.analogy)}”</div>
       <div class="cc-pair stagger">
@@ -812,6 +885,22 @@
     });
   }
 
+  // ---------- coupling-detail ----------
+  function renderCouplingDetail(p) {
+    return `
+      <div class="coupling-list anim anim-d1">
+        ${p.items.map(it => `
+          <div class="coupling-item${it.theme === "dark" ? " dark" : ""}">
+            <div class="coupling-text">
+              <h3>${esc(it.term)}</h3>
+              <p>${esc(it.desc)}</p>
+            </div>
+            <div class="coupling-media"><img src="${esc(it.image)}" alt="${esc(it.term)}: ${esc(it.desc)}" loading="lazy" /></div>
+          </div>`).join("")}
+      </div>
+    `;
+  }
+
   // ---------- checklist ----------
   function renderChecklist(p) {
     return `
@@ -953,7 +1042,7 @@
   // ---------- association-entities ----------
   function renderAssociationEntities(p) {
     return `
-      <p class="copy anim anim-d1" style="margin-bottom:22px;">${esc(p.intro)}</p>
+      <p class="copy entity-intro anim anim-d1">${esc(p.intro)}</p>
       <div class="entity-grid stagger">
         ${p.entities.map(e => `
           <div class="entity-card">
@@ -961,7 +1050,7 @@
             <p class="desc">${esc(e.desc)}</p>
           </div>`).join("")}
       </div>
-      <p class="copy anim anim-d2" style="font-weight:700;margin-bottom:4px;">${esc(p.dataLabel)}</p>
+      <p class="copy data-label anim anim-d2">${esc(p.dataLabel)}</p>
       <div class="data-chip-row anim anim-d3">
         ${p.dataProvided.map(d => `<span class="data-chip">${esc(d)}</span>`).join("")}
       </div>

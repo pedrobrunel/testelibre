@@ -20,7 +20,7 @@ python3 -m http.server 8080
 
 ## Navegação
 
-O site é uma sequência de 18 páginas (1 capa + 16 páginas de conteúdo + 1
+O site é uma sequência de 19 páginas (1 capa + 17 páginas de conteúdo + 1
 encerramento). Dá para navegar de várias formas:
 
 - **Scroll / trackpad / mouse wheel** — cada "tela" gruda na página seguinte.
@@ -62,8 +62,9 @@ duas páginas menores, indicado pelo campo `part`, ex. `"1/2"`). O campo
 | `differentials`          | 05 · Diferenciais                       | cards expandem detalhes ao clicar                   |
 | `pinos-calc`             | 06 · Métrica dos Pinos (1/2)            | calculadora: escolha a composição, veja os pinos    |
 | `pinos-rodotrem`         | 06 · E o Rodotrem? (2/2)                | passo a passo clicável                               |
-| `glossary`               | 07 · Glossário (1/2)                    | cards viram (flip)                                   |
-| `checklist`              | 07 · Itens Obrigatórios (2/2)           | itens marcáveis                                      |
+| `glossary`               | 07 · Glossário (1/3)                    | cards viram (flip)                                   |
+| `coupling-detail`        | 07 · Semirreboque x Reboque (2/3)       | —                                                   |
+| `checklist`              | 07 · Itens Obrigatórios (3/3)           | itens marcáveis                                      |
 | `network-map`            | 08 · Nossa presença nacional (1/2)      | mapa estático, legenda apenas informativa           |
 | `network-roles`          | 08 · Papel dos representantes (2/2)     | —                                                   |
 | `journey`                | 09 · Jornada do Cliente                 | stepper com avançar/voltar                          |
@@ -110,12 +111,20 @@ um cartão com o nome em destaque e a explicação abaixo, mais fácil de ler do
 que um parágrafo corrido.
 
 O mapa da página "Nossa presença nacional" é uma imagem única e estática
-(`"mapBase"` no JSON, atualmente `map-composite.jpg`). A legenda ao lado
+(`"mapBase"` no JSON, atualmente `map-pins-full.webp`). A legenda ao lado
 (`"legend"`, array de `{ key, label, color, count }`) é só uma referência
 visual — não há mais clique para ligar/desligar camadas de pinos, o mapa
 já vem com tudo desenhado na própria imagem. Para trocar o mapa, basta
 gerar uma nova imagem com todos os pinos já incluídos e apontar `"mapBase"`
 para ela.
+
+A última página (encerramento) tem um quiz de 5 perguntas no lugar do antigo
+botão "Voltar ao início". As perguntas ficam em `"closing.quiz"` no JSON, uma
+lista de `{ "q": "...", "options": ["...", "...", "...", "..."], "answer": 0 }`
+(`"answer"` é o índice, começando em 0, da opção correta). Ao responder, a
+opção certa fica verde; se errar, a escolhida fica vermelha e a certa também
+aparece em verde. No final aparece a pontuação, com botões para refazer o
+quiz ou voltar ao início (`"closing.cta"`).
 
 ## Créditos das imagens
 

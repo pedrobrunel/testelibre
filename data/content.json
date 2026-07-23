@@ -59,7 +59,7 @@
           "label": "Caminhão",
           "sub": "(cavalo mecânico)",
           "desc": "É a parte da frente, onde ficam o motor e o motorista. Sua principal função é fornecer a força para movimentar o conjunto.",
-          "image": "assets/img/tractor-unit.png"
+          "image": "assets/img/glossary/caminhao.webp"
         },
         {
           "role": "carroca",
@@ -403,7 +403,7 @@
       }
     },
     {
-      "group": 7, "part": "1/2",
+      "group": 7, "part": "1/3",
       "type": "glossary",
       "kicker": "07 · Dicionário das Estradas",
       "title": "Glossário técnico e operacional",
@@ -425,7 +425,7 @@
           "term": "PBT",
           "full": "Peso Bruto Total",
           "def": "Refere-se ao limite de peso de um único veículo isolado (apenas o caminhão ou apenas um implemento).",
-          "image": "assets/img/tractor-unit.png"
+          "image": "assets/img/glossary/pbt.webp"
         },
         {
           "term": "Semirreboque",
@@ -454,7 +454,27 @@
       ]
     },
     {
-      "group": 7, "part": "2/2",
+      "group": 7, "part": "2/3",
+      "type": "coupling-detail",
+      "kicker": "07 · Dicionário das Estradas",
+      "title": "Glossário Técnico de Operação",
+      "items": [
+        {
+          "term": "Semirreboque",
+          "desc": "Engate através de pino rei",
+          "image": "assets/img/glossary/semirreboque-detalhe.webp",
+          "theme": "light"
+        },
+        {
+          "term": "Reboque",
+          "desc": "Engate através de ponteira",
+          "image": "assets/img/glossary/reboque-detalhe.webp",
+          "theme": "dark"
+        }
+      ]
+    },
+    {
+      "group": 7, "part": "3/3",
       "type": "checklist",
       "kicker": "07 · Dicionário das Estradas",
       "title": "Itens Obrigatórios",
@@ -478,7 +498,7 @@
       "kicker": "08 · Modelo de Negócio",
       "title": "Nossa presença nacional",
       "lead": "A Librelato opera por meio de uma rede de representantes comerciais.",
-      "mapBase": "assets/img/map-composite.jpg",
+      "mapBase": "assets/img/map-pins-full.webp",
       "legend": [
         { "key": "postos", "label": "Postos de Venda", "color": "#2f9bf0" },
         { "key": "oficinas", "label": "Oficinas Homologadas", "color": "#8fe1f5", "count": "43" },
@@ -557,6 +577,59 @@
   ],
   "closing": {
     "quote": "Na Librelato, nós carregamos o que o Brasil produz, conectando estradas e entregando o futuro.",
-    "cta": "Voltar ao início"
+    "cta": "Voltar ao início",
+    "quizTitle": "Teste o que você aprendeu",
+    "quiz": [
+      {
+        "q": "Na analogia “Cavalo e Carroça”, o que representa o CAVALO?",
+        "options": [
+          "O implemento que carrega a carga",
+          "A unidade de tração, que gera a força",
+          "Apenas o motorista",
+          "A carga transportada"
+        ],
+        "answer": 1
+      },
+      {
+        "q": "Como o mercado de implementos rodoviários mede o volume comercializado?",
+        "options": [
+          "Por chassi",
+          "Por tonelada",
+          "Por “pino” (unidade de acoplamento)",
+          "Por eixo"
+        ],
+        "answer": 2
+      },
+      {
+        "q": "No Rodotrem (3 pinos), qual peça cria um novo ponto de conexão entre os dois semirreboques?",
+        "options": [
+          "O cavalo mecânico",
+          "A quinta roda",
+          "O pneu",
+          "O dolly"
+        ],
+        "answer": 3
+      },
+      {
+        "q": "Qual a diferença entre Semirreboque e Reboque?",
+        "options": [
+          "Não há diferença entre eles",
+          "O Semirreboque se apoia no cavalo mecânico via pino-rei; o Reboque tem eixos próprios e se conecta por barra de tração",
+          "O Reboque é sempre maior que o Semirreboque",
+          "O Semirreboque não pode ser acoplado a caminhões"
+        ],
+        "answer": 1
+      },
+      {
+        "q": "Qual destes é um item obrigatório de verificação em reboques e semirreboques?",
+        "options": [
+          "Ar-condicionado",
+          "Rádio",
+          "Iluminação",
+          "Porta-copos"
+        ],
+        "answer": 2
+      }
+    ]
   }
 }

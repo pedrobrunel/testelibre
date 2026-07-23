@@ -20,6 +20,7 @@
   --line: #dfe8f1;
   --amber: #f4c60d;
   --red: #e2231a;
+  --green: #1fae5e;
 
   --font-display: "Archivo Black", "Arial Black", Impact, sans-serif;
   --font-body: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
@@ -343,6 +344,7 @@ button { font-family: inherit; cursor: pointer; }
   margin-top: 10px; padding: 10px 16px; border-left: 3px solid var(--blue-600);
   background: var(--blue-100); border-radius: 0 12px 12px 0; color: var(--ink-700); font-size: 0.9rem;
 }
+.cc-intro { margin-bottom: 14px; }
 .cc-analogy-label { font-size: .82rem; color: var(--ink-500); margin-top: 12px; }
 .cc-analogy { font-family: var(--font-display); font-size: clamp(1.2rem, 2.6vw, 1.8rem); color: var(--blue-600); text-transform: uppercase; margin: 4px 0 14px; }
 .cc-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; position: relative; }
@@ -538,7 +540,7 @@ body.gallery-lock { overflow: hidden; }
 /* ============================================================
    6b. Rodotrem detail
    ============================================================ */
-.rodotrem-panel { background: var(--navy-950); border-radius: 22px; padding: clamp(18px, 3.4vw, 40px); color: #fff; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: center; }
+.rodotrem-panel { background: var(--navy-950); border-radius: 22px; padding: clamp(18px, 3.4vw, 40px); color: #fff; display: grid; grid-template-columns: 0.82fr 1.18fr; gap: 28px; align-items: center; }
 .rodotrem-panel .rk { color: var(--blue-400); font-size: .78rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
 .rodotrem-panel .intro { color: #b7cbe2; font-size: .9rem; line-height: 1.42; margin: 4px 0 8px; }
 .pin-steps { display: flex; flex-direction: column; gap: 8px; }
@@ -546,7 +548,7 @@ body.gallery-lock { overflow: hidden; }
 .pin-step:hover, .pin-step.active { background: rgba(0,146,213,0.22); border-color: var(--blue-500); }
 .pin-step .num { flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--blue-600); display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-size: .78rem; }
 .pin-step .label { font-size: .85rem; color: #dbe8f5; line-height: 1.35; padding-top: 2px; }
-.rodotrem-media { border-radius: 14px; overflow: hidden; background: #fff; padding: 16px; height: clamp(160px, 26vh, 220px); }
+.rodotrem-media { border-radius: 14px; overflow: hidden; background: #fff; padding: 12px; height: clamp(200px, 34vh, 300px); }
 .rodotrem-media img { width: 100%; height: 100%; object-fit: contain; transition: opacity .15s ease; }
 .rules-title { margin-top: 10px; font-size: .76rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--blue-400); }
 .rodotrem-rules { margin-top: 6px; display: flex; flex-direction: column; gap: 6px; }
@@ -582,6 +584,19 @@ body.gallery-lock { overflow: hidden; }
 .term-back { transform: rotateY(180deg); background: var(--navy-950); color: #eaf2fa; justify-content: center; padding: 18px; }
 .term-back p { font-size: .81rem; line-height: 1.48; }
 .term-back .term-mini { color: var(--blue-400); font-weight: 800; font-size: .72rem; letter-spacing: .05em; text-transform: uppercase; margin-bottom: 6px; }
+
+/* ============================================================
+   7a2. Coupling detail (Semirreboque x Reboque)
+   ============================================================ */
+.coupling-list { display: flex; flex-direction: column; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-card); }
+.coupling-item { display: flex; align-items: center; gap: 24px; padding: 20px 32px; background: #fff; }
+.coupling-item.dark { background: var(--blue-600); color: #fff; }
+.coupling-text { flex: none; width: 200px; }
+.coupling-text h3 { font-family: var(--font-display); text-transform: uppercase; font-size: 1.15rem; margin-bottom: 6px; }
+.coupling-text p { color: var(--ink-500); font-size: .88rem; line-height: 1.35; }
+.coupling-item.dark .coupling-text p { color: rgba(255,255,255,0.85); }
+.coupling-media { flex: 1; height: clamp(90px, 16vh, 170px); }
+.coupling-media img { width: 100%; height: 100%; object-fit: contain; display: block; }
 
 /* ============================================================
    7b. Checklist
@@ -680,6 +695,8 @@ body.gallery-lock { overflow: hidden; }
 .entity-card { background: var(--navy-950); color: #fff; border-radius: 16px; padding: 24px; }
 .entity-card .acronym { font-family: var(--font-display); font-size: 1.45rem; color: var(--blue-400); }
 .entity-card .desc { margin-top: 6px; color: #b7cbe2; font-size: .87rem; line-height: 1.5; }
+.entity-intro { margin-bottom: 22px; }
+.data-label { font-weight: 700; margin-bottom: 4px; }
 .data-chip-row { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 14px; }
 .data-chip { padding: 8px 15px; border-radius: 100px; background: var(--blue-100); color: var(--blue-600); font-weight: 700; font-size: .82rem; }
 .standards-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 24px; }
@@ -707,6 +724,37 @@ body.gallery-lock { overflow: hidden; }
   transition: all .2s var(--ease);
 }
 .closing .back-cta:hover { background: var(--blue-600); border-color: var(--blue-600); color: #fff; }
+
+.quiz-card {
+  margin-top: 32px; width: min(560px, 88vw); max-width: 560px; background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12); border-radius: 20px; padding: 24px 26px;
+  position: relative; z-index: 1; text-align: left;
+}
+.quiz-progress { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.quiz-progress-text { font-size: .76rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--blue-400); }
+.quiz-progress-bar { flex: 1; max-width: 100px; height: 4px; background: rgba(255,255,255,0.12); border-radius: 3px; overflow: hidden; }
+.quiz-progress-fill { height: 100%; background: var(--blue-500); border-radius: 3px; transition: width .3s var(--ease); }
+.quiz-question { font-size: 1.08rem; line-height: 1.35; color: #fff; margin-bottom: 16px; }
+.quiz-options { display: flex; flex-direction: column; gap: 9px; }
+.quiz-option {
+  text-align: left; background: rgba(255,255,255,0.04); border: 1.5px solid rgba(255,255,255,0.14);
+  color: #dbe8f5; padding: 11px 16px; border-radius: 12px; font-size: .88rem; font-weight: 600;
+  line-height: 1.3; transition: all .2s var(--ease); cursor: pointer;
+}
+.quiz-option:hover:not(:disabled) { border-color: var(--blue-400); color: #fff; }
+.quiz-option:disabled { cursor: default; }
+.quiz-option.correct { background: rgba(31,174,94,0.85); border-color: var(--green); color: #fff; }
+.quiz-option.wrong { background: rgba(226,35,26,0.75); border-color: var(--red); color: #fff; }
+.quiz-result { text-align: center; }
+.quiz-score { font-family: var(--font-display); font-size: 2.4rem; color: var(--blue-400); }
+.quiz-score-msg { color: #c3d4ea; font-size: .92rem; margin-top: 6px; line-height: 1.4; }
+.quiz-result-actions { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 20px; }
+.quiz-retry {
+  background: var(--blue-600); color: #fff; border: none; padding: 11px 24px; border-radius: 100px;
+  font-weight: 700; font-size: .9rem; cursor: pointer; transition: all .2s var(--ease);
+}
+.quiz-retry:hover { transform: translateY(-2px); box-shadow: 0 16px 34px -12px rgba(0,146,213,0.7); }
+.quiz-result-actions .back-cta { margin-top: 0; }
 
 /* ============================================================
    Responsive
@@ -737,20 +785,211 @@ body.gallery-lock { overflow: hidden; }
 }
 
 @media (max-width: 760px) {
-  .slide { padding: 90px 22px 100px; }
+  .slide { padding: clamp(58px, 9vh, 90px) 18px clamp(60px, 9vh, 90px); }
   .dot-rail { display: none; }
   .deck-nav { right: 18px; bottom: 18px; }
   .deck-nav .counter { display: none; }
-  .hero-flex { flex-direction: column; }
-  .hero-photo, .hero-video { width: 100%; max-width: none; }
+  .hero-flex { flex-direction: column; gap: 16px; }
+  .hero-inner { flex: none; width: 100%; max-width: none; }
+  .hero-title { font-size: 1.9rem; margin-bottom: 10px; }
+  .hero-subtitle { font-size: .88rem; line-height: 1.4; margin-bottom: 14px; }
+  .hero-cta { padding: 12px 22px; font-size: .9rem; }
+  .hero-photo, .hero-video { width: 100%; max-width: none; min-width: 0; flex: none; }
+  .hero-video { max-width: 78%; margin: 0 auto; }
   .player-grid, .diff-grid, .standards-grid, .glossary-grid, .check-grid, .journey-track { grid-template-columns: repeat(2, 1fr); }
   .rodotrem-panel, .switch-panel { padding: 24px 20px; }
   .type-grid { grid-template-columns: repeat(3, 1fr); }
+  .coupling-item { flex-direction: column; align-items: flex-start; gap: 10px; padding: 16px 20px; }
+  .coupling-text { width: auto; }
+  .coupling-media { width: 100%; }
+  .switch-tabs, .comp-selector {
+    flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
+  }
+  .switch-tabs::-webkit-scrollbar, .comp-selector::-webkit-scrollbar { display: none; }
+  .switch-tab, .comp-btn { flex: none; }
 }
 
 @media (max-width: 480px) {
-  .player-grid, .diff-grid, .standards-grid, .glossary-grid, .check-grid, .journey-track { grid-template-columns: repeat(2, 1fr); }
-  .type-grid { grid-template-columns: repeat(2, 1fr); }
+  /* Card grids become horizontally swipeable strips instead of wrapping to
+     several short rows — on a short phone screen, N rows of cards almost
+     always overflows the slide, a single scrollable row never does. */
+  .type-grid, .glossary-grid, .player-grid, .diff-grid, .standards-grid,
+  .check-grid, .entity-grid {
+    display: flex; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; gap: 10px; padding-bottom: 2px;
+  }
+  .type-grid::-webkit-scrollbar, .glossary-grid::-webkit-scrollbar,
+  .player-grid::-webkit-scrollbar, .diff-grid::-webkit-scrollbar, .standards-grid::-webkit-scrollbar,
+  .check-grid::-webkit-scrollbar, .entity-grid::-webkit-scrollbar { display: none; }
+  .type-card { flex: 0 0 128px; }
+  .term-card { flex: 0 0 148px; height: clamp(150px, 30vh, 190px); }
+  .player-card, .diff-card, .standard-card, .check-item, .entity-card { flex: 0 0 76vw; }
+
+  /* Journey stepper: keep all 6 dots + connecting line in one row instead of
+     wrapping to 2 columns (which breaks the line), let it scroll if tight. */
+  .journey-track {
+    grid-template-columns: repeat(6, minmax(56px, 1fr));
+    overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-bottom: 4px;
+  }
+  .journey-track::-webkit-scrollbar { display: none; }
+  .journey-step { min-width: 64px; }
+  .journey-detail { padding: 18px; }
+  .journey-detail .big-label { font-size: 1.1rem; }
+
+  /* Cavalo/Carroça cards: only 2, shrink in place instead of scrolling */
+  .cc-intro { margin-bottom: 8px; font-size: .82rem; line-height: 1.35; }
+  .cc-pair { gap: 6px; }
+  .cc-card { padding: 6px 10px; }
+  .cc-card .cc-img { height: clamp(26px, 4.2vh, 38px); margin-bottom: 1px; }
+  .cc-card h3 { font-size: .88rem; }
+  .cc-card .sub { font-size: .66rem; margin-bottom: 1px; }
+  .cc-card p { font-size: .7rem; line-height: 1.2; margin-top: 1px; }
+  .cc-analogy-label { font-size: .68rem; margin-top: 1px; }
+  .cc-analogy { font-size: .86rem; margin: 1px 0 4px; }
+  .cc-note { font-size: .7rem; padding: 6px 10px; margin-top: 6px; }
+
+  /* Pinos pages: the media images were sized for desktop side-by-side
+     layouts; once stacked full-width on a phone they need a much smaller cap. */
+  .pinos-layout { gap: 6px; margin-bottom: 0; }
+  .pinos-media { max-height: 7.5vh; }
+  .pinos-rule { padding: 5px 10px; font-size: .7rem; margin-top: 3px; line-height: 1.25; }
+  .comp-selector { margin-bottom: 6px; gap: 6px; }
+  .comp-btn { padding: 6px 12px; font-size: .76rem; }
+  .pinos-footnote { margin-top: 2px; font-size: .72rem; line-height: 1.25; }
+  .pin-display { padding: 6px 12px; }
+  .pin-display .comp-name { font-size: 1rem; }
+  .pin-display .comp-note { font-size: .72rem; margin-top: 1px; margin-bottom: 3px; }
+  .pin-row { gap: 5px; }
+  .pin-dot { width: 28px; height: 28px; font-size: .74rem; }
+  .pin-link { width: 12px; }
+  .pin-count { margin-top: 2px; font-size: 1.4rem; }
+  .pin-count span { font-size: .74rem; margin-left: 4px; }
+  .rodotrem-panel { gap: 5px; padding: 12px; }
+  .rodotrem-panel .rk { font-size: .66rem; }
+  .rodotrem-panel .intro { font-size: .74rem; line-height: 1.22; margin: 2px 0 4px; }
+  .rodotrem-media { height: clamp(64px, 10vh, 100px); padding: 4px; }
+  .pin-steps { gap: 3px; }
+  .pin-step { padding: 3px 8px; }
+  .pin-step .num { width: 18px; height: 18px; font-size: .66rem; }
+  .pin-step .label { font-size: .72rem; line-height: 1.2; }
+  .rules-title { margin-top: 3px; font-size: .66rem; }
+  .rodotrem-rules { margin-top: 3px; gap: 4px; }
+  .rule-item { padding: 3px 8px; }
+  .rule-label { font-size: .66rem; margin-bottom: 0; }
+  .rule-desc { font-size: .7rem; line-height: 1.18; }
+
+  /* National map: the map-stage height was tuned for a half-width desktop
+     column; at full-width-stacked on a phone it needs to be much shorter. */
+  .map-layout { gap: 10px; }
+  .map-stage { max-height: 15vh; }
+  .map-legend { gap: 5px; margin-bottom: 10px; }
+  .legend-chip { padding: 6px 11px; font-size: .78rem; }
+  .intl-box { padding: 8px 12px; }
+  .intl-label { font-size: .74rem; margin-bottom: 6px; }
+  .intl-chip { font-size: .68rem; padding: 4px 9px; }
+
+  /* Market stat tile */
+  .market-top { margin-bottom: 10px; gap: 10px; }
+  .market-stat { padding: 12px 16px; min-width: 0; }
+  .market-stat .value { font-size: 1.6rem; }
+  .player-card { height: 110px; }
+  .player-face { padding: 10px; }
+  .player-face img { max-height: 30px; }
+
+  /* Backpack / cargo-table switch panel */
+  .switch-panel { padding: 14px 16px; }
+  .switch-intro { margin-bottom: 10px; font-size: .8rem; line-height: 1.4; }
+  .switch-tabs { margin-bottom: 10px; }
+  .switch-display { padding: 12px 14px; gap: 10px; min-height: 0; }
+  .switch-display-media { width: 84px; height: 66px; }
+  .switch-display .headline { font-size: .96rem; margin-bottom: 2px; }
+  .switch-display .desc { font-size: .8rem; line-height: 1.35; }
+  .switch-display .tagline { margin-top: 3px; font-size: .68rem; padding: 2px 8px; }
+
+  /* Network roles (representantes) */
+  .network-media img { max-height: 16vh; }
+  .resp-list { gap: 6px; margin-top: 10px; }
+  .resp-item { padding: 8px 12px; gap: 10px; }
+  .resp-item .idx { width: 24px; height: 24px; font-size: .68rem; }
+  .resp-item p { font-size: .8rem; }
+
+  /* Intro (Quem Somos) */
+  .intro-media { max-height: 16vh; margin-bottom: 6px; }
+  .tag-row { gap: 6px; margin-top: 10px; }
+  .tag { padding: 5px 11px; font-size: .74rem; }
+
+  /* Association entities */
+  .entity-intro { margin-bottom: 10px; }
+  .entity-grid { margin-bottom: 10px; }
+  .entity-card { padding: 14px; }
+  .entity-card .acronym { font-size: 1.15rem; }
+  .entity-card .desc { font-size: .8rem; line-height: 1.35; margin-top: 3px; }
+  .data-label { font-size: .84rem; margin-bottom: 2px; }
+  .data-chip-row { gap: 6px; margin-top: 6px; }
+  .data-chip { padding: 5px 11px; font-size: .74rem; }
+
+  /* Generic text sizing — shared across every page */
+  .slide-head { margin-bottom: 10px; }
+  .slide-title { font-size: 1.35rem; }
+  .slide-subtitle { font-size: .85rem; margin-top: 4px; }
+  .lead { font-size: 1rem; margin-bottom: 8px; }
+  .copy { font-size: .88rem; line-height: 1.48; }
+
+  /* Closing slide / quiz — this slide has overflow:hidden (no scroll fallback
+     at all, by design, for the decorative floating shapes), so the quiz must
+     fit the shortest phone screens with real margin to spare. */
+  .closing img.logo { height: 20px; margin-bottom: 12px; }
+  .closing .quote { font-size: .98rem; line-height: 1.3; }
+  .quiz-card { margin-top: 12px; padding: 14px 16px; border-radius: 16px; }
+  .quiz-progress { margin-bottom: 8px; }
+  .quiz-progress-text { font-size: .66rem; }
+  .quiz-question { font-size: .88rem; line-height: 1.3; margin-bottom: 10px; }
+  .quiz-options { gap: 6px; }
+  .quiz-option { padding: 8px 12px; font-size: .76rem; border-radius: 10px; }
+  .quiz-score { font-size: 1.8rem; }
+  .quiz-score-msg { font-size: .78rem; margin-top: 4px; }
+  .quiz-result-actions { gap: 8px; margin-top: 12px; }
+  .quiz-retry { padding: 8px 18px; font-size: .8rem; }
+  .closing .back-cta { padding: 8px 18px; font-size: .8rem; }
+}
+
+/* Extra-narrow phones (320px class): text wraps to more lines than the
+   480px block accounts for, so a few pages need one more trim pass. */
+@media (max-width: 340px) {
+  .slide-kicker { font-size: .7rem; margin-bottom: 6px; gap: 7px; }
+  .cc-intro { margin-bottom: 6px; }
+  .cc-analogy-label { margin-top: 0; }
+  .cc-analogy { font-size: .8rem; margin: 1px 0 3px; }
+  .cc-note { font-size: .66rem; padding: 5px 8px; }
+  .pinos-rule { font-size: .68rem; padding: 5px 8px; }
+  .pinos-media { max-height: 7vh; }
+  .pinos-footnote { font-size: .68rem; }
+  .comp-btn { padding: 5px 10px; font-size: .7rem; }
+  .map-legend { gap: 4px; margin-bottom: 8px; }
+  .legend-chip { padding: 5px 9px; font-size: .72rem; }
+  .intl-box { padding: 6px 10px; }
+  .intl-label { font-size: .7rem; margin-bottom: 4px; }
+  .intl-chip { font-size: .64rem; padding: 3px 8px; }
+  .network-media img { max-height: 13vh; }
+  .resp-list { gap: 4px; margin-top: 8px; }
+  .resp-item { padding: 6px 10px; }
+  .resp-item p { font-size: .74rem; }
+  .entity-intro { margin-bottom: 8px; }
+  .entity-card { padding: 11px; }
+  .entity-card .desc { font-size: .74rem; }
+  .data-label { font-size: .78rem; }
+  .data-chip { font-size: .68rem; padding: 4px 9px; }
+}
+
+/* Short desktop/laptop viewports (e.g. 1280x720): the Rodotrem panel's
+   3 pin-steps + 2 rule cards can exceed available height even though there's
+   plenty of width, so trim its internal spacing a bit independent of width. */
+@media (min-width: 761px) and (max-height: 740px) {
+  .rodotrem-panel { padding: 22px 28px; }
+  .pin-steps { gap: 5px; }
+  .rodotrem-rules { gap: 4px; margin-top: 4px; }
+  .rule-item { padding: 5px 12px; }
+  .rules-title { margin-top: 6px; }
 }
 
 /* print */
