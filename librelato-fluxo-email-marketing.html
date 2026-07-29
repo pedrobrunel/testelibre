@@ -1,0 +1,528 @@
+<title>Librelato — Simulador de Fluxo de E-mail Marketing</title>
+<style>
+:root{
+  --azul-claro:#3FA9F5;
+  --azul-digital:#ADEAFF;
+  --azul-marinho:#012340;
+  --cinza-escuro:#4D4D4D;
+  --cinza-claro:#828282;
+  --azul-royal:#00091F;
+  --azul-librelato:#008BD2;
+  --branco:#FFFFFF;
+  --bg:#f2f6fa;
+  --card:#ffffff;
+  --border:#e1e8ef;
+  --ok:#1f9d55;
+  --radius:12px;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;height:100%;}
+body{
+  font-family:"Segoe UI",Roboto,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--cinza-escuro);
+  overflow-x:hidden;
+}
+
+/* ---------- TOP BAR ---------- */
+.topbar{
+  background:linear-gradient(90deg,var(--azul-royal),var(--azul-marinho));
+  color:var(--branco);
+  padding:14px 22px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:12px;
+  box-shadow:0 2px 10px rgba(0,0,0,.25);
+  position:sticky;
+  top:0;
+  z-index:50;
+}
+.brand{display:flex;align-items:center;gap:12px;}
+.brand .logo{
+  width:38px;height:38px;border-radius:9px;
+  background:linear-gradient(135deg,var(--azul-claro),var(--azul-librelato));
+  display:flex;align-items:center;justify-content:center;
+  font-weight:800;font-size:16px;color:var(--branco);
+  box-shadow:0 0 0 2px rgba(255,255,255,.15) inset;
+}
+.brand h1{font-size:16px;margin:0;font-weight:700;letter-spacing:.2px;}
+.brand span.tag{
+  display:inline-block;margin-left:8px;font-size:11px;font-weight:600;
+  background:rgba(63,169,245,.18);color:var(--azul-digital);
+  padding:3px 8px;border-radius:20px;border:1px solid rgba(173,234,255,.3);
+}
+.tabs{display:flex;gap:6px;background:rgba(255,255,255,.06);padding:4px;border-radius:10px;}
+.tabs button{
+  background:transparent;border:none;color:rgba(255,255,255,.7);
+  padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;
+  transition:.15s;
+}
+.tabs button.active{background:var(--azul-librelato);color:#fff;}
+.tabs button:hover:not(.active){color:#fff;background:rgba(255,255,255,.08);}
+
+/* ---------- LAYOUT ---------- */
+.view{display:none;}
+.view.active{display:block;}
+
+/* ===================== FLOW VIEW ===================== */
+.flow-toolbar{
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  padding:14px 22px;background:var(--card);border-bottom:1px solid var(--border);
+  position:sticky;top:62px;z-index:40;
+}
+.flow-toolbar .info{font-size:13px;color:var(--cinza-claro);}
+.flow-toolbar select{
+  padding:8px 12px;border-radius:8px;border:1px solid var(--border);
+  font-size:13px;font-weight:600;color:var(--azul-marinho);background:#fff;
+}
+.legend{display:flex;gap:14px;margin-left:auto;font-size:12px;color:var(--cinza-claro);flex-wrap:wrap;}
+.legend .dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:middle;}
+
+.canvas-wrap{
+  overflow-x:auto;overflow-y:hidden;padding:30px 22px 50px;
+  -webkit-overflow-scrolling:touch;
+}
+.canvas{
+  display:flex;gap:26px;align-items:flex-start;min-width:max-content;position:relative;
+}
+.entry-col{
+  display:flex;flex-direction:column;align-items:center;gap:10px;padding-top:8px;flex:0 0 200px;
+}
+.node{
+  background:var(--card);border:1.5px solid var(--border);border-radius:var(--radius);
+  padding:12px 14px;width:190px;box-shadow:0 1px 4px rgba(1,35,64,.06);
+  position:relative;cursor:default;
+}
+.node.clickable{cursor:pointer;transition:transform .12s, box-shadow .12s;}
+.node.clickable:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(0,139,210,.18);border-color:var(--azul-claro);}
+.node .nlabel{font-size:10px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--azul-librelato);display:flex;align-items:center;gap:5px;}
+.node .ntitle{font-size:13px;font-weight:600;color:var(--azul-marinho);margin-top:5px;line-height:1.35;}
+.node.entry{border-color:var(--azul-claro);background:linear-gradient(180deg,#fff,#f3faff);}
+.node.trigger{
+  background:var(--azul-marinho);color:#fff;border-color:var(--azul-marinho);
+}
+.node.trigger .nlabel{color:var(--azul-digital);}
+.node.trigger .ntitle{color:#fff;}
+.connector{width:2px;height:22px;background:var(--azul-claro);opacity:.6;}
+.connector.split{height:0;}
+
+.branch-arrow{
+  width:2px;flex:1;background:repeating-linear-gradient(var(--azul-claro),var(--azul-claro) 4px,transparent 4px,transparent 8px);
+  min-height:24px;
+}
+
+.columns{display:flex;gap:22px;padding-left:6px;}
+.col{display:flex;flex-direction:column;align-items:center;flex:0 0 210px;position:relative;}
+.col-header{
+  background:var(--azul-librelato);color:#fff;border-radius:10px 10px 0 0;
+  padding:9px 10px;width:190px;text-align:center;font-weight:700;font-size:13px;
+  box-shadow:0 2px 6px rgba(0,139,210,.25);
+}
+.wait-chip{
+  font-size:10.5px;color:var(--cinza-claro);background:#eef4f9;border:1px solid var(--border);
+  padding:3px 10px;border-radius:20px;margin:8px 0;font-weight:600;
+}
+.mail-node{width:190px;}
+.mail-node .nlabel{color:var(--azul-librelato);}
+.mail-node .ntitle{font-size:12.5px;}
+.mail-node .cta-preview{margin-top:8px;display:flex;flex-wrap:wrap;gap:4px;}
+.mail-node .cta-preview span{
+  font-size:9.5px;background:var(--azul-digital);color:var(--azul-marinho);
+  padding:2px 7px;border-radius:20px;font-weight:700;
+}
+.step-num{
+  position:absolute;left:-9px;top:-9px;background:var(--azul-royal);color:#fff;
+  width:20px;height:20px;border-radius:50%;font-size:10px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #fff;
+}
+
+/* ---------- MODAL ---------- */
+.overlay{
+  position:fixed;inset:0;background:rgba(1,9,31,.55);z-index:100;
+  display:none;align-items:center;justify-content:center;padding:20px;
+  backdrop-filter:blur(2px);
+}
+.overlay.show{display:flex;}
+.modal{
+  background:#fff;border-radius:16px;max-width:560px;width:100%;max-height:88vh;overflow:auto;
+  box-shadow:0 20px 60px rgba(0,0,0,.35);
+}
+.modal-head{
+  background:var(--azul-marinho);color:#fff;padding:16px 20px;display:flex;justify-content:space-between;align-items:flex-start;
+  border-radius:16px 16px 0 0;
+}
+.modal-head .m-wait{font-size:11px;color:var(--azul-digital);font-weight:700;text-transform:uppercase;letter-spacing:.4px;}
+.modal-head h2{font-size:15px;margin:4px 0 0;font-weight:700;line-height:1.4;}
+.modal-head button{background:rgba(255,255,255,.12);border:none;color:#fff;width:28px;height:28px;border-radius:8px;cursor:pointer;font-size:16px;line-height:1;}
+.modal-body{padding:22px 20px;}
+.email-frame{border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.email-hero{
+  background:linear-gradient(135deg,var(--azul-marinho),var(--azul-librelato));
+  color:#fff;padding:26px 22px;text-align:center;
+}
+.email-hero .logo-mark{
+  width:46px;height:46px;border-radius:10px;background:rgba(255,255,255,.14);
+  margin:0 auto 10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;
+}
+.email-hero h3{margin:0;font-size:16px;font-weight:700;}
+.email-content{padding:22px;background:#fff;}
+.email-content p{font-size:13.5px;line-height:1.7;color:var(--cinza-escuro);margin:0 0 16px;}
+.email-content .placeholder-img{
+  background:repeating-linear-gradient(45deg,#eef4f9,#eef4f9 10px,#e4edf5 10px,#e4edf5 20px);
+  border-radius:8px;height:110px;display:flex;align-items:center;justify-content:center;
+  color:var(--cinza-claro);font-size:12px;margin-bottom:16px;border:1px dashed var(--border);
+}
+.email-ctas{display:flex;flex-direction:column;gap:10px;margin-top:6px;}
+.btn-primary{
+  background:var(--azul-librelato);color:#fff;text-align:center;padding:11px;border-radius:8px;
+  font-weight:700;font-size:13px;text-decoration:none;cursor:pointer;border:none;
+}
+.btn-secondary{
+  background:transparent;color:var(--azul-librelato);border:1.5px solid var(--azul-librelato);
+  text-align:center;padding:10px;border-radius:8px;font-weight:700;font-size:13px;cursor:pointer;
+}
+.email-footer{background:#f7fafc;padding:14px 22px;font-size:10.5px;color:var(--cinza-claro);text-align:center;border-top:1px solid var(--border);}
+
+/* ===================== SIMULATOR VIEW ===================== */
+.sim-wrap{display:grid;grid-template-columns:320px 1fr;gap:0;min-height:calc(100vh - 62px);}
+.sim-side{
+  background:var(--azul-royal);color:#fff;padding:22px;border-right:1px solid rgba(255,255,255,.08);
+}
+.sim-side h2{font-size:14px;text-transform:uppercase;letter-spacing:.5px;color:var(--azul-digital);margin:0 0 14px;}
+.lead-card{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px;margin-bottom:18px;
+}
+.lead-card label{font-size:11px;color:rgba(255,255,255,.6);display:block;margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px;}
+.lead-card select,.lead-card input{
+  width:100%;padding:9px 10px;border-radius:8px;border:1px solid rgba(255,255,255,.15);
+  background:rgba(255,255,255,.06);color:#fff;font-size:13px;margin-bottom:12px;
+}
+.lead-card select option{color:#000;}
+.btn-start{
+  width:100%;background:var(--azul-claro);color:var(--azul-royal);border:none;padding:11px;
+  border-radius:8px;font-weight:800;cursor:pointer;font-size:13px;
+}
+.btn-start:hover{background:var(--azul-digital);}
+.timeline{margin-top:10px;}
+.tl-item{
+  display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-left:2px solid rgba(255,255,255,.12);
+  padding-left:14px;margin-left:6px;position:relative;
+}
+.tl-item::before{
+  content:'';position:absolute;left:-7px;top:12px;width:11px;height:11px;border-radius:50%;
+  background:rgba(255,255,255,.2);border:2px solid var(--azul-royal);
+}
+.tl-item.done::before{background:var(--ok);}
+.tl-item.active::before{background:var(--azul-claro);box-shadow:0 0 0 4px rgba(63,169,245,.25);}
+.tl-item .tt{font-size:12px;font-weight:700;}
+.tl-item .td{font-size:10.5px;color:rgba(255,255,255,.5);}
+.tl-item.done .tt{color:rgba(255,255,255,.55);}
+.tl-item.active .tt{color:var(--azul-claro);}
+
+.sim-main{padding:28px;display:flex;flex-direction:column;align-items:center;}
+.sim-status{
+  width:100%;max-width:620px;display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:18px;flex-wrap:wrap;gap:10px;
+}
+.sim-status .day-badge{
+  background:var(--azul-digital);color:var(--azul-marinho);font-weight:800;font-size:12px;
+  padding:6px 14px;border-radius:20px;
+}
+.sim-controls{display:flex;gap:8px;}
+.sim-controls button{
+  background:#fff;border:1px solid var(--border);padding:8px 14px;border-radius:8px;font-size:12px;
+  font-weight:700;cursor:pointer;color:var(--azul-marinho);
+}
+.sim-controls button.primary{background:var(--azul-librelato);color:#fff;border-color:var(--azul-librelato);}
+.sim-controls button:disabled{opacity:.35;cursor:not-allowed;}
+
+.phone{
+  width:100%;max-width:400px;background:#0e1b2b;border-radius:28px;padding:14px;box-shadow:0 20px 50px rgba(0,0,0,.25);
+}
+.phone-screen{background:#fff;border-radius:18px;overflow:hidden;min-height:520px;}
+.inbox-bar{background:var(--azul-marinho);color:#fff;padding:12px 16px;font-size:13px;font-weight:700;display:flex;justify-content:space-between;}
+.inbox-empty{padding:60px 24px;text-align:center;color:var(--cinza-claro);font-size:13px;}
+.inbox-empty .big-icon{font-size:38px;margin-bottom:10px;}
+
+.mail-view .email-hero{padding:22px 18px;}
+.mail-view .email-content{padding:18px;}
+.mail-view .email-content p{font-size:12.5px;}
+.mail-view .subject-line{
+  padding:12px 16px;border-bottom:1px solid var(--border);font-size:12.5px;color:var(--cinza-claro);
+}
+.mail-view .subject-line b{color:var(--azul-marinho);display:block;font-size:13.5px;margin-bottom:3px;}
+
+.confetti-msg{
+  max-width:620px;width:100%;background:#e9fbf0;border:1px solid #b7ecc9;color:#1f7a3f;
+  padding:14px 16px;border-radius:10px;font-size:13px;font-weight:600;margin-top:16px;display:none;
+}
+.confetti-msg.show{display:block;}
+
+.footer-note{
+  text-align:center;color:var(--cinza-claro);font-size:11.5px;padding:18px;
+}
+
+@media (max-width:800px){
+  .sim-wrap{grid-template-columns:1fr;}
+  .sim-side{border-right:none;border-bottom:1px solid rgba(255,255,255,.08);}
+}
+</style>
+
+<div class="topbar">
+  <div class="brand">
+    <div class="logo">L</div>
+    <div>
+      <h1>Librelato · Automação de E-mail Marketing<span class="tag">simulação estilo RD Station</span></h1>
+    </div>
+  </div>
+  <div class="tabs">
+    <button id="tab-flow" class="active" onclick="setView('flow')">🗺️ Fluxo Completo</button>
+    <button id="tab-sim" onclick="setView('sim')">▶️ Simulador de Jornada</button>
+  </div>
+</div>
+
+<!-- ============ FLOW VIEW ============ -->
+<div id="view-flow" class="view active">
+  <div class="flow-toolbar">
+    <div class="info">Automação disparada a partir de um formulário. Clique em qualquer e-mail para ver o preview.</div>
+    <div class="legend">
+      <span><span class="dot" style="background:var(--azul-marinho)"></span>Gatilho / Entrada</span>
+      <span><span class="dot" style="background:var(--azul-librelato)"></span>E-mail</span>
+      <span><span class="dot" style="background:var(--cinza-claro)"></span>Espera</span>
+    </div>
+  </div>
+
+  <div class="canvas-wrap">
+    <div class="canvas" id="canvas"></div>
+  </div>
+  <div class="footer-note">Reconstruído a partir do fluxograma original (.drawio) da automação de e-mail marketing da Librelato — 11 jornadas por linha de produto, 6 e-mails cada, ao longo de 22 dias.</div>
+</div>
+
+<!-- ============ SIMULATOR VIEW ============ -->
+<div id="view-sim" class="view">
+  <div class="sim-wrap">
+    <div class="sim-side">
+      <h2>Configurar Lead</h2>
+      <div class="lead-card">
+        <label>Nome do Lead</label>
+        <input id="leadName" value="João" />
+        <label>Empresa</label>
+        <input id="leadCompany" value="Transportes JM" />
+        <label>Produto de interesse (formulário)</label>
+        <select id="leadProduct"></select>
+        <button class="btn-start" onclick="startSim()">🚀 Entrar no Fluxo</button>
+      </div>
+      <h2>Linha do Tempo</h2>
+      <div class="timeline" id="timeline"></div>
+    </div>
+
+    <div class="sim-main">
+      <div class="sim-status">
+        <div class="day-badge" id="dayBadge">Dia 0</div>
+        <div class="sim-controls">
+          <button onclick="simPrev()" id="btnPrev">◀ Anterior</button>
+          <button onclick="simPlay()" class="primary" id="btnPlay">▶ Reproduzir</button>
+          <button onclick="simNext()" id="btnNext">Próximo ▶</button>
+        </div>
+      </div>
+
+      <div class="phone">
+        <div class="phone-screen" id="phoneScreen">
+          <div class="inbox-bar"><span>Caixa de Entrada</span><span id="inboxCount">0 novos</span></div>
+          <div class="inbox-empty"><div class="big-icon">📭</div>Configure um lead e clique em<br>"Entrar no Fluxo" para começar a simulação.</div>
+        </div>
+      </div>
+      <div class="confetti-msg" id="doneMsg">✅ Jornada concluída! O lead recebeu os 6 e-mails da automação ao longo de 22 dias.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ EMAIL PREVIEW MODAL ============ -->
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal"></div>
+</div>
+
+<script>
+const FLOWS = [{"product": "Graneleiro", "steps": [{"order": 1, "wait": "Instantâneo", "subject": "1° E-mail - Bem-vindo à Librelato", "body": "Olá, {{Nome}}! É um prazer ter você e a equipe da {{Empresa}} com a gente. Ao preencher o formulário, você deu o primeiro passo para conhecer uma marca que, há mais de 50 anos, desenvolve implementos", "ctas": ["Implementos", "Compre em {{ESTADO}}"]}, {"order": 2, "wait": "3 dias depois", "subject": "2° E-mail - Resumo Técnico Graneleiro", "body": "Olá, {{Nome}}! À primeira vista, todo graneleiro pode parecer igual. Mas é nos detalhes que a diferença aparece. O Graneleiro Librelato foi desenvolvido para unir leveza, resistência e eficiência. Iss", "ctas": ["Onde comprar em {{Estado}}", "Veja as Opções"]}, {"order": 3, "wait": "7 dias depois", "subject": "3° E-mail - Limpeza e Conservação do Graneleiro", "body": "", "ctas": ["Encontrar Rede Autorizada em {{Cidade}}"]}, {"order": 4, "wait": "11 dias depois", "subject": "4° E-mail - {{Nome}}, Comprar um Graneleiro = Investimento", "body": "Olá, {{Nome}}! Quando uma empresa escolhe um implemento rodoviário, ela está escolhendo uma ferramenta de trabalho que precisa acompanhar sua operação por muitos anos. Por isso, o Graneleiro Librelato", "ctas": ["Quero Comprar", "Modelos Disponíveis"]}, {"order": 5, "wait": "16 dias depois", "subject": "5° E-mail - {{Nome}}, Consórcio sem entrada e sem juros", "body": "Olá, {{Nome}}! Renovar ou ampliar a frota é uma decisão importante para qualquer operação. Por isso, contar com um planejamento que preserve o caixa da empresa faz toda a diferença. Com o Consórcio Na", "ctas": ["Quero Conhecer"]}, {"order": 6, "wait": "22 dias depois", "subject": "6° E-mail - {{Nome}}, 12 Meses Grátis de Telemetria", "body": "Olá, {{Nome}}! Seus implementos Librelato podem sair de fábrica já equipados com a Sigaway, com 12 meses gratuitos para você conhecer todos os benefícios da telemetria. A Librelato e a Sigaway fazem p", "ctas": ["Quero Conhecer"]}]}, {"product": "Basculante", "steps": [{"order": 1, "wait": "Instantâneo", "subject": "1° E-mail - Bem-vindo à Librelato", "body": "Olá, {{Nome}}! É um prazer ter você e a equipe da {{Empresa}} com a gente. Ao preencher o formulário, você deu o primeiro passo para conhecer uma marca que, há mais de 50 anos, desenvolve implementos", "ctas": ["Implementos", "Onde comprar"]}, {"order": 2, "wait": "3 dias depois", "subject": "2° E-mail - Resumo Técnico Basculante", "body": "Olá, {{Nome}}! O Basculante Librelato foi desenvolvido para oferecer resistência, versatilidade e proteção em diferentes aplicações, como grãos, brita, areia, calcário entre outros. Confira alguns dif", "ctas": ["Onde comprar em {{Estado}}", "Veja as Opções"]}, {"order": 3, "wait": "7 dias depois", "subject": "3° E-mail - Limpeza e Conservação do Basculante", "body": "", "ctas": ["Encontrar Rede Autorizada em {{Cidade}}"]}, {"order": 4, "wait": "11 dias depois", "subject": "4° E-mail - {{Nome}}, Comprar um Basculante = Investimento", "body": "Olá, {{Nome}}! No transporte de cargas como brita, calcário e areia, a etapa da descarga exige atenção. É nesse momento que pequenos cuidados ajudam a preservar a segurança da operação. Antes de bascu", "ctas": ["Quero Comprar", "Modelos Disponíveis"]}, {"order": 5, "wait": "16 dias depois", "subject": "5° E-mail - {{Nome}}, Consórcio sem entrada e sem juros", "body": "Olá, {{Nome}}! Renovar ou ampliar a frota é uma decisão importante para qualquer operação. Por isso, contar com um planejamento que preserve o caixa da empresa faz toda a diferença. Com o Consórcio Na", "ctas": ["Quero Conhecer"]}, {"order": 6, "wait": "22 dias depois", "subject": "6° E-mail - {{Nome}}, 12 Meses Grátis de Telemetria", "body": "Olá, {{Nome}}! Seus implementos Librelato podem sair de fábrica já equipados com a Sigaway, com 12 meses gratuitos para você conhecer todos os benefícios da telemetria. A Librelato e a Sigaway fazem p", "ctas": ["Quero Conhecer"]}]}, {"product": "Carrega Tudo", "steps": [{"order": 1, "wait": "Instantâneo", "subject": "1° E-mail - Bem-vindo à Librelato", "body": "Olá, {{Nome}}! É um prazer ter você e a equipe da {{Empresa}} com a gente. Ao preencher o formulário, você deu o primeiro passo para conhecer uma marca que, há mais de 50 anos, desenvolve implementos", "ctas": ["Implementos", "Onde comprar"]}, {"order": 2, "wait": "3 dias depois", "subject": "2° E-mail - Resumo Técnico Carrega Tudo", "body": "Olá, {{Nome}}! Transportar máquinas e equipamentos pesados exige muito mais do que capacidade de carga. Exige um implemento preparado para oferecer segurança, estabilidade e praticidade em cada operaç", "ctas": ["Onde comprar em {{Estado}}", "Veja as Opções"]}, {"order": 3, "wait": "7 dias depois", "subject": "3° E-mail - Limpeza e Conservação do Carrega Tudo", "body": "", "ctas": ["Encontrar Rede Autorizada em {{Cidade}}"]}, {"order": 4, "wait": "11 dias depois", "subject": "4° E-mail - {{Nome}}, Comprar um Carrega Tudo = Investimento", "body": "Olá, {{Nome}}! No transporte de máquinas e equipamentos, uma viagem segura começa antes mesmo de pegar a estrada. Antes de iniciar o deslocamento, confira se a carga está corretamente posicionada e ut", "ctas": ["Quero Comprar", "Modelos Disponíveis"]}, {"order": 5, "wait": "16 dias depois", "subject": "5° E-mail - {{Nome}}, Consórcio sem entrada e sem juros", "body": "Olá, {{Nome}}! Renovar ou ampliar a frota é uma decisão importante para qualquer operação. Por isso, contar com um planejamento que preserve o caixa da empresa faz toda a diferença. Com o Consórcio Na", "ctas": ["Quero Conhecer"]}, {"order": 6, "wait": "22 dias depois", "subject": "6° E-mail - {{Nome}}, 12 Meses Grátis de Telemetria", "body": "Olá, {{Nome}}! Seus implementos Librelato podem sair de fábrica já equipados com a Sigaway, com 12 meses gratuitos para você conhecer todos os benefícios da telemetria. A Librelato e a Sigaway fazem p", "ctas": ["Quero Conhecer"]}]}, {"product": "Porta Contêiner", "steps": [{"order": 1, "wait": "Instantâneo", "subject": "1° E-mail - Bem-vindo à Librelato", "body": "Olá, {{Nome}}! É um prazer ter você e a equipe da {{Empresa}} com a gente. Ao preencher o formulário, você deu o primeiro passo para conhecer uma marca que, há mais de 50 anos, desenvolve implementos", "ctas": ["Implementos", "Onde comprar"]}, {"order": 2, "wait": "3 dias depois", "subject": "2° E-mail - Resumo Técnico Porta Contêiner", "body": "Olá, {{Nome}}! Quem opera no transporte de contêineres sabe que cada aplicação exige um implemento preparado para enfrentar diferentes desafios. Em regiões litorâneas, por exemplo, a maresia faz parte", "ctas": ["Onde comprar em {{Estado}}", "Veja as Opções"]}, {"order": 3, "wait": "7 dias depois", "subject": "3° E-mail - Limpeza e Conservação do Porta Contêiner", "body": "", "ctas": ["Encontrar Rede Autorizada em {{Cidade}}"]}, {"order": 4, "wait": "11 dias depois", "subject": "4° E-mail - {{Nome}}, Comprar um Porta Contêiner = Investimento", "body": "Olá, {{Nome}}! No transporte de contêineres, a segurança da operação começa antes mesmo de pegar a estrada. Por isso, antes de cada viagem, confira se todos os twist locks estão corretamente travados.", "ctas": ["Quero Comprar", "Modelos Disponíveis"]}, {"order": 5, "wait": "16 dias depois", "subject": "5° E-mail - {{Nome}}, Consórcio sem entrada e sem juros", "body": "Olá, {{Nome}}! Renovar ou ampliar a frota é uma decisão importante para qualquer operação. Por isso, contar com um planejamento que preserve o caixa da empresa faz toda a diferença. Com o Consórcio Na", "ctas": ["Quero Conhecer"]}, {"order": 6, "wait": "22 dias depois", "subject": "6° E-mail - {{Nome}}, 12 Meses Grátis de Telemetria", "body": "Olá, {{Nome}}! Seus implementos Librelato podem sair de fábrica já equipados com a Sigaway, com 12 meses gratuitos para você conhecer todos os benefícios da telemetria. A Librelato e a Sigaway fazem p", "ctas": ["Quero Conhecer"]}]}, {"product": "Florestal", "steps": [{"order": 1, "wait": "Instantâneo", "subject": "1° E-mail - Bem-vindo à Librelato", "body": "Olá, {{Nome}}! É um prazer ter você e a equipe da {{Empresa}} com a gente. Ao preencher o formulário, você deu o primeiro passo para conhecer uma marca que, há mais de 50 anos, desenvolve implementos", "ctas": ["Implementos", "Onde comprar"]}, {"order": 2, "wait": "3 dias depois", "subject": "2° E-mail - Resumo Técnico Florestal", "body": "Olá, {{Nome}}! No transporte florestal, manter o implemento disponível para a operação faz toda a diferença. Por isso, o Florestal Librelato foi desenvolvido para facilitar as intervenções de manutenç", "ctas": ["Onde comprar em {{Estado}}", "Veja as Opções"]}, {"order": 3, "wait": "7 dias depois", "subject": "3° E-mail - Limpeza e Conservação do Florestal", "body": "", "ctas": ["Encontrar Rede Autorizada em {{Cidade}}"]}, {"order": 4, "wait": "11 dias depois", "subject": "4° E-mail - {{Nome}}, Comprar um Florestal = Investimento", "body": "Olá, {{Nome}}! Antes de iniciar a viagem, reserve alguns minutos para conferir os fueiros, as catracas e os dispositivos de amarração com a carga já posicionada. Essa verificação ajuda a garantir que", "ctas": ["Quero Comprar", "Modelos Disponíveis"]}, {"order": 5, "wait": "16 dias depois", "subject": "5° E-mail - {{Nome}}, Consórcio sem entrada e sem juros", "body": "Olá, {{Nome}}! Renovar ou ampliar a frota é uma decisão importante para qualquer operação. Por isso, contar com um planejamento que preserve o caixa da empresa faz toda a diferença. Com o Consórcio Na", "ctas": ["Quero Conhecer"]}, {"order": 6, "wait": "22 dias depois", "subject": "6° E-mail - {{Nome}}, 12 Meses Grátis de Telemetria", "body": "Olá, {{Nome}}! Seus implementos Librelato podem sair de fábrica já equipados com a Sigaway, com 12 meses gratuitos para você conhecer todos os benefícios da telemetria. A Librelato e a Sigaway fazem p", "ctas": ["Quero Conhecer"]}]}, {"product": "Tanque", "steps": [{"order": 1, "wait": "Instantâneo", "subject": "1° E-mail - Bem-vindo à Librelato", "body": "Olá, {{Nome}}! É um prazer ter você e a equipe da {{Empresa}} com a gente. Ao preencher o formulário, você deu o primeiro passo para conhecer uma marca que, há mais de 50 anos, desenvolve implementos", "ctas": ["Implementos", "Onde comprar"]}, {"order": 2, "wait": "3 dias depois", "subject": "2° E-mail - Resumo Técnico Tanque", "body": "Olá, {{Nome}}! O transporte de cargas perigosas exige um implemento desenvolvido para atender às normas vigentes e às exigências da operação. O Tanque Librelato reúne soluções que contribuem para mais", "ctas": ["Onde comprar em {{Estado}}", "Veja as Opções"]}, {"order": 3, "wait": "7 dias depois", "subject": "3° E-mail - Limpeza e Conservação do Tanque", "body": "", "ctas": ["Encontrar Rede Autorizada em {{Cidade}}"]}, {"order": 4, "wait": "11 dias depois", "subject": "4° E-mail - {{Nome}}, Comprar um Tanque = Investimento", "body": "Olá, {{Nome}}! Quem transporta cargas perigosas sabe que cada operação tem suas particularidades. Por isso, contar com um implemento que se adapta à necessidade da frota faz toda a diferença. O Tanque", "ctas": ["Quero Comprar", "Modelos Disponíveis"]}, {"order": 5, "wait": "16 dias depois", "subject": "5° E-mail - {{Nome}}, Consórcio sem entrada e sem juros", "body": "Olá, {{Nome}}! Renovar ou ampliar a frota é uma decisão importante para qualquer operação. Por isso, contar com um planejamento que preserve o caixa da empresa faz toda a diferença. Com o Consórcio Na", "ctas": ["Quero Conhecer"]}, {"order": 6, "wait": "22 dias depois", "subject": "6° E-mail - {{Nome}}, 12 Meses Grátis de Telemetria", "body": "Olá, {{Nome}}! Seus implementos Librelato podem sair de fábrica já equipados com a Sigaway, com 12 meses gratuitos para você conhecer todos os benefícios da telemetria. A Librelato e a Sigaway fazem p", "ctas": ["Quero Conhecer"]}]}, {"product": "Furgão Alumínio", "steps": [{"order": 1, "wait": "Instantâneo", "subject": "1° E-mail - Bem-vindo à Librelato", "body": "Olá, {{Nome}}! É um prazer ter você e a equipe da {{Empresa}} com a gente. Ao preencher o formulário, você deu o primeiro passo para conhecer uma marca que, há mais de 50 anos, desenvolve implementos", "ctas": ["Implementos", "Onde comprar"]}, {"order": 2, "wait": "3 dias depois", "subject": "2° E-mail - Resumo Técnico Furgão Alumínio", "body": "Olá, {{Nome}}! O Furgão Alumínio Librelato foi desenvolvido para unir leveza, resistência e eficiência operacional, entregando vantagens para quem busca mais produtividade no transporte. Confira algun", "ctas": ["Onde comprar em {{Estado}}", "Veja as Opções"]}, {"order": 3, "wait": "7 dias depois", "subject": "3° E-mail - Limpeza e Conservação do Furgão Alumínio", "body": "", "ctas": ["Encontrar Rede Autorizada em {{Cidade}}"]}, {"order": 4, "wait": "11 dias depois", "subject": "4° E-mail - {{Nome}}, Comprar um Furgão Alumínio = Investimento", "body": "Olá, {{Nome}}! No transporte de cargas, reduzir o peso do implemento pode representar um melhor aproveitamento da capacidade disponível e mais eficiência em cada viagem. O Furgão Alumínio Librelato fo", "ctas": ["Quero Comprar", "Modelos Disponíveis"]}, {"order": 5, "wait": "16 dias depois", "subject": "5° E-mail - {{Nome}}, Consórcio sem entrada e sem juros", "body": "Olá, {{Nome}}! Renovar ou ampliar a frota é uma decisão importante para qualquer operação. Por isso, contar com um planejamento que preserve o caixa da empresa faz toda a diferença. Com o Consórcio Na", "ctas": ["Quero Conhecer"]}, {"order": 6, "wait": "22 dias depois", "subject": "6° E-mail - {{Nome}}, 12 Meses Grátis de Telemetria", "body": "Olá, {{Nome}}! Seus implementos Librelato podem sair de fábrica já equipados com a Sigaway, com 12 meses gratuitos para você conhecer todos os benefícios da telemetria. A Librelato e a Sigaway fazem p", "ctas": ["Quero Conhecer"]}]}, {"product": "Furgão Lonado", "steps": [{"order": 1, "wait": "Instantâneo", "subject": "1° E-mail - Bem-vindo à Librelato", "body": "Olá, {{Nome}}! É um prazer ter você e a equipe da {{Empresa}} com a gente. Ao preencher o formulário, você deu o primeiro passo para conhecer uma marca que, há mais de 50 anos, desenvolve implementos", "ctas": ["Implementos", "Onde comprar"]}, {"order": 2, "wait": "3 dias depois", "subject": "2° E-mail - Resumo Técnico Furgão Lonado", "body": "Olá, {{Nome}}! No transporte de carga seca, tempo de operação e proteção da carga fazem diferença no resultado da frota. O Furgão Lonado Librelato foi desenvolvido para unir resistência, praticidade e", "ctas": ["Onde comprar em {{Estado}}", "Veja as Opções"]}, {"order": 3, "wait": "7 dias depois", "subject": "3° E-mail - Limpeza e Conservação do Furgão Lonado", "body": "", "ctas": ["Encontrar Rede Autorizada em {{Cidade}}"]}, {"order": 4, "wait": "11 dias depois", "subject": "4° E-mail - {{Nome}}, Comprar um Furgão Lonado = Investimento", "body": "Olá, {{Nome}}! Antes de iniciar a viagem, faça uma inspeção rápida no sistema de enlonamento. Verifique se a lona está corretamente tensionada, sem folgas ou danos aparentes. Esse cuidado contribui pa", "ctas": ["Quero Comprar", "Modelos Disponíveis"]}, {"order": 5, "wait": "16 dias depois", "subject": "5° E-mail - {{Nome}}, Consórcio sem entrada e sem juros", "body": "Olá, {{Nome}}! Renovar ou ampliar a frota é uma decisão importante para qualquer operação. Por isso, contar com um planejamento que preserve o caixa da empresa faz toda a diferença. Com o Consórcio Na", "ctas": ["Quero Conhecer"]}, {"order": 6, "wait": "22 dias depois", "subject": "6° E-mail - {{Nome}}, 12 Meses Grátis de Telemetria", "body": "Olá, {{Nome}}! Seus implementos Librelato podem sair de fábrica já equipados com a Sigaway, com 12 meses gratuitos para você conhecer todos os benefícios da telemetria. A Librelato e a Sigaway fazem p", "ctas": ["Quero Conhecer"]}]}, {"product": "Furgão Frigorífico", "steps": [{"order": 1, "wait": "Instantâneo", "subject": "1° E-mail - Bem-vindo à Librelato", "body": "Olá, {{Nome}}! É um prazer ter você e a equipe da {{Empresa}} com a gente. Ao preencher o formulário, você deu o primeiro passo para conhecer uma marca que, há mais de 50 anos, desenvolve implementos", "ctas": ["Implementos", "Onde comprar"]}, {"order": 2, "wait": "3 dias depois", "subject": "2° E-mail - Resumo Técnico Furgão Frigorífico", "body": "Olá, {{Nome}}! No transporte de cargas refrigeradas, manter as condições ideais durante todo o trajeto faz diferença no resultado da operação. O Furgão Frigorífico Librelato foi desenvolvido com soluç", "ctas": ["Onde comprar em {{Estado}}", "Veja as Opções"]}, {"order": 3, "wait": "7 dias depois", "subject": "3° E-mail - Limpeza e Conservação do Furgão Frigorífico", "body": "", "ctas": ["Encontrar Rede Autorizada em {{Cidade}}"]}, {"order": 4, "wait": "11 dias depois", "subject": "4° E-mail - {{Nome}}, Comprar um Furgão Frigorífico = Investimento", "body": "Olá, {{Nome}}! No transporte refrigerado, alguns cuidados antes mesmo do carregamento podem fazer diferença na eficiência da operação. Uma boa prática é realizar o pré-resfriamento do implemento antes", "ctas": ["Quero Comprar", "Modelos Disponíveis"]}, {"order": 5, "wait": "16 dias depois", "subject": "5° E-mail - {{Nome}}, Consórcio sem entrada e sem juros", "body": "Olá, {{Nome}}! Renovar ou ampliar a frota é uma decisão importante para qualquer operação. Por isso, contar com um planejamento que preserve o caixa da empresa faz toda a diferença. Com o Consórcio Na", "ctas": ["Quero Conhecer"]}, {"order": 6, "wait": "22 dias depois", "subject": "6° E-mail - {{Nome}}, 12 Meses Grátis de Telemetria", "body": "Olá, {{Nome}}! Seus implementos Librelato podem sair de fábrica já equipados com a Sigaway, com 12 meses gratuitos para você conhecer todos os benefícios da telemetria. A Librelato e a Sigaway fazem p", "ctas": ["Quero Conhecer"]}]}, {"product": "Canavieira", "steps": [{"order": 1, "wait": "Instantâneo", "subject": "1° E-mail - Bem-vindo à Librelato", "body": "Olá, {{Nome}}! É um prazer ter você e a equipe da {{Empresa}} com a gente. Ao preencher o formulário, você deu o primeiro passo para conhecer uma marca que, há mais de 50 anos, desenvolve implementos", "ctas": ["Implementos", "Onde comprar"]}, {"order": 2, "wait": "3 dias depois", "subject": "2° E-mail - Resumo Técnico Canavieira", "body": "Olá, {{Nome}}! Na operação canavieira, o implemento precisa enfrentar estradas de terra, longas jornadas de trabalho e as condições severas da safra. Por isso, o Rodotrem Canavieiro Evolut foi desenvo", "ctas": ["Onde comprar em {{Estado}}", "Veja as Opções"]}, {"order": 3, "wait": "7 dias depois", "subject": "3° E-mail - Limpeza e Conservação da Canavieira", "body": "", "ctas": ["Encontrar Rede Autorizada em {{Cidade}}"]}, {"order": 4, "wait": "11 dias depois", "subject": "4° E-mail - {{Nome}}, Comprar um Canavieiro = Investimento", "body": "Olá, {{Nome}}! Na operação canavieira, cada etapa da safra exige produtividade e disponibilidade da frota. Por isso, preparar o implemento antes do início da colheita é uma prática que contribui para", "ctas": ["Quero Comprar", "Modelos Disponíveis"]}, {"order": 5, "wait": "16 dias depois", "subject": "5° E-mail - {{Nome}}, Consórcio sem entrada e sem juros", "body": "Olá, {{Nome}}! Renovar ou ampliar a frota é uma decisão importante para qualquer operação. Por isso, contar com um planejamento que preserve o caixa da empresa faz toda a diferença. Com o Consórcio Na", "ctas": ["Quero Conhecer"]}, {"order": 6, "wait": "22 dias depois", "subject": "6° E-mail - {{Nome}}, 12 Meses Grátis de Telemetria", "body": "Olá, {{Nome}}! Seus implementos Librelato podem sair de fábrica já equipados com a Sigaway, com 12 meses gratuitos para você conhecer todos os benefícios da telemetria. A Librelato e a Sigaway fazem p", "ctas": ["Quero Conhecer"]}]}, {"product": "Cavaqueira", "steps": [{"order": 1, "wait": "Instantâneo", "subject": "1° E-mail - Bem-vindo à Librelato", "body": "Olá, {{Nome}}! É um prazer ter você e a equipe da {{Empresa}} com a gente. Ao preencher o formulário, você deu o primeiro passo para conhecer uma marca que, há mais de 50 anos, desenvolve implementos", "ctas": ["Implementos", "Onde comprar"]}, {"order": 2, "wait": "3 dias depois", "subject": "2° E-mail - Resumo Técnico Cavaqueira", "body": "Olá, {{Nome}}! Cavaco de madeira, biomassa e resíduos florestais são cargas leves e volumosas. Nessas operações, aproveitar ao máximo o volume transportado faz toda a diferença. Por isso, o Semirreboq", "ctas": ["Onde comprar em {{Estado}}", "Veja as Opções"]}, {"order": 3, "wait": "7 dias depois", "subject": "3° E-mail - Limpeza e Conservação da Cavaqueira", "body": "", "ctas": ["Encontrar Rede Autorizada em {{Cidade}}"]}, {"order": 4, "wait": "11 dias depois", "subject": "4° E-mail - {{Nome}}, Comprar um Cavaqueira = Investimento", "body": "Olá, {{Nome}}! No transporte de cavaco de madeira e biomassa, cada metro cúbico bem aproveitado faz diferença na produtividade da operação. Por isso, contar com um implemento desenvolvido para transpo", "ctas": ["Quero Comprar", "Modelos Disponíveis"]}, {"order": 5, "wait": "16 dias depois", "subject": "5° E-mail - {{Nome}}, Consórcio sem entrada e sem juros", "body": "Olá, {{Nome}}! Renovar ou ampliar a frota é uma decisão importante para qualquer operação. Por isso, contar com um planejamento que preserve o caixa da empresa faz toda a diferença. Com o Consórcio Na", "ctas": ["Quero Conhecer"]}, {"order": 6, "wait": "22 dias depois", "subject": "6° E-mail - {{Nome}}, 12 Meses Grátis de Telemetria", "body": "Olá, {{Nome}}! Seus implementos Librelato podem sair de fábrica já equipados com a Sigaway, com 12 meses gratuitos para você conhecer todos os benefícios da telemetria. A Librelato e a Sigaway fazem p", "ctas": ["Quero Conhecer"]}]}];
+
+/* ---------------- VIEW SWITCH ---------------- */
+function setView(v){
+  document.getElementById('view-flow').classList.toggle('active', v==='flow');
+  document.getElementById('view-sim').classList.toggle('active', v==='sim');
+  document.getElementById('tab-flow').classList.toggle('active', v==='flow');
+  document.getElementById('tab-sim').classList.toggle('active', v==='sim');
+}
+
+/* ---------------- BUILD FLOW CANVAS ---------------- */
+function emailHTML(step, extra){
+  const hasBody = step.body && step.body.trim().length>0;
+  return `
+    <div class="email-frame">
+      <div class="email-hero">
+        <div class="logo-mark">L</div>
+        <h3>Librelato</h3>
+      </div>
+      <div class="email-content">
+        ${hasBody ? `<p>${step.body.trim()}${step.body.trim().slice(-1)!=='.'?'…':''}</p>` : `<div class="placeholder-img">🖼️ Peça visual — dicas de limpeza e conservação</div><p>Conteúdo visual com orientações de manutenção do implemento, reforçando a rede autorizada Librelato mais próxima do lead.</p>`}
+        <div class="email-ctas">
+          ${step.ctas.map((c,i)=>`<${i===0?'button class="btn-primary"':'button class="btn-secondary"'}>${c}</button>`).join('')}
+        </div>
+      </div>
+      <div class="email-footer">Enviado pela Librelato · {{Empresa}} · Automação de Relacionamento</div>
+    </div>`;
+}
+
+function buildCanvas(){
+  const canvas = document.getElementById('canvas');
+  let html = `
+    <div class="entry-col">
+      <div class="node entry">
+        <div class="nlabel">📝 Gatilho</div>
+        <div class="ntitle">Formulário preenchido no site</div>
+      </div>
+      <div class="connector"></div>
+      <div class="node trigger">
+        <div class="nlabel">🔀 Segmentação</div>
+        <div class="ntitle">Produto escolhido no formulário define a jornada (12 caminhos)</div>
+      </div>
+    </div>
+    <div class="branch-arrow" style="align-self:center;"></div>
+    <div class="columns">
+  `;
+  FLOWS.forEach((flow, fi)=>{
+    html += `<div class="col">
+      <div class="col-header">${flow.product}</div>
+      <div class="connector"></div>`;
+    flow.steps.forEach((step, si)=>{
+      html += `
+        <div class="wait-chip">⏱ ${step.wait}</div>
+        <div class="node mail-node clickable" onclick='openModal(${fi},${si})'>
+          <span class="step-num">${step.order}</span>
+          <div class="nlabel">✉️ E-mail ${step.order}</div>
+          <div class="ntitle">${step.subject.replace(/^\\d°\\s*E-mail\\s*-\\s*/,'')}</div>
+          <div class="cta-preview">${step.ctas.map(c=>`<span>${c}</span>`).join('')}</div>
+        </div>`;
+      if(si < flow.steps.length-1) html += `<div class="connector"></div>`;
+    });
+    html += `</div>`;
+  });
+  html += `</div>`;
+  canvas.innerHTML = html;
+}
+
+function openModal(fi, si){
+  const step = FLOWS[fi].steps[si];
+  const modal = document.getElementById('modal');
+  modal.innerHTML = `
+    <div class="modal-head">
+      <div>
+        <div class="m-wait">${FLOWS[fi].product} · ${step.wait}</div>
+        <h2>${step.subject}</h2>
+      </div>
+      <button onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">${emailHTML(step)}</div>
+  `;
+  document.getElementById('overlay').classList.add('show');
+}
+function closeModal(){ document.getElementById('overlay').classList.remove('show'); }
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+/* ---------------- SIMULATOR ---------------- */
+let simFlow = null, simStep = -1, simTimer = null, simDayMap=[0,3,7,11,16,22];
+
+function fillProductSelect(){
+  const sel = document.getElementById('leadProduct');
+  sel.innerHTML = FLOWS.map((f,i)=>`<option value="${i}">${f.product}</option>`).join('');
+}
+fillProductSelect();
+
+function personalize(text, name, company){
+  return text.replaceAll('{{Nome}}', name || 'Lead').replaceAll('{{Empresa}}', company || 'sua empresa')
+    .replaceAll('{{Estado}}','SP').replaceAll('{{ESTADO}}','SP').replaceAll('{{Cidade}}','sua região');
+}
+
+function startSim(){
+  const idx = parseInt(document.getElementById('leadProduct').value);
+  simFlow = { flowIndex: idx, name: document.getElementById('leadName').value, company: document.getElementById('leadCompany').value };
+  simStep = -1;
+  document.getElementById('doneMsg').classList.remove('show');
+  renderTimeline();
+  simNext();
+}
+
+function renderTimeline(){
+  const tl = document.getElementById('timeline');
+  if(!simFlow){ tl.innerHTML = '<div style="font-size:12px;color:rgba(255,255,255,.5)">Nenhum lead ativo ainda.</div>'; return; }
+  const steps = FLOWS[simFlow.flowIndex].steps;
+  tl.innerHTML = steps.map((s,i)=>{
+    const cls = i < simStep ? 'done' : (i===simStep ? 'active' : '');
+    return `<div class="tl-item ${cls}">
+      <div>
+        <div class="tt">E-mail ${s.order} — ${simDayMap[i]===0?'Instantâneo':'Dia '+simDayMap[i]}</div>
+        <div class="td">${s.subject.replace(/^\d°\s*E-mail\s*-\s*/,'')}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderPhone(){
+  const screen = document.getElementById('phoneScreen');
+  if(!simFlow || simStep<0){
+    screen.innerHTML = `<div class="inbox-bar"><span>Caixa de Entrada</span><span id="inboxCount">0 novos</span></div>
+      <div class="inbox-empty"><div class="big-icon">📭</div>Configure um lead e clique em<br>"Entrar no Fluxo" para começar a simulação.</div>`;
+    return;
+  }
+  const steps = FLOWS[simFlow.flowIndex].steps;
+  const step = steps[simStep];
+  const bodyRaw = step.body && step.body.trim().length>0 ? personalize(step.body, simFlow.name, simFlow.company) : '';
+  const hasBody = bodyRaw.length>0;
+  screen.innerHTML = `
+    <div class="inbox-bar"><span>Caixa de Entrada</span><span>${simStep+1} de ${steps.length}</span></div>
+    <div class="mail-view">
+      <div class="subject-line"><b>${personalize(step.subject, simFlow.name, simFlow.company)}</b>de: Librelato &lt;relacionamento@librelato.com.br&gt;</div>
+      <div class="email-hero"><div class="logo-mark">L</div><h3>Librelato</h3></div>
+      <div class="email-content">
+        ${hasBody ? `<p>${bodyRaw}${bodyRaw.slice(-1)!=='.'?'…':''}</p>` : `<div class="placeholder-img">🖼️ Dicas de limpeza e conservação</div><p>Conteúdo visual com orientações de manutenção, reforçando a rede autorizada Librelato mais próxima de ${simFlow.name}.</p>`}
+        <div class="email-ctas">${step.ctas.map((c,i)=>`<${i===0?'button class="btn-primary"':'button class="btn-secondary"'}>${personalize(c,simFlow.name,simFlow.company)}</button>`).join('')}</div>
+      </div>
+      <div class="email-footer">Enviado pela Librelato · Automação de Relacionamento</div>
+    </div>
+  `;
+}
+
+function updateStatus(){
+  const badge = document.getElementById('dayBadge');
+  if(!simFlow || simStep<0){ badge.textContent = 'Dia 0'; }
+  else{ badge.textContent = simDayMap[simStep]===0 ? 'Dia 0 · Instantâneo' : `Dia ${simDayMap[simStep]}`; }
+  document.getElementById('btnPrev').disabled = !simFlow || simStep<=0;
+  const last = simFlow ? FLOWS[simFlow.flowIndex].steps.length-1 : 0;
+  document.getElementById('btnNext').disabled = !simFlow || simStep>=last;
+  document.getElementById('doneMsg').classList.toggle('show', !!simFlow && simStep===last);
+}
+
+function simNext(){
+  if(!simFlow) return;
+  const last = FLOWS[simFlow.flowIndex].steps.length-1;
+  if(simStep < last){ simStep++; renderPhone(); renderTimeline(); updateStatus(); }
+}
+function simPrev(){
+  if(!simFlow || simStep<=0) return;
+  simStep--; renderPhone(); renderTimeline(); updateStatus();
+}
+function simPlay(){
+  if(!simFlow) return;
+  clearInterval(simTimer);
+  const last = FLOWS[simFlow.flowIndex].steps.length-1;
+  simTimer = setInterval(()=>{
+    if(simStep>=last){ clearInterval(simTimer); return; }
+    simNext();
+  }, 1400);
+}
+
+renderTimeline();
+updateStatus();
+buildCanvas();
+</script>
